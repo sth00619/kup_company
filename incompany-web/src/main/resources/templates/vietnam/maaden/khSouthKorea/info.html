@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>메인</title>
+
+    <link th:href="@{/css/common.css(date=${todayFormat})}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/inCompany.css(date=${todayFormat})}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/vietnam/css.css(date=${todayFormat})}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+        rel="stylesheet">
+    <script src="/lib/jquery-3.6.0.min.js"></script>
+    <script th:src="@{/lib/moment.js}"></script>
+    <script th:src="@{/js/side_drop_down.js(date=${todayFormat})}" type="text/javascript"></script>
+
+</head>
+
+<body>
+    <input id="cloudUrlAndPath" th:value="${cloudUrlAndPath}" hidden="true">
+
+    <div id="wrap">
+
+        <!-- header -->
+        <header class="header" sec:authorize="hasAnyAuthority('VIETNAM')">
+
+            <div class="main_inner">
+
+                <h1><a th:href="@{/}">HOME</a></h1>
+
+                <div class="mypage">
+
+                    <div class="my_box">
+
+                        <a href="/logout"><img src="/images/img/back.png"></a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+        <header sec:authorize="hasAnyAuthority('VIETNAM_ADMIN')" th:replace="fragments/header :: headerFragment">
+        </header>
+        <!-- main start ! -->
+        <main>
+            <section class="main_section">
+                <div class="main_inner">
+
+                    <div class="main_section-flex">
+                        <!-- side -->
+                        <div class="main_side_wrap">
+
+                            <div class="quick_box">
+
+                                <th:block layout:fragment="side_contents">
+                                    <div th:replace="fragments/sideVietnam :: sideVietnamFragment"></div>
+                                </th:block>
+                            </div>
+
+                        </div>
+                        <!-- center -->
+                        <div class="main_center">
+
+                            <div class="top_center_menu_visual">
+
+                                <div class="top_center-menu">
+
+                                </div>
+
+                                <div class="main_center_wrap">
+                                    <!-- table -->
+
+                                    <div class="table-topmenu">
+                                        <h2 class="tw_title">KH SOUTHKOREA DOC</h2>
+                                    </div>
+
+                                    <table id="table-wrap">
+
+                                        <tbody>
+
+                                            <tr>
+                                                <th class="title-bgc03">PO NO.<br />(Purchase order)</th>
+                                                <td th:text="${ksk.poNo}">PO_1806_6341908390_1</td>
+                                                <th class="title-bgc03">BL NO.</th>
+                                                <td th:text="${ksk.blNo}">MEDUV1986375</td>
+                                            </tr>
+
+                                        </tbody>
+
+                                        <tbody>
+
+                                            <tr>
+                                                <th class="title-bgc02">Check list</th>
+                                                <td>
+                                                    <a class="_downFile" th:each=" fl: ${ksk.checkListFile}" th:href="@{(${cloudUrl+fl.fileNamePath})}"  th:text="${fl.fileNameStr}"><br>
+                                                </td>
+                                                <th class="title-bgc02">B/L<br />(Bill of Landing)</th>
+                                                <td>
+                                                    <a class="_downFile" th:each=" fl: ${ksk.blFile}" th:href="@{${cloudUrl}${fl.fileNamePath}}"  th:text="${fl.fileNameStr}"></a>
+
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <th class="title-bgc02">C/I<br />(Commercial Invoice)</th>
+                                                <td>
+                                                    <a class="_downFile" th:each=" fl: ${ksk.ciFile}" th:href="@{(${cloudUrl+fl.fileNamePath})}"  th:text="${fl.fileNameStr}">
+
+
+                                                </td>
+                                                <th class="title-bgc02">P/L<br />(Packing List)</th>
+                                                <td>
+                                                    <a class="_downFile" th:each=" fl: ${ksk.plFile}" th:href="@{(${cloudUrl+fl.fileNamePath})}"  th:text="${fl.fileNameStr}">
+
+
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <th class="title-bgc02">COO<br />(Certificate of origin)</th>
+                                                <td>
+                                                    <a class="_downFile" th:each=" fl: ${ksk.cooFile}" th:href="@{(${cloudUrl+fl.fileNamePath})}"  th:text="${fl.fileNameStr}">
+                                                </td>
+                                                <th class="title-bgc02">LABEL & Container<br />PHOTO</th>
+                                                <td>
+                                                    <a class="_downFile" th:each=" fl: ${ksk.labelContainerPhotoFile}" th:href="@{(${cloudUrl+fl.fileNamePath})}"  th:text="${fl.fileNameStr}">
+
+
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <th class="title-bgc02">상공회의소인증</th>
+                                                <td>
+                                                    <div class="date_box">
+                                                        <input class="date-txt" type="date" th:value="${ksk.cci}" disabled>
+                                                    </div>
+                                                </td>
+                                                <th class="title-bgc02">DHL</th>
+                                                <td>
+                                                    <div class="date_box">
+                                                        <input class="date-txt" type="date" th:value="${ksk.dhl}" disabled>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <th class="title-bgc02">MAADEN UPLOAD</th>
+                                                <td>
+                                                    <div class="date_box">
+                                                        <input class="date-txt" type="date" th:value="${ksk.uploadDate}" disabled>
+                                                    </div>
+                                                </td>
+                                                <th class="title-bgc02"></th>
+                                                <td> </td>
+                                            </tr>
+
+                                            <tr>
+                                                <th class="title-bgc01" colspan="4">NOTES</th>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="td-text" colspan="4">
+                                                    <textarea  th:text="${ksk.notes}" disabled></textarea>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+
+                                    </table>
+
+
+                                    <div class="save_btn_wrap">
+                                        <div>
+                                            <a href="list">
+                                                <button class="close_btn _closeBtn" id="closeBtn"
+                                                    type="button">CANCEL</button>
+                                            </a>
+                                            <a th:href="@{/vietnam/maaden/khSouthKorea/edit(poIdxNo=${ksk.poIdxNo})}">
+                                                <button class="close_btn btn_color deta"  th:if="${ksk.state == 1}" type="button">UPDATE</button>
+                                            </a>
+
+                                        </div>
+                                    </div>
+
+
+                                    <!-- table end -->
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </section>
+
+            <footer id="footer">
+
+
+
+
+
+            </footer>
+
+        </main>
+
+
+    </div>
+
+
+</body>
+
+</html>

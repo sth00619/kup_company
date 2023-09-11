@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head th:replace="fragments/head :: headFragment"></head>
+<style>
+    ._block {
+        display: none;
+    }
+
+
+</style>
+
+<body>
+<div id="wrap">
+    <!-- header -->
+    <div th:unless="${#authorization.expression('hasAnyAuthority(''SI_COMPANY'', ''FA_COMPANY'')')}">
+        <header th:replace="fragments/header :: headerFragment"></header>
+    </div>
+
+    <div th:if="${#authorization.expression('hasAnyAuthority(''SI_COMPANY'', ''FA_COMPANY'')')}">
+        <header th:replace="fragments/siHeader :: siHeaderFragment"></header>
+    </div>
+
+    <main>
+        <section class="main_section">
+            <div class="main_inner">
+                <div class="main_section-flex">
+                    <div class="main_side_wrap">
+                        <!-- side -->
+                        <div class="quick_box">
+                            <!-- 프로필 영역 (today box) -->
+                            <th:block th:replace="fragments/myProfile :: myProfileFragment"></th:block>
+
+                            <div class="daily_box">
+                                <a href="/worksheet/document/documentList">업무일지</a>
+                                <a href="/schedule/schedule">스케줄 확인</a>
+                            </div>
+                            <th:block th:replace="fragments/coffeePointBox :: coffeePointBox"></th:block>
+                            <!-- 목표 금액 입력 -->
+                            <div th:if="${salesTargetAmountDto != null}">
+                                <th:block th:replace="fragments/mainSales :: mainsalesFragment"></th:block>
+                            </div>
+
+                            <!-- side contents -->
+                            <th:block layout:fragment="side_contents"></th:block>
+                        </div>
+
+                        <!-- mypage 클릭 -->
+                        <div class="account_box my_pop2">
+                            <th:block th:replace="popup/myPop :: myPopFragment"></th:block>
+                        </div>
+                    </div>
+
+
+                    <th:block layout:fragment="contents"></th:block>
+
+                </div>
+            </div>
+        </section>
+
+        <footer id="footer">
+
+            <div class="foot_inner">
+
+                <div class="foot_left">
+                    <p>COPYRIGHT ⓒ KHGROUP</p>
+                </div>
+                <div class="foot_right">
+
+                </div>
+
+            </div>
+
+        </footer>
+
+        <div class="scroll_btn">TOP 버튼 클릭<img src="/images/img/top_btn.png"></div>
+
+    </main>
+
+    <div class="_block">
+        <div class="pop_wrap popblock">
+            <div class="advice_save_visual pop4 pop4block">
+
+                <p>서비스 준비 중입니다.</p>
+                <div>
+                    <span>확인</span>
+                </div>
+            </div>
+        </div>
+        <div class="black_screen screenblock"></div>
+    </div>
+
+    <form>
+
+        <div class="password_visual">
+
+            <div class="password_pop">
+
+                <div class="close_btn_wrap"></div>
+                <div class="password">
+                    <h2>비밀번호 변경</h2>
+                    <div class="guest_list">
+                        <input hidden id="updatePwEmployeeCode" th:value="${myProfileDto.employeeCode}"/>
+                        <div class="guest_list_name">
+                            <p>이름</p>
+                        </div>
+
+                        <div class="guest_list_box">
+                            <div class="name_box">
+                                <p th:text="${myProfileDto.getEmployeeName()}"></p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="guest_list">
+
+                        <div class="guest_list_name">
+                            <p>현재비밀번호</p>
+                        </div>
+
+                        <div class="guest_list_box">
+                            <div class="name_box">
+                                <input autoComplete="on" class="_beforPassword" id="now_password" type="password">
+                                <label for="now_password"></label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="guest_list new_passowrd">
+
+                        <div class="guest_list_name">
+                            <p>새 비밀번호</p>
+                        </div>
+
+                        <div class="guest_list_box">
+                            <div class="name_box">
+                                <input autoComplete="on" class="_afterPassword" id="new_password" type="password">
+                                <label for="new_password"></label>
+                            </div>
+                        </div>
+
+                        <div class="new_txt">(영문 대소문자 / 숫자 / 특수문자 / 중 2가지 이상 조합, 10자 ~ 16자)</div>
+
+                    </div>
+
+                    <div class="guest_list">
+
+                        <div class="guest_list_name">
+                            <p>새 비밀번호 확인</p>
+                        </div>
+
+                        <div class="guest_list_box">
+                            <div class="name_box">
+                                <input autoComplete="on" class="_afterPasswordRe" id="new_passwordNow" type="password">
+                                <label for="new_passwordNow"></label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="password_changebox">
+                        <div class="changeto password_close">다음에 변경하기</div>
+                        <div class="change">비밀번호 변경하기</div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </form>
+    <div class="pop_wrap">
+        <div class="advice_save_visual pop4">
+
+            <p>비밀번호가 변경되었습니다.</p>
+            <div>
+                <span id="passwordComp">확인</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="black_screen"></div>
+</div>
+
+<!--하단의 script-->
+<th:block layout:fragment="pageScript"></th:block>
+</body>

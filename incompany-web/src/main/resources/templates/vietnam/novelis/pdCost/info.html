@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>메인</title>
+
+    <link th:href="@{/css/common.css(date=${todayFormat})}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/inCompany.css(date=${todayFormat})}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/vietnam/css.css(date=${todayFormat})}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+        rel="stylesheet">
+    <script src="/lib/jquery-3.6.0.min.js"></script>
+    <script th:src="@{/js/vietnam/form.js(date=${todayFormat})}"></script>
+    <script th:src="@{/lib/moment.js}"></script>
+    <script th:src="@{/js/side_drop_down.js(date=${todayFormat})}" type="text/javascript"></script>
+
+</head>
+
+<body>
+
+    <div id="wrap">
+
+        <!-- header -->
+        <header class="header" sec:authorize="hasAnyAuthority('VIETNAM')">
+
+            <div class="main_inner">
+
+                <h1><a th:href="@{/}">HOME</a></h1>
+
+                <div class="mypage">
+
+                    <div class="my_box">
+
+                        <a href="/logout"><img src="/images/img/back.png"></a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+        <header sec:authorize="hasAnyAuthority('VIETNAM_ADMIN')" th:replace="fragments/header :: headerFragment">
+        </header>
+        <!-- main start ! -->
+        <main>
+            <section class="main_section">
+                <div class="main_inner">
+
+                    <div class="main_section-flex">
+                        <!-- side -->
+                        <div class="main_side_wrap">
+
+                            <div class="quick_box">
+
+                                <th:block layout:fragment="side_contents">
+                                    <div th:replace="fragments/sideVietnam :: sideVietnamFragment"></div>
+                                </th:block>
+                            </div>
+
+                        </div>
+                        <!-- center -->
+                        <div class="main_center">
+
+
+                            <form id="form">
+
+                                <input th:value="${pc.poIdxNo}" name="poIdxNo" hidden>
+
+
+                                <div class="top_center_menu_visual">
+
+                                    <div class="top_center-menu">
+
+                                    </div>
+
+                                    <div class="main_center_wrap">
+                                        <!-- table -->
+
+                                        <div class="table-topmenu">
+                                            <h2 class="tw_title">PD COST</h2>
+                                        </div>
+
+                                        <table id="table-wrap">
+
+                                            <tbody>
+
+                                                <tr>
+                                                    <th style="width:55%" colspan="2" class="title-bgc03">PO
+                                                        NO.<br />(Purchase order)</th>
+                                                    <td colspan="4" th:text="${pc.poNo}">PO_1806_6341908390_1</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <th colspan="2" class="title-bgc03">BL NO.</th>
+                                                    <td colspan="4" th:text="${pc.blNo}">MEDUV1986375</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <th colspan="2" class="title-bgc03">INVOICE.NO</th>
+                                                    <td colspan="4"><input type="text" class="typing-txt"
+                                                            th:value="${pc.invoiceNo}" maxlength="50" name="invoiceNo" disabled>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <th class="title-bgc02">ETD</th>
+                                                    <th class="title-bgc02">ETA</th>
+                                                    <th class="title-bgc02" colspan="2">CONTAINERS</td>
+                                                    <th class="title-bgc02" colspan="2">INCOTERMS</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td th:text="${pc.etd}">2022-01-01</td>
+                                                    <td th:text="${pc.eta}">2022-01-01</td>
+                                                    <td colspan="2" th:text="${pc.containers}">10</td>
+                                                    <td colspan="2" th:text="${pc.incoterms}">CIF</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <th colspan="2" class="title-bgc02">CATECORY</th>
+                                                    <th class="title-bgc02">QUANTITY</th>
+                                                    <th class="title-bgc02">UNIT PRICE</th>
+                                                    <th class="title-bgc02">AMOUNT</th>
+                                                    <th class="title-bgc02">CURRENCY</th>
+                                                </tr>
+
+                                                <tr>
+                                                    <th class="title-bgc02">FREIGHT CHARGE</th>
+                                                    <th class="title-bgc04">OCEAN FREIGHT</th>
+                                                    <td>
+                                                        <input type="text" class="typing-txt _freightQuantity" 
+                                                            th:value="${#numbers.formatDecimal(pc.oceanFreightQuantityUsd, 1, 'COMMA', 2 , 'POINT')}" name="oceanFreightQuantityUsd" maxlength="15" onkeyup="inputNumberFormat(this)" disabled/>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="typing-txt _freightUnitPrice"  th:value="${#numbers.formatDecimal(pc.oceanFreightUnitPriceUsd, 1, 'COMMA', 2 , 'POINT')}" name="oceanFreightUnitPriceUsd" maxlength="15" onkeyup="inputNumberFormat(this)" disabled/>
+                                                    </td>
+                                                    <td>
+                                                        <p class="_freightAmount"></p>
+                                                    </td>
+                                                    <td>USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th class="title-bgc03" colspan="3">SUBTOTAL</th>
+                                                    <th class="title-bgc03"></th>
+                                                    <th class="title-bgc03"><p id="freightSubTotal"></p></th>
+                                                    <th class="title-bgc03"></th>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th class="title-bgc03" rowspan="12">LOCAL CHARGE</th>
+                                                    <th class="title-bgc04">TERMINAL HANDLING<br />CHARGE</th>
+                                                    <td>
+                                                        <input type="text" class="typing-txt _local_quantity"  th:value="${#numbers.formatDecimal(pc.terminalHandlingQuantityUsd, 1, 'COMMA', 2 , 'POINT')}" name="terminalHandlingQuantityUsd" maxlength="15" onkeyup="inputNumberFormat(this)" disabled/>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="typing-txt _local_unit_price" th:value="${#numbers.formatDecimal(pc.terminalHandlingUnitPriceUsd, 1, 'COMMA', 2 , 'POINT')}" name="terminalHandlingUnitPriceUsd" maxlength="15" onkeyup="inputNumberFormat(this)" disabled/>
+                                                    </td>
+                                                    <td>
+                                                        <p class="_local_amount">자동으로계산</p>
+                                                    </td>
+                                                    
+                                                    <td>USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th class="title-bgc04">SEAL CHARGE</th>
+                                                    <td>
+                                                        <input type="text" class="typing-txt _local_quantity" th:value="${#numbers.formatDecimal(pc.sealChargeQuantityUsd, 1, 'COMMA', 2 , 'POINT')}" name="sealChargeQuantityUsd" maxlength="15" onkeyup="inputNumberFormat(this)" disabled/>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="typing-txt _local_unit_price" th:value="${#numbers.formatDecimal(pc.sealChargeUnitPriceUsd, 1, 'COMMA', 2 , 'POINT')}" name="sealChargeUnitPriceUsd" maxlength="15" onkeyup="inputNumberFormat(this)" disabled/>
+                                                    </td>
+                                                    <td>
+                                                        <p class="_local_amount">자동으로계산</p>
+                                                    </td>
+                                                    <td>USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th class="title-bgc04">DOCUMENT FEE</th>
+                                                    <td>
+                                                        <input type="text" class="typing-txt _local_quantity" th:value="${#numbers.formatDecimal(pc.documentFeeQuantityUsd, 1, 'COMMA', 2 , 'POINT')}" name="documentFeeQuantityUsd" maxlength="15" onkeyup="inputNumberFormat(this)" disabled/>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="typing-txt _local_unit_price" th:value="${#numbers.formatDecimal(pc.documentFeeUnitPriceUsd, 1, 'COMMA', 2 , 'POINT')}" name="documentFeeUnitPriceUsd" maxlength="15" onkeyup="inputNumberFormat(this)" disabled/>
+                                                    </td>
+                                                    <td>
+                                                        <p class="_local_amount">자동으로계산</p>
+                                                    </td>
+                                                    <td>USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th class="title-bgc04">TELEX RELEASE<br />CHARGE</th>
+                                                    <td>
+                                                        <input type="text" class="typing-txt _local_quantity" th:value="${#numbers.formatDecimal(pc.telexReleaseQuantityUsd, 1, 'COMMA', 2 , 'POINT')}" name="telexReleaseQuantityUsd" maxlength="15" onkeyup="inputNumberFormat(this)" disabled/>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="typing-txt _local_unit_price" th:value="${#numbers.formatDecimal(pc.telexReleaseUnitPriceUsd, 1, 'COMMA', 2 , 'POINT')}" name="telexReleaseUnitPriceUsd" maxlength="15" onkeyup="inputNumberFormat(this)" disabled/>
+                                                    </td>
+                                                    <td>
+                                                        <p class="_local_amount">자동으로계산</p>
+                                                    </td>
+                                                    <td>USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th class="title-bgc04">TRUKING CHARGE</th>
+                                                    <td>
+                                                        <input type="text" class="typing-txt _local_quantity" th:value="${#numbers.formatDecimal(pc.trukingChargeQuantityUsd, 1, 'COMMA', 2 , 'POINT')}" name="trukingChargeQuantityUsd" maxlength="15" onkeyup="inputNumberFormat(this)" disabled/>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="typing-txt _local_unit_price" th:value="${#numbers.formatDecimal(pc.trukingChargeUnitPriceUsd, 1, 'COMMA', 2 , 'POINT')}" name="trukingChargeUnitPriceUsd" maxlength="15" onkeyup="inputNumberFormat(this)" disabled/>
+                                                    </td>
+                                                    <td>
+                                                        <p class="_local_amount">자동으로계산</p>
+                                                    </td>
+                                                    <td>USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th class="title-bgc04">LIFT ON/OFF FEE</th>
+                                                    <td>
+                                                        <input type="text" class="typing-txt _local_quantity" th:value="${#numbers.formatDecimal(pc.liftOnOffFeeQuantityUsd, 1, 'COMMA', 2 , 'POINT')}" name="liftOnOffFeeQuantityUsd" maxlength="15" onkeyup="inputNumberFormat(this)" disabled/>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="typing-txt _local_unit_price" th:value="${#numbers.formatDecimal(pc.liftOnOffFeeUnitPriceUsd, 1, 'COMMA', 2 , 'POINT')}" name="liftOnOffFeeUnitPriceUsd" maxlength="15" onkeyup="inputNumberFormat(this)" disabled/>
+                                                    </td>
+                                                    <td>
+                                                        <p class="_local_amount">자동으로계산</p>
+                                                    </td>
+                                                    <td>USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th class="title-bgc04">STORAGE CHARGE</th>
+                                                    <td>
+                                                        <input type="text" class="typing-txt _local_quantity" th:value="${#numbers.formatDecimal(pc.storageChargeQuantityUsd, 1, 'COMMA', 2 , 'POINT')}" name="storageChargeQuantityUsd" maxlength="15" onkeyup="inputNumberFormat(this)" disabled/>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="typing-txt _local_unit_price" th:value="${#numbers.formatDecimal(pc.storageChargeUnitPriceUsd, 1, 'COMMA', 2 , 'POINT')}" name="storageChargeUnitPriceUsd" maxlength="15" onkeyup="inputNumberFormat(this)" disabled/>
+                                                    </td>
+                                                    <td>
+                                                        <p class="_local_amount">자동으로계산</p>
+                                                    </td>
+                                                    <td>USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th class="title-bgc04">DETENTION CHARGE</th>
+                                                    <td>
+                                                        <input type="text" class="typing-txt _local_quantity" th:value="${#numbers.formatDecimal(pc.detentionChargeQuantityUsd, 1, 'COMMA', 2 , 'POINT')}" name="detentionChargeQuantityUsd" maxlength="15" onkeyup="inputNumberFormat(this)" disabled/>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="typing-txt _local_unit_price" th:value="${#numbers.formatDecimal(pc.detentionChargeUnitPriceUsd, 1, 'COMMA', 2 , 'POINT')}" name="detentionChargeUnitPriceUsd" maxlength="15" onkeyup="inputNumberFormat(this)" disabled/>
+                                                    </td>
+                                                    <td>
+                                                        <p class="_local_amount">자동으로계산</p>
+                                                    </td>
+                                                    <td>USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th class="title-bgc04">DEMURRGAECHARGE</th>
+                                                    <td>
+                                                        <input type="text" class="typing-txt _local_quantity" th:value="${#numbers.formatDecimal(pc.demurrageChargeQuantityUsd, 1, 'COMMA', 2 , 'POINT')}" name="demurrageChargeQuantityUsd" maxlength="15" onkeyup="inputNumberFormat(this)" disabled />
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="typing-txt _local_unit_price" th:value="${#numbers.formatDecimal(pc.demurrageChargeUnitPriceUsd, 1, 'COMMA', 2 , 'POINT')}" name="demurrageChargeUnitPriceUsd" maxlength="15" onkeyup="inputNumberFormat(this)" disabled/>
+                                                    </td>
+                                                    <td>
+                                                        <p class="_local_amount">자동으로계산</p>
+                                                    </td>
+                                                    <td>USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th class="title-bgc04">CUSTOMS FEE</th>
+                                                    <td>
+                                                        <input type="text" class="typing-txt _local_quantity" th:value="${#numbers.formatDecimal(pc.customsFeeQuantityUsd, 1, 'COMMA', 2 , 'POINT')}" name="customsFeeQuantityUsd" maxlength="15" onkeyup="inputNumberFormat(this)" disabled/>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="typing-txt _local_unit_price" th:value="${#numbers.formatDecimal(pc.customsFeeUnitPriceUsd, 1, 'COMMA', 2 , 'POINT')}" name="customsFeeUnitPriceUsd" maxlength="15" onkeyup="inputNumberFormat(this)" disabled/>
+                                                    </td>
+                                                    <td>
+                                                        <p class="_local_amount">자동으로계산</p>
+                                                    </td>
+                                                    <td>USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th class="title-bgc04">HANDLINGCHARGE</th>
+                                                    <td>
+                                                        <input type="text" class="typing-txt _local_quantity" th:value="${#numbers.formatDecimal(pc.handlingChargeQuantityUsd, 1, 'COMMA', 2 , 'POINT')}" name="handlingChargeQuantityUsd" maxlength="15" onkeyup="inputNumberFormat(this)" disabled/>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="typing-txt _local_unit_price" th:value="${#numbers.formatDecimal(pc.handlingChargeUnitPriceUsd, 1, 'COMMA', 2 , 'POINT')}" name="handlingChargeUnitPriceUsd" maxlength="15" onkeyup="inputNumberFormat(this)" disabled/>
+                                                    </td>
+                                                    <td>
+                                                        <p class="_local_amount">자동으로계산</p>
+                                                    </td>
+                                                    <td>USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th class="title-bgc04">OTHER CHARGE</th>
+                                                    <td>
+                                                        <input type="text" class="typing-txt _local_quantity" th:value="${#numbers.formatDecimal(pc.otherChargeQuantityUsd, 1, 'COMMA', 2 , 'POINT')}" name="otherChargeQuantityUsd" maxlength="15" onkeyup="inputNumberFormat(this)" disabled/>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="typing-txt _local_unit_price" th:value="${#numbers.formatDecimal(pc.otherChargeUnitPriceUsd, 1, 'COMMA', 2 , 'POINT')}" name="otherChargeUnitPriceUsd" maxlength="15" onkeyup="inputNumberFormat(this)" disabled/>
+                                                    </td>
+                                                    <td>
+                                                        <p class="_local_amount">자동으로계산</p>
+                                                    </td>
+                                                    <td>USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th colspan="3" class="title-bgc03">SUBTOTAL</th>
+                                                    <th class="title-bgc03"></th>
+                                                    <th class="title-bgc03"><p id="localSubTotal"></p></th>
+                                                    <th class="title-bgc03"></th>
+
+                                                </tr>
+    
+                                                <tr>
+                                                    <th colspan="3" class="title-bgc03">TOTAL</th>
+                                                    <th class="title-bgc03"></th>
+                                                    <th class="title-bgc03"><p id="total"></p></th>
+                                                    <th class="title-bgc03"></th>
+
+                                                </tr>
+    
+                                                <tr>
+                                                    <th class="title-bgc01" colspan="6">NOTES</th>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td class="td-text" colspan="6">
+                                                        <textarea name="notes" th:text="${pc.notes}" disabled></textarea>
+                                                    </td>
+                                                </tr>
+    
+                                            </tbody>
+    
+                                        </table>
+    
+    
+                                        <div class="save_btn_wrap">
+                                            <div>
+                                                <a>
+                                                    <button class="close_btn _closeBtn" id="closeBtn"
+                                                    type="button">CANCEL</button>
+                                                <button class="close_btn btn_color deta _editBtn"
+                                                    type="button" th:if="${pc.state == 1}">UPDATE</button>
+                                            </div>
+                                        </div>
+    
+    
+                                        <!-- table end -->
+                                    </div>
+
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </section>
+
+            <footer id="footer">
+
+
+
+
+
+            </footer>
+
+        </main>
+
+    </div>
+    <script th:src="@{/js/vietnam/pcCalcu.js(date=${todayFormat})}" type="text/javascript"></script>
+
+</body>
+
+</html>

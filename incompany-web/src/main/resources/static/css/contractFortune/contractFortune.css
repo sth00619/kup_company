@@ -1,0 +1,4 @@
+/* dataList 화살표시 삭제 */
+._searchUserList::-webkit-calendar-picker-indicator {
+    opacity: 0;
+}

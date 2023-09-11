@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+
+    <title>assignDepartment</title>
+    <link rel="stylesheet" th:href="@{/bootstrap-5.0.2-dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/assignDepartment.css(date=${todayFormat})}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/common.css(date=${todayFormat})}" type="text/css">
+
+</head>
+<body>
+<input id="departmentCode" th:value="${departmentCode}" type="hidden">
+<div class="container">
+    <div class="item" th:each="gad : ${getAssignDepartment}">
+        <div class="form-check form-switch">
+            <input class="form-check-input assignCheck" th:checked="${gad.employeeYn == 1?: true}"
+                   th:id="${gad.employeeCode}+'Check'" type="checkbox">
+            <label class="form-check-label" th:for="${gad.employeeCode}+'Check'">
+                <div class="employee" th:text="${gad.employeeName}" th:value="${gad.employeeCode}"></div>
+            </label>
+            <div class="employeeCode" th:text="'( '+${gad.employeeCode}+' )'"></div>
+        </div>
+    </div>
+</div>
+
+<!-- script 영역 시작 -->
+<script th:src="@{/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/lib/jquery-3.6.0.min.js}"></script>
+<script th:src="@{/js/assignDepartment.js(date=${todayFormat})}"></script>
+</body>
+</html>

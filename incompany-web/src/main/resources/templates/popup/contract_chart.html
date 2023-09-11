@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="contract_chart_fragment">
+
+    <input id="reportEmployeeCode" th:value="${reportEmployeeCode}" type="hidden">
+    
+    <div class="advice_save_visual pop3 _pop3">
+        <div class="close_btn_wrap">
+            <div class="close_btn_img"><img src="/images/img/close_btn.png"></div>
+        </div>
+        <div class="contract_chart">
+            <div class="contract_name">
+                <div>
+                    <p class="_contract_employee_name"></p>
+                    <span>님의 계약 현황입니다.</span>
+                </div>
+                <div class="top_right_menu">
+                    <div class="date_box search_deta">
+                        <input class="_start_date" type="date">
+                    </div>
+                    <div class="date_box search_deta margin">
+                        <input class="_end_date" type="date">
+                    </div>
+                </div>
+            </div>
+            <div class="contract_chart_box">
+                <div class="chart_item">
+                    <div class="ct_achievement">
+                        <p>achievement</p>
+                        <span class="_search_date"></span>
+                    </div>
+
+                    <div class="ct_chart_box">
+                        <div class="ct_chart">
+                            <div class="ct_chart_bar1"></div>
+                        </div>
+
+                        <div class="ct_chart">
+                            <div class="ct_chart_bar2"></div>
+                        </div>
+
+                        <div class="ct_chart">
+                            <div class="ct_chart_bar3"></div>
+                        </div>
+
+                        <div class="ct_chart">
+                            <div class="ct_chart_bar4"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart_item">
+                    <div class="ct_money_gage">
+                        <div class="ct_achievement">
+                            <p>MONTHLY REPORT</p>
+                            <span class="_search_date"></span>
+                        </div>
+
+                        <div class="ct_gage_box">
+                            <span>목돈</span>
+                            <div class="ct_money ct_money1">
+                                <div class="ct_money_bar1 ct_money_bar _contract_money_bar"></div>
+                            </div>
+                        </div>
+
+                        <div class="ct_gage_box">
+                            <span>보험</span>
+                            <div class="ct_money money2">
+                                <div class="ct_money_bar2 ct_money_bar"></div>
+                            </div>
+                        </div>
+
+                        <div class="ct_gage_box">
+                            <span>펀드</span>
+                            <div class="ct_money ct_money3">
+                                <div class="ct_money_bar3 ct_money_bar"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="black_screen _black_screen"></div>
+</th:block>
+</html>

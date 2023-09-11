@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="headFragment">
+
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title th:text="${title}"></title>
+    <!--공통 CSS-->
+    <link rel="stylesheet" th:href="@{/css/common.css(date=${todayFormat})}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/inCompany.css(date=${todayFormat})}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/sidebar.css(date=${todayFormat})}" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+        rel="stylesheet">
+    <!--해당 페이지의 css-->
+    <th:block layout:fragment="pageCss"></th:block>
+
+    <!--공통 script-->
+    <script th:src="@{/lib/jquery-3.6.0.min.js}"></script>
+    <script th:src="@{/lib/main_js.js(date=${todayFormat})}"></script>
+    <script th:src="@{/lib/moment.js}"></script>
+    <script th:src="@{/js/password_update.js(date=${todayFormat})}" type="text/javascript"></script>
+
+
+    <!-- side_drop_down -->
+    <script th:src="@{/js/side_drop_down.js(date=${todayFormat})}" type="text/javascript"></script>
+
+    <!--해당 페이지 상단의 script-->
+    <th:block layout:fragment="pageScriptTop"></th:block>
+
+
+
+</head>
+
+</html>

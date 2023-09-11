@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="en"xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <input id="_barcode" th:value="${barcode}" type="hidden" />
+            <canvas id="barcodeCanvas" style="max-width:100%;"></canvas>
+    <th:block layout:fragment="pageScript">
+        <script th:src="@{/lib/jquery-3.6.0.min.js}"></script>
+        <script th:src="@{/js/coffeeBarcode.js}"></script>
+        <script th:src="@{/lib/jsbarcode.js}"></script>
+    </th:block>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+  <!-- css작성, 파일 -->
+
+  <style>
+    #textBox {
+      width: 100%;
+      height: 400px;
+    }
+
+    #comment {
+      padding-top: 10px;
+      padding-left: 10px;
+      display: none;
+    }
+    #txtCnt{
+      float: left;
+    }
+  </style>
+</th:block>
+<th:block layout:fragment="side_contents">
+  <div th:replace="fragments/sideNote :: sideNoteFragment"></div>
+</th:block>
+
+
+<th:block layout:fragment="contents">
+
+
+  <div class="top_center_menu_visual">
+
+    <div class="main_center_wrap">
+
+      <div class="top_title">
+        <h2>
+          쪽지 보내기</h2>
+      </div>
+      <div class="Khlist">
+
+        <dl class="list_view03">
+          <dt>받는 사람</dt>
+          <dd>
+            <input type="checkbox" id="forMe">
+            <label for="forMe" style="color: black; font-weight: 600;">내게 쓰기</label>
+
+            <span id="comment">
+              내게 쓴 쪽지는 <strong>내게쓴쪽지함</strong>에만 저장되며,
+              삭제하시지 않으시면 영구 보관됩니다.
+            </span>
+
+
+            <div id="receiveEmployeeCode">
+              <div class="name_box saved_click _selectEmployee" style="margin-top: 20px;">
+                <input class="_searchEmployee" type="text" placeholder="검색">
+                <ul class="saved_list">
+                  <li class="_clickApproverEmployee" th:each="ae : ${allEmployee}">
+                    <div class="saved_icon"><img src="/images/img/quick_my.png"></div>
+                    <div class="saved_namebox">
+                      <div class="saved_name" th:text="${ae.employeeName}"></div>
+                      <div class="saved_number" th:text="${ae.employeeCode}"></div>
+                    </div>
+                  </li>
+
+                </ul>
+              </div>
+              
+              <div class="_selectApproverList" style="margin-top: 10px;" >
+                <div class="_selectApprDiv" style="float : left; margin : 10px;" th:if="${sendEmployeeCode != null}">
+                  <div style="float : left ; margin-right: 5px;"> <img src="/images/img/delete.png"
+                      class="_delEmployeeBtn" style="cursor: pointer"></div>
+                  <div class="_selectEmployeeTypeList">
+                    <p class="_selectEmployeecode" th:text="${sendEmployeeCode}"></p>
+                    <p th:text="${sendEmployeeName}"></p>
+                  </div> <br>
+                </div>
+              </div>
+            </div>
+
+
+
+          </dd>
+        </dl>
+
+        <dl class="list_view04 heightUp">
+          <dt>내용</dt>
+          <dd>
+            <textarea id="textBox" maxlength="1000" placeholder="1000글자 이내"></textarea>
+            <div id="txtCnt">(0 / 1000)</div>
+
+          </dd>
+        </dl>
+      </div>
+
+      <div class="save_btn_wrap">
+        <div>
+          <button class="close_btn" id="back" type="button">취소</button>
+          <button class="close_btn btn_color" id="addBtn" type="button">보내기</button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</th:block>
+
+
+<th:block layout:fragment="pageScript">
+  <!-- js파일 -->
+
+  <script th:src="@{/js/note/form.js(date=${todayFormat})}"></script>
+
+</th:block>
+
+
+</html>

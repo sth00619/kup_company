@@ -1,0 +1,11 @@
+/* 3뎁스, 즉 소속된 팀이 없을 경우 이름 영역의 왼쪽 padding or margin 삭제 */
+._true_D3 {
+    padding-left:0px !important;
+    margin-left:0px !important;
+}
+
+/* 프로필 영역 클릭 시 화면에 띄워주기 */
+.my_pop1.active, .my_pop2.active2 {
+    opacity : 1;
+    visibility : visible;
+}

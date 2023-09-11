@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+
+    <style>
+        ._department {
+            font-size: 24px;
+            font-weight: bold;
+            color: #304260;
+        }
+
+        .card {
+            /* display: block; */
+            float: left;
+            width: 248.2px;
+            padding: 10px 10px 20px 10px;
+            box-sizing: border-box;
+            margin: 0 20px 20px 0;
+            border: 1px solid #7990b5;
+            margin: 0 20px 20px 0;
+            border-radius: 30px;
+        }
+
+        ._date {
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+        }
+
+        .top_title {
+            border-bottom: 1px solid white !important;
+            margin-bottom: 1px solid white !important;
+
+        }
+
+        ._scheduleList {
+            border: 1px solid #d9e0eb;
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        .card-body {
+            margin: 10px;
+        }
+
+        .card-body>span {
+            margin: 10px;
+            font-weight: bold;
+        }
+
+        ._scheduleList>p {
+            margin: 10px;
+        }
+
+        ._selectDepartment {
+            width: 103px;
+            height: 30px;
+            line-height: 30px;
+            outline: none;
+            background: #fff;
+            border-radius: 2px;
+            color: #304260;
+            font-weight: 600;
+            border: 2px solid #edf0f5;
+            padding-left: 7px;
+
+            margin-left: 50px;
+            margin-bottom: 40px;
+        }
+
+        #searchDate {
+            margin-left: 40px;
+            font-size: 20px;
+            font-weight: bold;
+            background-color: #fff;
+        }
+
+        .card:hover {
+            background-color: #eff3fc;
+            cursor: pointer;
+        }
+
+        ._note {
+            color: #304260;
+            margin:15px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+    </style>
+    <!-- css작성, 파일 -->
+
+    </head>
+
+</th:block>
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideContractFortune :: sideContractFortuneFragment"></div>
+</th:block>
+
+
+<th:block layout:fragment="contents">
+
+    <div class="_note">
+        ※ <span th:each=" dc: ${defaultCalendar}" th:text="${dc} + ' ' "></span> 자동 생성된 캘린더만 노출됩니다.
+
+    </div>
+
+
+    <div class="top_title">
+        <!-- 이전 버튼 -->
+        <div class="salesman_search prev-btn">
+            <div class="prev_btn pn_btn _prePage" id="prePage">
+                <a aria-label="Previous" class="page-link previous" id="prev" href="#">
+                    <span aria-hidden="true" id="preNo">«</span>
+                </a>
+            </div>
+        </div>
+        <!-- 제목 -->
+        <input type="date" id="searchDate" th:value="${#strings.defaultString(searchDate,#calendars.format(#calendars.createNow(), 'yyyy-MM-dd'))}" disabled>
+        <!-- 다음 버튼 -->
+        <div class="salesman_search next-btn">
+            <div class="next_btn pn_btn _nextPage" id="nextPage">
+                <a aria-label="Next" class="page-link next" id="next" href="#">
+                    <span aria-hidden="true" id="nextNo" >»</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <select class="_selectDepartment" id="selectDepartment" name="department">
+        <option disabled="" selected="" value="">지점</option>
+        <option value="cancel">선택취소
+        <option th:selected="${dl.departmentCode==departmentCode}" th:each=" dl: ${departmentList}" th:value="${dl.departmentCode}" th:text="${dl.departmentName}" th:if="${dl.departmentCode.length} == 5">테스트</option>
+    </select>
+
+    <div class="_cardDiv main_center_wrap" th:each=" ts: ${teamFullScheduleList}">
+        <p class="_department"  th:text="${ts.departmentName}"></p>
+
+        <div class="top_line"></div>
+        <div class="card" style="width: 25rem;" th:each=" te: ${ts.teamEmployeeList}">
+            <div class="card-body" >
+                <input hidden th:value="${te.employeeCode}" class="_cardEmployeeCode">
+                <input hidden th:value="${ts.departmentCode}" class="_cardDepartmentCode">
+
+                <span class="card-title" th:text="${te.employeeName}"></span>
+                <span class="card-title" th:text="${te.positionName}"></span>
+
+                <div class="_scheduleList"  th:each=" ts: ${te.scheduleList}" >
+                    <p th:text="${ts.startEndTime}"></p>
+                    <p th:text="${ts.title}"></p>
+                </div>
+
+            </div>
+            
+        </div>
+
+
+    </div>
+    <br>
+
+</th:block>
+
+
+<th:block layout:fragment="pageScript">
+    <script th:src="@{/js/schedule/teamFullSchedule.js(date=${todayFormat})}" type="text/javascript"></script>
+
+</th:block>
+
+
+</html>

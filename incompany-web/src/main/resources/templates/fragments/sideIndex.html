@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- Left CompanyChart Start -->
+<div class="slide_down_wrap" th:fragment="sideIndexFragment">
+
+    <div class="main_top_slide">
+        <h2>
+            <a th:href="@{/companyChart(departmentCode=${myProfileDto.departmentCode})}">조직도</a>
+        </h2>
+    </div>
+    <div class="main_top_slide">
+        <h2><a th:href="@{/potential/counseling}">고객관리</a></h2>
+    </div>
+    <div class="main_top_slide">
+        <h2><a th:href="@{/contractFortune/contractFortune}">계약관리</a></h2>
+    </div>
+    <div class="main_top_slide">
+        <h2><a th:href="@{/worksheet/document/documentList}">업무관리</a></h2>
+    </div>
+    <div class="main_top_slide">
+        <h2><a th:href="@{/notice/list?type=0}">KH소식</a></h2>
+    </div>
+    <div class="main_top_slide">
+        <h2><a th:href="@{/board/list}">커뮤니티</a></h2>
+    </div>
+
+</div>
+
+</html>

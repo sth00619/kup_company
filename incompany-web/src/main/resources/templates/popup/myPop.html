@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="myPopFragment">
+    <div class="account_top">
+        <div class="my_name">
+            
+            <img th:if="${#strings.isEmpty(myProfileDto.imageUrl)}" src="/images/img/quick_my.png">
+            <img th:unless="${#strings.isEmpty(myProfileDto.imageUrl)}" th:src="${myProfileDto.imageUrl}">
+
+            <button class="my_click" onclick="onClickUpload();">
+                <svg class="xAIiLb NMm5M" focusable="false" height="18" viewBox="0 0 24 24" width="18">
+                    <path
+                            d="M20 5h-3.17L15 3H9L7.17 5H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 14H4V7h16v12z">
+                    </path>
+                    <path d="M12 9c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z">
+                    </path>
+                </svg>
+            </button>
+        </div>
+        <div class="my_nametxt">
+            <div class="m_belong" th:text="${myProfileDto.getCompanyName()}"></div>
+            <div class="m_teamname">
+                [[${myProfileDto.getD1()}]]
+                <em>[[${myProfileDto.getD2()}]]</em>
+            </div>
+            <div class="m_team">
+                [[${myProfileDto.getD3()}]]
+                <em th:classappend="${myProfileDto.getD3() == null} ? '_true_D3'">
+                    [[${myProfileDto.getEmployeeName()}]]
+                </em>
+            </div>
+        </div>
+        <div>
+            <button class="manage_btn password_btn">비밀번호변경</button>
+        </div>
+        <button class="pictureAdd" onclick="onClickUpload();">프로필 업로드</button>
+
+    </div>
+    <div class="account_bottom">
+        <span><a class="my_page" href="/myPage/myPage">마이페이지</a></span>
+
+        <div class="logout _logout">로그아웃</div>
+    </div>
+</th:block>
+
+</html>

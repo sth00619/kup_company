@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- Left CompanyChart Start -->
+<div class="slide_down_wrap" th:fragment="sideVietnamFragment">
+
+
+    <div class="top_slide arrowOn">
+        <h2>MAADEN VIETNAM</h2>
+    </div>
+
+
+
+    <ul class="top_slide_sub">
+
+        <ul class="top_slide_sub5">
+            <li onclick="location.href='/vietnam/maaden/purchaseOrder'"><a href="#"
+                    th:classappend="${requestUrl == '/vietnam/maaden/purchaseOrder'} ? 'on_color'">PO LIST</a></li>
+            <ul></ul>
+
+        </ul>
+
+
+        <li class="sub_arrowOn on_block">
+            <a class="_trade "
+            th:classappend="(${#strings.contains(requestUrl,'/vietnam/maaden/vietnamDoc')} or ${#strings.contains(requestUrl,'/vietnam/maaden/khSouthKorea')}) ? 'on_color'">TRADE
+                DOCUMENT</a>
+
+
+        </li>
+        <ul class="top_slide_sub2 "
+        th:classappend="(${#strings.contains(requestUrl,'/vietnam/maaden/vietnamDoc')} or ${#strings.contains(requestUrl,'/vietnam/maaden/khSouthKorea')}) ? '_open'">
+            <li onclick="location.href='/vietnam/maaden/vietnamDoc/list'">
+
+                <a href="#" th:classappend="${#strings.contains(requestUrl,'/vietnam/maaden/vietnamDoc')}  ? 'on_color'">· VIETNAM DOC</a>
+
+                    
+            </li>
+            <li onclick="location.href='/vietnam/maaden/khSouthKorea/list'"><a href="#"
+                th:classappend="${#strings.contains(requestUrl,'/vietnam/maaden/khSouthKorea')}  ? 'on_color'">· KH SOUTHKOREA
+                    DOC</a></li>
+        </ul>
+
+        <ul></ul>
+
+        <ul class="top_slide_sub5">
+            <li onclick="location.href='/vietnam/maaden/deliverySchedule/list'"><a href="#"
+                th:classappend="${#strings.contains(requestUrl,'/vietnam/maaden/deliverySchedule')}  ? 'on_color'">DELIVERY
+                SCHEDULE</a></li>
+            <ul></ul>
+        </ul>
+
+
+        <ul class="top_slide_sub5">
+
+            <li onclick="location.href='/vietnam/maaden/account/list'"><a href="#"
+                th:classappend="${#strings.contains(requestUrl,'/vietnam/maaden/account')} ? 'on_color'">ACCOUNTING
+                LIST</a></li>
+
+        </ul>
+        <ul></ul>
+
+
+
+        <ul class="top_slide_sub5">
+
+            <li onclick="location.href='/vietnam/maaden/pdCost/list'">
+                <a href="#"
+                th:classappend="${#strings.contains(requestUrl,'/vietnam/maaden/pdCost')} ? 'on_color'">PD COST</a>
+            </li>
+
+
+            <ul></ul>
+        </ul>
+
+    </ul>   
+    <br><br>
+
+    <div class="top_slide arrowOn">
+        <h2>NOVELIS VIETNAM</h2>
+    </div>
+
+
+
+    <ul class="top_slide_sub">
+
+        <ul class="top_slide_sub5">
+            <li onclick="location.href='/vietnam/novelis/purchaseOrder'"><a href="#"
+                    th:classappend="${requestUrl == '/vietnam/novelis/purchaseOrder'} ? 'on_color'">PO LIST</a></li>
+            <ul></ul>
+
+        </ul>
+
+
+        <li class="sub_arrowOn on_block">
+            <a class="_trade "
+                th:classappend="(${#strings.contains(requestUrl,'/vietnam/novelis/vietnamDoc')} or ${#strings.contains(requestUrl,'/vietnam/novelis/jwGlobal')}) ? 'on_color'">TRADE
+                DOCUMENT</a>
+
+
+        </li>
+        <ul class="top_slide_sub2 "
+            th:classappend="(${#strings.contains(requestUrl,'/vietnam/novelis/vietnamDoc')} or ${#strings.contains(requestUrl,'/vietnam/novelis/jwGlobal')}) ? '_open'">
+            <li onclick="location.href='/vietnam/novelis/vietnamDoc/list'">
+
+                <a href="#" th:classappend="${#strings.contains(requestUrl,'/vietnam/novelis/vietnamDoc')}  ? 'on_color'">· VIETNAM DOC</a>
+
+                    
+            </li>
+            <li onclick="location.href='/vietnam/novelis/jwGlobal/list'"><a href="#"
+                th:classappend="${#strings.contains(requestUrl,'/vietnam/novelis/jwGlobal')}  ? 'on_color'">· JW GLOBAL
+                    DOC</a></li>
+        </ul>
+        
+        <ul></ul>
+
+        <ul class="top_slide_sub5">
+            <li onclick="location.href='/vietnam/novelis/deliverySchedule/list'"><a href="#"
+                th:classappend="${#strings.contains(requestUrl,'/vietnam/novelis/deliverySchedule')}  ? 'on_color'">DELIVERY
+                SCHEDULE</a></li>
+            <ul></ul>
+        </ul>
+
+
+        <ul class="top_slide_sub5">
+
+            <li onclick="location.href='/vietnam/novelis/account/list'"><a href="#"
+                th:classappend="${#strings.contains(requestUrl,'/vietnam/novelis/account')} ? 'on_color'">ACCOUNTING
+                LIST</a></li>
+
+        </ul>
+        <ul></ul>
+
+
+
+        <ul class="top_slide_sub5">
+
+            <li onclick="location.href='/vietnam/novelis/pdCost/list'">
+                <a href="#"
+                th:classappend="${#strings.contains(requestUrl,'/vietnam/novelis/pdCost')} ? 'on_color'">PD COST</a>
+            </li>
+
+
+            <ul></ul>
+        </ul>
+
+    </ul>  
+
+    <ul class="top_slide_sub5">
+
+
+        <li onclick="location.href='/vietnam/operatingCost/list'">
+            <a href="#"
+            th:classappend="${#strings.contains(requestUrl,'/vietnam/operatingCost')} ? 'on_color'">OPERATING COST</a>
+        </li>
+
+        <ul></ul>
+    </ul>
+
+</div>
+
+</html>

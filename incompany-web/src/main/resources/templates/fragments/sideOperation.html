@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<div class="slide_down_wrap" th:fragment="sideOperationFragment">
+    <div class="top_slide guest_slide arrowOn">
+        <h2>운영툴</h2>
+    </div>
+    <div sec:authorize="hasAnyAuthority('ROOT_ADMIN')">
+        <ul class="top_slide_sub5">
+            <li onclick="location.href='/potential/uploadFile/uploadFile'">
+                <a th:classappend="${requestUrl == '/potential/uploadFile/uploadFile'} ? 'on_color'" href="#">DB 엑셀
+                    입력</a>
+            </li>
+        </ul>
+        <ul class="top_slide_sub5">
+            <li onclick="location.href='/account/reset'">
+                <a th:classappend="${requestUrl == '/account/reset'} ? 'on_color'" href="#">비밀번호 초기화</a>
+            </li>
+        </ul>
+        <ul class="top_slide_sub5">
+            <li onclick="location.href='/writingFormat/addWritingFormat'">
+                <a th:classappend="${requestUrl == '/writingFormat/addWritingFormat'} ? 'on_color'" href="#">글쓰기양식
+                    수정</a>
+            </li>
+        </ul>
+
+
+
+
+        <ul class="top_slide_sub5" sec:authorize="hasAnyAuthority('OPERATION_CALENDAR_UPDATE')">
+            <li onclick="location.href='/calendar/operation'">
+                <a th:classappend="${requestUrl == '/calendar/operation'} ? 'on_color'" href="#">캘린더 수정</a>
+            </li>
+        </ul>
+
+        <ul class="top_slide_sub5">
+            <li onclick="location.href='/event/eventOperation'">
+                <a th:classappend="${requestUrl == '/event/eventOperation'} ? 'on_color'" href="#">이벤트 관리</a>
+            </li>
+        </ul>
+
+
+        <ul class="top_slide_sub5" sec:authorize="hasAnyAuthority('OPERATION_CALENDAR_UPDATE')">
+            <li onclick="location.href='/calendar/appendix'">
+                <a th:classappend="${requestUrl == '/calendar/appendix'} ? 'on_color'" href="#">외부 캘린더 주입</a>
+            </li>
+        </ul>
+
+        <ul class="top_slide_sub5">
+            <li onclick="location.href='/commonEncrypt'">
+                <a th:classappend="${requestUrl == '/commonEncrypt'} ? 'on_color'" href="#">암호화</a>
+            </li>
+        </ul>
+
+
+        <ul class="top_slide_sub arrowOn arrowOff" sec:authorize="hasAnyAuthority('ROLL_APPENDIX_UPDATE')">
+            <li class="sub_arrowOn is_next">
+                <a th:style="${!#strings.contains(requestUrl,'role')} ? 'color: #9499a3'">권한</a>
+            </li>
+
+            <div class="top_slide_sub3_wrap" style="margin-left: 10px;"
+            th:style="${#strings.contains(requestUrl,'role')} ? 'display: block'">
+
+                <ul class="top_slide_sub3" sec:authorize="hasAnyAuthority('ROLL_APPENDIX_UPDATE')">
+                    <li onclick="location.href='/roleAppendix/form'">
+                        <a th:classappend="${requestUrl == '/roleAppendix/form'} ? 'on_color'" href="#">추가권한 부여</a>
+                    </li>
+                </ul>
+        
+                <ul class="top_slide_sub3" sec:authorize="hasAnyAuthority('ROLL_APPENDIX_UPDATE')">
+                    <li onclick="location.href='/role/form'">
+                        <a th:classappend="${requestUrl == '/role/form'} ? 'on_color'" href="#">권한 다시 부여</a>
+                    </li>
+                </ul>
+        
+                <ul class="top_slide_sub3" sec:authorize="hasAnyAuthority('ROLL_APPENDIX_UPDATE')">
+                    <li onclick="location.href='/role/list'">
+                        <a th:classappend="${requestUrl == '/role/list'} ? 'on_color'" href="#">권한이름으로 찾기</a>
+                    </li>
+                </ul>
+            </div>
+        </ul>
+
+        <ul class="top_slide_sub arrowOn arrowOff">
+            <li class="sub_arrowOn is_next">
+                <a th:style="${!#strings.contains(requestUrl,'banner')} ? 'color: #9499a3'">상단 배너</a>
+            </li>
+
+            <div class="top_slide_sub3_wrap" style="margin-left: 10px;"
+                 th:style="${#strings.contains(requestUrl,'banner')} ? 'display: block'">
+
+                <ul class="top_slide_sub3">
+                    <li onclick="location.href='/banner/youtube'">
+                        <a th:classappend="${requestUrl == '/banner/youtube'} ? 'on_color'" href="#">유튜브 영상 수정</a>
+                    </li>
+                </ul>
+
+                <ul class="top_slide_sub3">
+                    <li onclick="location.href='/banner/img'">
+                        <a th:classappend="${requestUrl == '/banner/img'} ? 'on_color'" href="#">이미지 배너 수정</a>
+                    </li>
+                </ul>
+                <ul class="top_slide_sub3">
+                    <li onclick="location.href='/banner/imgCategory'">
+                        <a th:classappend="${requestUrl == '/banner/imgCategory'} ? 'on_color'" href="#">이미지 카테고리 수정</a>
+                    </li>
+                </ul>
+            </div>
+        </ul>
+    </div>
+</div>
+
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+  <!-- css작성, 파일 -->
+
+  <style>
+    #textBox {
+      width: 100%;
+      height: 400px;
+      border: 0px;
+    }
+  </style>
+</th:block>
+<th:block layout:fragment="side_contents">
+  <div th:replace="fragments/sideNote :: sideNoteFragment"></div>
+</th:block>
+
+
+<th:block layout:fragment="contents">
+
+  <input id="noteNo" th:value="${n.noteNo}" hidden>
+  <input id="pageNum" th:value="${pageNum}" hidden>
+
+
+
+  <div class="top_center_menu_visual">
+
+    <div class="main_center_wrap">
+
+      <div class="top_title">
+        <h2>쪽지 보관함</h2>
+      </div>
+      <div class="Khlist">
+
+        <dl class="list_view01">
+          <dt>보낸/받은 사람</dt>
+          <dd><span>
+
+              <div th:if="${n.sender}">
+
+                <select>
+                  <option th:each="rl : ${n.receiveEmployeeList}">
+                    [[${rl.receiveEmployeeName}]]
+                    ([[${rl.receiveEmployeeCode}]])
+
+                    <br>
+                    [[${rl.readAtFormat}]]
+                  </option>
+                </select>
+              </div>
+
+              <div th:unless="${n.sender}">
+                <p th:text="${n.sendEmployee.sendEmployeeName}"></p>
+              </div>
+
+            </span></dd>
+        </dl>
+
+
+        <dl class="list_view02 file_view">
+          <dt>보낸/받은 날짜</dt>
+
+          <dd><span>[[${n.createAtFormat}]]</span></dd>
+        </dl>
+
+        <dl class="list_view04 heightUp">
+          <dt>내용</dt>
+          <dd>
+            [[${n.isSenderFormat}]]
+            
+            <textarea id="textBox" readonly th:text="${n.contents}"></textarea>
+
+
+          </dd>
+        </dl>
+
+
+      </div>
+
+      <div class="save_btn_wrap">
+        <div>
+          <a th:href="@{/note/save/list(pageNum=${pageNum}}">
+            <button class="close_btn full_list2">전체목록</button>
+          </a>
+          <!-- 작성자가 본인 -->
+          <button class="close_btn btn_color" th:if="${n.saveEmployeeCode == loginEmployeeCode}" id="deleteBtn">삭제</button>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</th:block>
+
+
+<th:block layout:fragment="pageScript">
+  <!-- js파일 -->
+
+  <script th:src="@{/js/note/save/contents.js(date=${todayFormat})}"></script>
+
+</th:block>
+
+
+</html>

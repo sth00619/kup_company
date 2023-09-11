@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<th:block layout:fragment="pageCss">
+</th:block>
+
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideWorksheet :: sideWorksheetFragment"></div>
+</th:block>
+<th:block layout:fragment="contents">
+    <div class="top_center_menu_visual">
+        <div class="notice_search">
+            <select class="select_box _select_box" id="select_box">
+                <option class="_all_used" value="-1">전체</option>
+                <option class="_non_used" value="0">사용 가능</option>
+                <option class="_is_used" value="1">사용 완료</option>
+            </select>
+        </div>
+        <div class="main_center_wrap">
+            <div class="top_title"><h2 style="padding-bottom:10px;">커피 쿠폰 내역</h2></div>
+            <div class="daily_title">
+                <ul>
+                    <li style="width: 20%">사원 이름</li>
+                    <li style="width: 20%">사용 여부</li>
+                    <li style="width: 20%">코드 번호</li>
+                    <li style="width: 20%">발급 일자</li>
+                    <li style="width: 20%">사용 일자</li>
+                </ul>
+            </div>
+            <div class="daily_sub_txt">
+                <ul class="_coffeeCouponList" th:each="cl : ${coffeeCouponList.getList()}" th:value="${cl.barcode}">
+                    <li style="width: 20%">[[${cl.employeeName}]]</li>
+                    <li style="width: 20%; text-align: center;">[[${cl.isUsed}]]</li>
+                    <li style="width: 20%; text-align: center;">[[${cl.barcode}]]</li>
+                    <li style="width: 20%; text-align: center;">[[${cl.changeTime}]]</li>
+                    <li style="width: 20%; text-align: center;">[[${cl.usedTime}]]</li>
+                </ul>
+            </div>
+
+        </div>
+        <!-- pageNation -->
+        <th:block th:replace="fragments/page_nation :: page_nation"></th:block>
+    </div>
+</th:block>
+<th:block layout:fragment="pageScript">
+    <script th:src="@{/js/worksheet/cafe/coffeeCoupon.js(date=${todayFormat})}" type="text/javascript"></script>
+    <script th:src="@{/js/page_nation.js(date=${todayFormat})}" type="text/javascript"></script>
+</th:block>
+</html>

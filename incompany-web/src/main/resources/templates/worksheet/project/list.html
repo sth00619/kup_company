@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <!-- css작성, 파일 -->
+</th:block>
+
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideWorksheet :: sideWorksheetFragment"></div>
+</th:block>
+
+<th:block layout:fragment="contents">
+
+    <input id="getDepartmentCode" th:value="${departmentCode}" type="hidden" />
+    <input id="getTeamCode" type="hidden" />
+    <input hidden id="employeeLoginCode" th:value="${employeeLoginCode}">
+    <input hidden id="selectEmployeeCode" th:value="${selectEmployeeCode}">
+    <input id="getEmployeeCode" th:value="${employeeCode}" type="hidden" />
+
+    <input id="state" th:value="${state}" type="hidden" />
+
+    <!-- 페이징 관련 데이터 세팅 -->
+
+    <input id="nextPage" th:value="${projectList.getNavigateLastPage()}" type="hidden" />
+    <input id="prePage" th:value="${projectList.getNavigateFirstPage()}" type="hidden" />
+    <input id="pages" th:value="${projectList.getPages()}" type="hidden" />
+    <input id="pageNum" th:value="${pageNum}" type="hidden" />
+
+
+    <div class="top_center_menu_visual">
+
+        <div class="top_center-menu">
+
+            <div class="top_left_menu">
+
+                <select class="belong_select _belong_select" name="belong"
+                    sec:authorize="hasAnyAuthority('SCHEDULE_SELECT_DEPARTMENT_ONE_DEPTH')">
+                    <option disabled selected>본부</option>
+                    <option th:if="${departmentCode != null and !departmentCode.empty}" value="cancel">선택취소</option>
+                    <option th:each="d :${getDepartmentOneDepth}" th:text="${d.departmentName}"
+                        th:value="${d.departmentCode}">
+                </select>
+
+                <select class="department_select _department_select" name="department"
+                    sec:authorize="hasAnyAuthority('SCHEDULE_SELECT_DEPARTMENT_ONE_DEPTH', 'SCHEDULE_SELECT_DEPARTMENT_TWO_DEPTH')">
+                    <option disabled selected>지점</option>
+                    <option
+                        th:if="${selectDepartmentMap.departmentList != null and !selectDepartmentMap.departmentList.empty}"
+                        value="cancel">선택취소
+                    </option>
+                    <option th:each="dl :${selectDepartmentMap.departmentList}" th:text="${dl.departmentName}"
+                        th:value="${dl.departmentCode}">
+                    </option>
+                </select>
+
+                <select class="team_select _team_select" name="team"
+                    sec:authorize="hasAnyAuthority('SCHEDULE_SELECT_DEPARTMENT_ONE_DEPTH', 'SCHEDULE_SELECT_DEPARTMENT_TWO_DEPTH', 'SCHEDULE_SELECT_DEPARTMENT_THREE_DEPTH')">
+                    <option disabled selected>팀</option>
+                    <option th:if="${selectDepartmentMap.teamList != null and !selectDepartmentMap.teamList.empty}"
+                        value="cancel">선택취소
+                    </option>
+                    <option th:each="tl :${selectDepartmentMap.teamList}" th:text="${tl.departmentName}"
+                        th:value="${tl.departmentCode}">
+                </select>
+
+                <select class="person_select _employee_select" name="person"
+                    sec:authorize="hasAnyAuthority('SCHEDULE_SELECT_DEPARTMENT_ONE_DEPTH', 'SCHEDULE_SELECT_DEPARTMENT_TWO_DEPTH', 'SCHEDULE_SELECT_DEPARTMENT_THREE_DEPTH')">
+                    <option disabled selected>작성자</option>
+                    <option
+                        th:if="${selectDepartmentMap.employeeList != null and !selectDepartmentMap.employeeList.empty}"
+                        value="cancel">선택취소
+                    </option>
+                    <option class="salesEmployeeName" th:each="el :${selectDepartmentMap.employeeList}"
+                        th:text="${el.employeeName}" th:value="${el.employeeCode}"></option>
+                </select>
+
+            </div>
+
+            <button class="writing_btn"><a href="/worksheet/project/form">프로젝트 작성</a></button>
+
+            <div class="notice_search">
+
+                <div class="interest">
+                    <input id="All" name="state" type="radio" th:checked="${state} == null" value="all">
+                    <label for="All">전체</label>
+                </div>
+
+                <div class="interest">
+                    <input id="progress" name="state" type="radio" th:checked="${state} == '0'" value="0">
+                    <label for="progress">진행예정</label>
+                </div>
+
+                <div class="interest">
+                    <input id="Proceeding" name="state" type="radio" th:checked="${state} == '1'" value="1">
+                    <label for="Proceeding">진행중</label>
+                </div>
+
+                <div class="interest">
+                    <input id="Keep" name="state" type="radio" th:checked="${state} == '2'" value="2">
+                    <label for="Keep">임시보관</label>
+                </div>
+
+                <div class="interest">
+                    <input id="complete" name="state" type="radio" th:checked="${state} == '3'" value="3">
+                    <label for="complete">완료</label>
+                </div>
+
+                <select class="select_box">
+                    <option th:selected="${searchType}=='title'" value="title">프로젝트명</option>
+                    <option th:selected="${searchType}=='createEmployeeCode'" value="createEmployeeCode">작성자</option>
+                    <option th:selected="${searchType}=='participants'" value="participants">참여인원</option>
+                    <option th:selected="${searchType}=='createDate'" value="createDate">작성일</option>
+                </select>
+
+                <div class="salesman_search">
+                    <input id="keyword" placeholder="검색" th:value="${keyword}" type="text">
+
+                    <img alt="검색" class="_searchBtn" src="/images/img/search_icon.png" />
+                </div>
+            </div>
+
+        </div>
+
+        <div class="main_center_wrap">
+
+            <div class="p_daily_title">
+                <ul>
+                    <li>NO</li>
+                    <li>상태</li>
+                    <li>프로젝트명</li>
+                    <li>작성자</li>
+                    <li>참여인원</li>
+                    <li>작성일</li>
+                    <li>마감일</li>
+                </ul>
+            </div>
+
+            <div class="p_daily_sub_txt">
+
+
+                <ul th:each=" pl: ${projectList.getList()}">
+                    <li><a
+                            th:href="@{/worksheet/project/contents(projectNo=${pl.projectNo},employeeCode=${selectEmployeeCode},departmentCode=${departmentCode},pageNum=${pageNum},searchType=${searchType},keyword=${keyword},state=${state})}">[[${pl.projectNo}]]</a>
+                    </li>
+                    <li class="state_click">
+
+                        <span class="confirm_view expected_item"></span>
+                        <span class="confirm_view progress_item"
+                            th:if="${pl.state == 1 || pl.state == 2 || pl.state == 3 }"></span>
+                        <span class="confirm_view demand_item" th:if="${pl.state == 2 || pl.state == 3 }"></span>
+                        <span class="confirm_view finish_item" th:if="${ pl.state == 3 }"></span>
+
+                        <input class="_state" hidden style="display: none" th:value="${pl.state}">
+                        <input class="_createEmployee" hidden th:value="${pl.createEmployeeCode}">
+
+                        <div class="state_viewbox">
+                            <ul>
+                                <input class="_projectNo" style="display: none" th:value="${pl.projectNo}" />
+
+                                <li class="_stateVal" value="0"><span class="confirm_view expected_item "></span></li>
+                                <li class="_stateVal" value="1"><span class="confirm_view progress_item "></span></li>
+                                <li class="_stateVal" value="2"><span class="confirm_view demand_item "></span></li>
+                                <li class="_stateVal" value="3"><span class="confirm_view finish_item "></span></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <a
+                            th:href="@{/worksheet/project/contents(projectNo=${pl.projectNo},employeeCode=${selectEmployeeCode},departmentCode=${departmentCode},pageNum=${pageNum},searchType=${searchType},keyword=${keyword},state=${state})}">
+                            <div class="title_inner">[[${pl.title}]]</div>
+                            <div class="comment" th:if="${pl.replyCount} > 0"><img src="/images/img/comment.png"></div>
+                        </a>
+                    </li>
+                    <li><a
+                            th:href="@{/worksheet/project/contents(projectNo=${pl.projectNo},employeeCode=${selectEmployeeCode},departmentCode=${departmentCode},pageNum=${pageNum},searchType=${searchType},keyword=${keyword},state=${state})}">[[${pl.createEmployeeName}]]</a>
+                    </li>
+                    <li>
+                        <a
+                            th:href="@{/worksheet/project/contents(projectNo=${pl.projectNo},employeeCode=${selectEmployeeCode},departmentCode=${departmentCode},pageNum=${pageNum},searchType=${searchType},keyword=${keyword},state=${state})}">
+                            <div class="p_people_wrap">
+
+                                <div class="p_people" th:each="mpl : ${pl.myProjectList}"
+                                    th:value="${mpl.employeeCode}">
+
+                                    <img th:if="${#strings.isEmpty(mpl.imageUrl)}" src="/images/img/quick_my.png">
+                                    <img th:unless="${#strings.isEmpty(mpl.imageUrl)}" th:src="${mpl.imageUrl}">
+                        
+                                    <!-- <p class="hover_name" th:text="${mpl.employeeName}"></p> -->
+                                </div>
+
+
+                            </div>
+                        </a>
+
+                    </li>
+                    <li><a
+                            th:href="@{/worksheet/project/contents(projectNo=${pl.projectNo},employeeCode=${selectEmployeeCode},departmentCode=${departmentCode},pageNum=${pageNum},searchType=${searchType},keyword=${keyword},state=${state})}">[[${pl.createDate}]]</a>
+                    </li>
+                    <li><a
+                            th:href="@{/worksheet/project/contents(projectNo=${pl.projectNo},employeeCode=${selectEmployeeCode},departmentCode=${departmentCode},pageNum=${pageNum},searchType=${searchType},keyword=${keyword},state=${state})}">[[${pl.responseDate}]]</a>
+                    </li>
+                </ul>
+
+
+            </div>
+
+            <!-- next btn -->
+            <th:block th:replace="fragments/page_nation :: page_nation"></th:block>
+
+
+        </div>
+
+    </div>
+
+</th:block>
+
+
+<th:block layout:fragment="pageScript">
+    <!-- js파일 -->
+    <script th:src="@{/js/worksheet/project/select.js(date=${todayFormat})}"></script>
+    <script th:src="@{/js/worksheet/project/list.js(date=${todayFormat})}"></script>
+
+</th:block>
+
+
+</html>

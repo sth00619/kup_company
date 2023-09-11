@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <style>
+        input {
+            text-align: center;
+            height: 30px;
+            margin-bottom: 7px;
+            margin-top: 7px;
+            background-color: transparent;
+            color: black;
+        }
+
+        ._calendarIdTd {
+            width: 100px;
+        }
+
+        /* ._btnTd {
+            width: 50px;
+        } */
+        ._selectInput {
+            border: 1px solid;
+
+        }
+
+        ._exTd {
+            width: 100px;
+        }
+
+        ._exTable {
+            width: 700px;
+            transform: translateX(40%);
+        }
+
+        table>tbody>tr:nth-child(1)>td {
+            font-weight: bolder;
+        }
+
+        td {
+            overflow: unset;
+        }
+        ._hide{
+            display: none;
+        }
+    </style>
+</th:block>
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideOperation :: sideOperationFragment"></div>
+</th:block>
+<th:block layout:fragment="contents" sec:authorize="hasAnyAuthority('OPERATION_CALENDAR_UPDATE')">
+    <br><br>
+    <br><br>
+    <button id="missingDefaultBtn" style="float:right;">영업사원 기본 캘린더 없는사람 일괄추가</button>
+    <br><br>
+    <hr>
+    <br><br>
+    <table class="_exTable">
+        <tbody>
+            <tr>
+                <td class="_exTd">수정 사원코드</td>
+                <td class="_exTd">회사코드</td>
+                <td class="_exTd">부서코드</td>
+                <td>설명</td>
+            </tr>
+            <tr>
+                <td>O</td>
+                <td>X</td>
+                <td>X</td>
+                <td>수정 사원 코드만 작성할 수 있는 개인 캘린더</td>
+            </tr>
+            <tr>
+                <td>O</td>
+                <td>O</td>
+                <td>X</td>
+                <td>수정 사원코드만 작성할 수 있는 회사 캘린더</td>
+            </tr>
+            <tr>
+                <td>O</td>
+                <td>X</td>
+                <td>O</td>
+                <td>수정 사원코드만 작성 할 수 있는 부서 캘린더</td>
+            </tr>
+            <tr>
+                <td>X</td>
+                <td>O</td>
+                <td>X</td>
+                <td>누구나 작성할 수 있는 회사캘린더</td>
+            </tr>
+            <tr>
+                <td>X</td>
+                <td>X</td>
+                <td>O</td>
+                <td>누구나 작성할 수 있는 부서 캘린더</td>
+            </tr>
+        </tbody>
+    </table>
+    <br><br>
+    <hr>
+    <table>
+        <tbody>
+            <tr>
+                <td>캘린더 이름</td>
+                <td>수정 사원코드</td>
+                <td>회사코드</td>
+                <td>부서코드</td>
+                <td>색상</td>
+                <td> </td>
+            </tr>
+            <tr class="_addCalendarForm">
+                <td><input class="_selectInput _name" type="text" name="name"></td>
+                <td class="_saveEmployeeCodeList">
+                    <div class="name_box saved_click _selectEmployee">
+                        <input class="_searchEmployee" type="text" placeholder="검색">
+                        <ul class="saved_list">
+                            <li class="_clickApproverEmployee" th:each="ae : ${allEmployee}">
+                                <div class="saved_icon"><img src="/images/img/quick_my.png"></div>
+                                <div class="saved_namebox">
+                                    <div class="saved_name" th:text="${ae.employeeName}"></div>
+                                    <div class="saved_number" th:text="${ae.employeeCode}"></div>
+                                </div>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <div class="_selectApproverList" style="margin : 10px;">
+                    </div>
+                </td>
+                <td>
+                    <input class="_selectInput _companyCode" list="addCompanyList" name="companyCode" type="text">
+                    <datalist id="addCompanyList">
+                        <option th:label="${ac.companyName}" th:each="ac : ${allCompany}" th:value="${ac.companyCode}">
+                    </datalist>
+
+                </td>
+                <td>
+
+
+                    <input class="_selectInput _departmentCode" list="addDepartmentList" name="departmentCode"
+                        type="text">
+                    <datalist id="addDepartmentList">
+                        <option th:label="${ad.departmentName}" th:each="ad : ${allDepartment}"
+                            th:value="${ad.departmentCode}">
+                    </datalist>
+
+                </td>
+                <td><input class="_selectInput _bgColor" type="color" name="bgColor"></td>
+                <td><button class="_addBtn">저장</button></td>
+            </tr>
+
+        </tbody>
+    </table>
+    <br>
+    <br>
+    <br> <br>
+    <br>
+    <br>
+    <hr>
+
+
+    <table class="_scheduleTable">
+        <tbody>
+            <tr>
+                <td class="_calendarIdTd">캘린더 번호 </td>
+                <td>캘린더 이름 </td>
+                <td>수정 사원코드 </td>
+                <td>회사코드 </td>
+                <td>부서코드 </td>
+                <td>색상 </td>
+                <td class="_btnTd"> </td>
+                <td class="_btnTd"></td>
+            </tr>
+            <tr class="_oclList" th:each=" ocl: ${operationCalendarList}">
+                <td>
+                    <p class="_calendarId" name="calendarId" th:text="${ocl.calendarId}"></p>
+                </td>
+
+                <td><input class="_name " name="name" th:value="${ocl.name}" maxlength="15" readonly> </td>
+                <td class="_editEmployeeList">
+
+                    <div class="_editableEmployeeCode">
+                        <p th:each="el : ${ocl.employeeCodeArr}" th:if="${!#strings.arrayIsEmpty(ocl.employeeCodeArr)}" th:text="${el}"></p>
+                    </div>
+
+                    <div class="_editEmployeeCodeDiv _hide">
+                        <div class="name_box saved_click _selectEmployee">
+                            <input class="_searchEmployee" type="text" placeholder="검색">
+                            <ul class="saved_list">
+                                <li class="_clickApproverEmployee" th:each="ae : ${allEmployee}">
+                                    <div class="saved_icon"><img src="/images/img/quick_my.png"></div>
+                                    <div class="saved_namebox">
+                                        <div class="saved_name" th:text="${ae.employeeName}"></div>
+                                        <div class="saved_number" th:text="${ae.employeeCode}"></div>
+                                    </div>
+                                </li>
+    
+                            </ul>
+                        </div>
+    
+                        <div class="_selectApproverList" style="margin : 10px;">
+                            <div class="_selectApprDiv" th:each="el : ${ocl.employeeCodeArr}" th:if="${!#strings.arrayIsEmpty(ocl.employeeCodeArr)}">
+                                <div style="float : left ;"> <img src="/images/img/delete.png" class="_delEmployeeBtn"
+                                        style="cursor: pointer"></div>
+                                <div class="_selectEmployeeTypeList"><p class="_selectApprover" th:text="${el}"
+                                        ></p></div> <br>
+                            </div>
+    
+                        </div>
+
+
+
+                    </div>
+
+                   
+
+
+                </td>
+                <td>
+                    <input class="_companyCode" list="companyList" name="companyCode" type="text"
+                        th:value="${ocl.companyCode}" placeholder="EMPTY" disabled="true">
+                    <datalist id="companyList">
+                        <option th:label="${ac.companyName}" th:each="ac : ${allCompany}" th:value="${ac.companyCode}">
+                    </datalist>
+                </td>
+                <td>
+                    <input class="_departmentCode" list="departmentList" name="departmentCode" type="text"
+                        th:value="${ocl.departmentCode}" placeholder="EMPTY" disabled="true">
+                    <datalist id="departmentList">
+                        <option th:label="${ad.departmentName}" th:each="ad : ${allDepartment}"
+                            th:value="${ad.departmentCode}">
+                    </datalist>
+                </td>
+                <td><input class="_bgColor " name="bgColor" th:value="${ocl.bgColor}" maxlength="50" type="color"
+                        disabled="true"> </td>
+                <td> <button class="_writeBtn" type="button">수정</button> <button class="_exitBtn" type="button"
+                        hidden>취소</button> </td>
+
+                <td> <button class="_deleteBtn" type="button">삭제</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+    <th:block layout:fragment="pageScript">
+        <script th:src="@{/js/calendar/operation.js(date=${todayFormat})}" type="text/javascript"></script>
+    </th:block>
+</th:block>
+
+</html>

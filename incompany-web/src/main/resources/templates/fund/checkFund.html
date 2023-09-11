@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<th:block layout:fragment="pageCss">
+  <link rel="stylesheet" th:href="@{/css/list_check_box.css(date=${todayFormat})}" type="text/css">
+  <link rel="stylesheet" th:href="@{/css/insurance/insuranceList.css(date=${todayFormat})}" type="text/css">
+</th:block>
+<th:block layout:fragment="side_contents">
+
+  <div th:unless="${#authorization.expression('hasAnyAuthority(''SI_COMPANY'', ''FA_COMPANY'')')}">
+    <div th:replace="fragments/sideContractFortune :: sideContractFortuneFragment"></div>
+  </div>
+
+  <!--si company 권한 있을 경우 사이드바 -->
+  <div th:if="${#authorization.expression('hasAnyAuthority(''SI_COMPANY'', ''FA_COMPANY'')')}">
+    <div th:replace="fragments/sideSiCompany :: sideSiCompanyFragment"></div>
+  </div>
+
+</th:block>
+<th:block layout:fragment="contents">
+  <!-- 검색 관련 세팅 -->
+  <input id="searchValue" th:value="${originalSearchValue}" type="hidden" />
+  <input id="searchKey" th:value="${searchKey}" type="hidden" />
+  <input id="isSuccess" th:value="${isSuccess}" type="hidden" />
+  <input id="message" th:value="${message}" type="hidden" />
+
+  <div class="top_center_menu_visual">
+    <div class="top_center-menu">
+      <div class="top_left_menu _top_left_menu">
+        <th:block sec:authorize="hasAnyAuthority('GENERAL_AFFAIRS')" th:replace="fragments/select_department_employee_general_affairs :: select_department_employee_general_affairs"></th:block>
+        <th:block sec:authorize="!hasAnyAuthority('GENERAL_AFFAIRS')" th:replace="fragments/select_department_employee :: select_department_employee"></th:block>
+        <div class="add_box2 _check_fund" sec:authorize="hasAnyAuthority('CONTRACT_CHECK')"><a>계약확인</a></div>
+      </div>
+
+      <div class="top_right_menu">
+        <div class="date_box search_deta">
+          <input class="_search_start_date" th:value="${startDate}" type="date">
+        </div>
+        <div class="date_box search_deta">
+          <input class="_search_end_date" th:value="${endDate}" type="date">
+        </div>
+
+        <select class="select_box _searchKey">
+          <option th:each="scl : ${searchCateList}"
+                  th:selected="${scl.meaning} == ${searchKey}"
+                  th:text="${scl.meaning}"></option>
+        </select>
+
+        <div class="salesman_search">
+          <input class="_searchValue" placeholder="검색" th:value="${originalSearchValue}" type="text">
+          <img alt="검색" class="_searchBtn" th:src="@{/images/img/search_icon.png}" />
+        </div>
+      </div>
+    </div>
+
+    <div class="main_center_wrap">
+      <div class="main_top">
+        <div>
+          <ul class="contract_main_title3">
+            <li class="_main_first_txt">
+              <input id="totalCheckbox" type="checkbox">
+              <label for="totalCheckbox"></label>
+            </li>
+            <li>NO</li>
+            <li>본부</li>
+            <li>지점</li>
+            <li>팀</li>
+            <li>직급</li>
+            <li>담당자</li>
+            <li>고객</li>
+            <li>종목</li>
+            <li>계약날짜</li>
+            <li>계좌개설일</li>
+            <li>만기일</li>
+            <li>이체일</li>
+            <li class="_sort" data-sort="amount">금액</li>
+          </ul>
+        </div>
+
+        <div class="contract_sub_txt3">
+          <ul class="_sub_ul _fund_sub" th:each="fl : ${fundList.getList()}" th:value="${fl.fundManageNo}">
+            <li class="sub_first_txt _checkbox_li _sub_first_txt" th:classappend="${!#authorization.expression('hasAnyAuthority(''CONTRACT_CHECK'')')} ? '_NOT_AUTH'">
+              <label class="_sub_label" for="checkbox"></label>
+              <input class="_sub_check" id="checkbox" type="checkbox">
+            </li>
+            <li><a th:text="${fl.fundManageNo}"></a></li>
+            <li><a th:text="${fl.departmentSettingDto.centralDepartmentName}"></a></li>
+            <li><a th:text="${fl.departmentSettingDto.salesDepartmentName}"></a></li>
+            <li><a th:text="${fl.departmentSettingDto.teamDepartmentName}"></a></li>
+            <li><a th:text="${fl.positionName}"></a></li>
+            <li><a th:text="${fl.employeeName}"></a></li>
+            <li><a th:text="${fl.potentialUserName}"></a></li>
+            <li><a th:text="${fl.fundTitle}"></a></li>
+            <li><a th:text="${fl.fundJoinDate}"></a></li>
+            <li><a th:text="${fl.accountOpenDate}"></a></li>
+            <li><a th:text="${fl.fundPayTerm}"></a></li>
+            <li><a th:text="${fl.fundPayDate}"></a></li>
+            <li><a th:text="${fl.getSumPerformancePlusComma()}"></a></li>
+          </ul>
+        </div>
+      </div>
+      <!-- pageNation -->
+      <th:block th:replace="fragments/page_nation :: page_nation"></th:block>
+    </div>
+  </div>
+</th:block>
+
+
+<th:block layout:fragment="pageScript">
+  <script th:src="@{/js/fund/checkFund.js(date=${todayFormat})}" type="text/javascript"></script>
+  <!-- checkBox -->
+  <script th:src="@{/js/list_check_box.js(date=${todayFormat})}" type="text/javascript"></script>
+  <script th:src="@{/js/select_department_employee.js(date=${todayFormat})}" type="text/javascript"></script>
+</th:block>
+</html>

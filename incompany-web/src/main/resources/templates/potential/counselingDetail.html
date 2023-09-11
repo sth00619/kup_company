@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <!-- css작성, 파일 -->
+    <style>
+        h3 {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            position: relative;
+            color: #304260;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .advice_box {
+            width: 100%;
+            min-height: 200px;
+            border: 2px solid #e4e8f0;
+            float: left;
+            resize: none;
+            outline: none;
+            box-sizing: border-box;
+        }
+    </style>
+</th:block>
+
+
+<th:block layout:fragment="contents">
+
+    <div th:if="${cd}">
+        <div class="advice_txt_box" th:if="${cd}">
+            <h3 th:text="${cd.titleMeaning}"></h3>
+            <div class="advice_txt">
+                <textarea class="advice_box _contentsForm" th:text="${cd.contents}"></textarea>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+
+
+</th:block>
+
+
+<th:block layout:fragment="pageScript">
+    <!-- js파일 -->
+</th:block>
+
+
+</html>

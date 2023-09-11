@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+     xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideContractFortune :: sideContractFortuneFragment"></div>
+</th:block>
+
+<th:block layout:fragment="contents">
+    <div class="top_center_menu_visual">
+        <div class="main_center_wrap">
+            <div class="top_right_menu">
+                <!-- 기간 조회 -->
+                <th:block th:replace="fragments/date_search_by_period :: date_search_by_period"></th:block>
+            </div>
+            <div class="daily_title">
+                <ul>
+                    <li style="width:100px;">목돈순위
+                    <li style="width:100px;">본부</li>
+                    <li style="width:100px;">지점</li>
+                    <li style="width:100px;">팀</li>
+                    <li style="width:100px;">직급</li>
+                    <li style="width:100px;">이름</li>
+                    <li style="width:100px;">사번</li>
+                </ul>
+            </div>
+
+            <div class="daily_sub_txt">
+                <ul th:each="cl : ${contractFortuneList}" th:unless="${cl.totalAmountContractFortune} == 0">
+                    <li style="width:100px;" th:text="${cl.ranking}"></li>
+                    <li style="width:100px;" th:text="${cl.D1Name}"></li>
+                    <li style="width:100px;" th:text="${cl.D2Name}"></li>
+                    <li style="width:100px;" th:text="${cl.D3Name}"></li>
+                    <li style="width:100px;" th:text="${cl.positionName}"></li>
+                    <li style="width:100px;" th:text="${cl.name}"></li>
+                    <li style="width:100px;" th:text="${cl.employeeCode}"></li>
+                </ul>
+            </div>
+
+            <div class="daily_title">
+                <ul>
+                    <li style="width:100px;">보험순위</li>
+                    <li style="width:100px;">본부</li>
+                    <li style="width:100px;">지점</li>
+                    <li style="width:100px;">팀</li>
+                    <li style="width:100px;">직급</li>
+                    <li style="width:100px;">이름</li>
+                    <li style="width:100px;">사번</li>
+                </ul>
+            </div>
+
+            <div class="daily_sub_txt">
+                <ul th:each="il : ${insuranceList}" th:unless="${il.totalAmountInsurance} == 0">
+                    <li style="width:100px;" th:text="${il.ranking}"></li>
+                    <li style="width:100px;" th:text="${il.D1Name}"></li>
+                    <li style="width:100px;" th:text="${il.D2Name}"></li>
+                    <li style="width:100px;" th:text="${il.D3Name}"></li>
+                    <li style="width:100px;" th:text="${il.positionName}"></li>
+                    <li style="width:100px;" th:text="${il.name}"></li>
+                    <li style="width:100px;" th:text="${il.employeeCode}"></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+<th:block layout:fragment="pageScript">
+    <script th:src="@{/js/statistics/contractRanking.js(date=${todayFormat})}" type="text/javascript"></script>
+    <!-- 날짜 계산 -->
+    <script th:src="@{/js/utils/date_util.js(date=${todayFormat})}" type="text/javascript"></script>
+</th:block>
+</html>

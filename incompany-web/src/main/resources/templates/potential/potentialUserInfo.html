@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="@{layout/defaultFragment}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="side_contents">
+
+    <div th:unless="${#authorization.expression('hasAnyAuthority(''SI_COMPANY'', ''FA_COMPANY'')')}">
+        <div  th:replace="fragments/sidePotential :: sidePotentialFragment"></div>
+    </div>
+
+    <!--si company 권한 있을 경우 사이드바 -->
+    <div th:if="${#authorization.expression('hasAnyAuthority(''SI_COMPANY'')')}">
+        <div th:replace="fragments/sideSiCompany :: sideSiCompanyFragment"></div>
+    </div>
+
+    <!--fa company 권한 있을 경우 사이드바 -->
+    <div th:if="${#authorization.expression('hasAnyAuthority(''FA_COMPANY'')')}">
+        <div th:replace="fragments/sideFaCompany :: sideFaCompanyFragment"></div>
+    </div>
+
+</th:block>
+
+<th:block layout:fragment="contents">
+    <div class="guest_deta_wrap">
+        <div class="guest_deta_box">
+            <h2>고객 정보</h2>
+            <div class="guest_deta">
+                <div class="guest_list">
+                    <div class="guest_list_name star">
+                        <p>고객분류</p>
+                    </div>
+                    <div class="guest_list_box report">
+                        <p th:text="${potentialUserDto.getSourceName()}"></p>
+                    </div>
+                </div>
+
+                <div class="guest_list">
+                    <div class="guest_list_name">
+                        <p>담당자</p>
+                    </div>
+                    <div class="guest_list_box report">
+                        <p th:text="${employeeInfoDto.employeeName}"></p>
+                    </div>
+                </div>
+
+                <div class="guest_list">
+                    <div class="guest_list_name star">
+                        <p>이름</p>
+                    </div>
+                    <div class="guest_list_box report">
+                        <p th:text="${potentialUserDto.name}"></p>
+                    </div>
+                </div>
+
+                <div class="guest_list">
+                    <div class="guest_list_name star">
+                        <p>연락처</p>
+                    </div>
+                    <div class="guest_list_box report">
+                        <p th:text="${potentialUserDto.mobile}"></p>
+                    </div>
+                </div>
+
+                <div class="guest_list">
+                    <div class="guest_list_name">
+                        <p>거주지</p>
+                    </div>
+                    <div class="guest_list_box report">
+                        <p th:text="${potentialUserDto.getPostCodeIncludeLocation()}"></p>
+                    </div>
+                </div>
+
+                <div class="guest_list">
+                    <div class="guest_list_name">
+                        <p>생년월일</p>
+                    </div>
+                    <div class="guest_list_box report">
+                        <p th:text="${potentialUserDto.birthday}"></p>
+                        <span>성별</span>
+                        <p th:text="${potentialUserDto.gender}"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="guest_deta_box">
+            <h2>상세 정보</h2>
+            <div class="guest_deta">
+                <div class="guest_list">
+                    <div class="guest_list_name">
+                        <p>직업</p>
+                    </div>
+                    <div class="guest_list_box report">
+                        <p th:text="${potentialUserDto.job}"></p>
+                    </div>
+                </div>
+
+                <div class="guest_list">
+                    <div class="guest_list_name">
+                        <p>월평균 급여</p>
+                    </div>
+                    <div class="guest_list_box report">
+                        <p th:text="${potentialUserDto.averagePay}"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="guest_deta_box">
+            <h2>상담 정보</h2>
+            <div class="guest_deta">
+                <div class="guest_list">
+                    <div class="guest_list_name">
+                        <p>통화가능 일시</p>
+                    </div>
+                    <div class="guest_list_box report">
+                        <p th:text="${potentialUserDto.possibleTime}"></p>
+                    </div>
+                </div>
+
+                <div class="guest_big_list">
+                    <div class="guest_list_bigname">
+                        <p>관심분야</p>
+                    </div>
+                    <div class="guest_list_box report">
+                        <p th:text="${potentialUserDto.note}"></p>
+                    </div>
+                </div>
+
+                <div class="guest_big_list">
+                    <div class="guest_list_bigname">
+                        <p>상담내용</p>
+                    </div>
+                    <div class="guest_list_box report">
+                        <p th:text="${potentialUserDto.counseling}">내용입력</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="save_btn_wrap">
+            <div>
+                <a href="javascript:history.back();">
+                    <button class="close_btn">취소</button>
+                </a>
+                <button th:unless="${#authorization.expression('hasAnyAuthority(''SI_COMPANY'', ''FA_COMPANY'')')}" class="close_btn btn_color" id="_updateButton"
+                        th:value="'/potential/updatePotentialUser?potentialUserNo='+${potentialUserNo}+'&employeeCode='+${employeeCode}"
+                        type="button">수정
+                </button>
+            </div>
+        </div>
+
+    </div>
+</th:block>
+<th:block layout:fragment="pageScript">
+    <script th:src="@{/js/potential/potentialUserInfo.js(date=${todayFormat})}"></script>
+</th:block>
+</html>

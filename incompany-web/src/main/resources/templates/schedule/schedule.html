@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <!-- css작성, 파일 -->
+    <link href="/toast-calendar/css/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="/toast-calendar/css/tui-time-picker.css" rel="stylesheet" type="text/css">
+    <link href="/toast-calendar/css/tui-date-picker.css" rel="stylesheet" type="text/css">
+    <link href="/toast-calendar/css/tui-calendar.css" rel="stylesheet" type="text/css">
+    <link href="/toast-calendar/css/default.css" rel="stylesheet" type="text/css">
+    <link href="/toast-calendar/css/icon.css" rel="stylesheet" type="text/css">
+    <style>
+        .pop6 {
+            z-index: 1;
+        }
+
+        ._deleteCalendar {
+            display: none;
+        }
+
+        #popUp {
+            background-color: transparent !important;
+            margin-left: 6px;
+            vertical-align: text-top;
+        }
+
+        .calendar_right select {
+            font-size: 14px;
+            color: #304260;
+            font-weight: bold;
+            border: 2px solid #edf0f5;
+            height: 28px;
+            background: transparent;
+            border-radius: 2px;
+            cursor: pointer;
+            outline: none;
+
+        }
+
+        #lnb {
+            left: 16px;
+        }
+
+        #right {
+            left: 197px;
+        }
+
+        #calendar {
+            padding: 0 16px 0;
+        }
+
+        .add_btn {
+            font-size: 12px;
+        }
+
+        .Se_save_wrap button {
+            line-height: 20px;
+        }
+
+        ._clearblock {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            visibility: hidden;
+            opacity: 0;
+            transition: all .5s;
+        }
+
+        #today {
+            pointer-events: none;
+        }
+
+        ._todayStyle {
+            line-height: 29px;
+            color: #9499a3;
+            font-size: 12px
+        }
+        ._holidayPicker{
+            color: #ff0202;
+            font-size:12px;
+        }
+    </style>
+</th:block>
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideIndex :: sideIndexFragment"></div>
+</th:block>
+
+<th:block layout:fragment="contents">
+
+    <div class="calendar_visual">
+        <div class="calendar_wrap">
+
+            <div class="calendar_main">
+
+                <input hidden id="companyEditCode" th:value="${companyEditCode}">
+                <input hidden id="departmentEditCode" th:value="${departmentEditCode}">
+
+
+                <input hidden id="employeeLoginCode" th:value="${employeeLoginCode}">
+                <input id="companyCode" th:value="${companyCode}" type="hidden">
+                <input id="departmentCode" th:value="${departmentCode}" type="hidden">
+                <input id="getDepartmentCode" th:value="${departmentCode}" type="hidden" />
+                <input id="getEmployeeCode" th:value="${employeeCode}" type="hidden" />
+                <input id="getTeamCode" type="hidden" />
+                <div class="categori_box">
+
+                    <!-- 스케줄 팝업 -->
+
+                    <div class="schedule_edit pop6">
+                        <h4>내 캘린더 편집</h4>
+                        <div class="Se_leftbox">
+                            <h6>항목 추가</h6>
+
+                            <div class="se_addwrap">
+
+                                <div class="se_addbox">
+                                    <div class="Se_add_input">
+                                        <input id="addCalendarName" maxlength="15" type="text">
+                                    </div>
+                                    <div class="color_red" id="addColor">빨강</div>
+                                </div>
+
+                                <div class="add_btn">
+                                    <button id="addCalendar">추가</button>
+                                </div>
+
+                            </div>
+
+                            <h6>항목 수정</h6>
+                            <ul class="amend_list" id="calenderEdit">
+
+
+                            </ul>
+
+
+                            <div class="Se_save_wrap">
+                                <div>
+                                    <button class="close_btn cbt" type="button">취소</button>
+                                    <button class="close_btn btn_color" id="editCalendar" type="button">저장</button>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="Se_rightbox">
+
+                            <div class="color_box">
+                                <ul>
+                                    <li class="_addColor"><span class="check_on _add"></span></li>
+                                    <li class="_addColor"></li>
+                                    <li class="_addColor"></li>
+                                    <li class="_addColor"></li>
+                                    <li class="_addColor"></li>
+                                    <li class="_addColor"></li>
+                                    <li class="_addColor"></li>
+                                    <li class="_addColor"></li>
+                                    <li class="_addColor"></li>
+                                    <li class="_addColor"></li>
+                                    <li class="_addColor"></li>
+                                    <li class="_addColor"></li>
+                                    <li class="_addColor"></li>
+                                    <li class="_addColor"></li>
+                                    <li class="_addColor"></li>
+                                    <li class="_addColor"></li>
+                                    <li class="_addColor"></li>
+                                    <li class="_addColor"></li>
+                                    <li class="_addColor"></li>
+                                    <li class="_addColor"></li>
+                                    <li class="_addColor"></li>
+                                    <li class="_addColor"></li>
+                                    <li class="_addColor"></li>
+                                    <li class="_addColor"></li>
+                                    <li class="_addColor"></li>
+                                    <li class="_addColor"></li>
+                                    <li class="_addColor"></li>
+                                    <li class="_addColor"></li>
+                                    <li class="_addColor"></li>
+                                    <li class="_addColor"></li>
+                                    <li class="_addColor"></li>
+                                    <li class="_addColor"></li>
+                                    <li class="_addColor"></li>
+                                    <li class="_addColor"></li>
+                                    <li class="_addColor"></li>
+                                </ul>
+                                <ul>
+                                    <li class="_editColor"></li>
+                                    <li class="_editColor"></li>
+                                    <li class="_editColor"></li>
+                                    <li class="_editColor"></li>
+                                    <li class="_editColor"></li>
+                                    <li class="_editColor"></li>
+                                    <li class="_editColor"></li>
+                                    <li class="_editColor"></li>
+                                    <li class="_editColor"></li>
+                                    <li class="_editColor"></li>
+                                    <li class="_editColor"></li>
+                                    <li class="_editColor"></li>
+                                    <li class="_editColor"></li>
+                                    <li class="_editColor"></li>
+                                    <li class="_editColor"></li>
+                                    <li class="_editColor"></li>
+                                    <li class="_editColor"></li>
+                                    <li class="_editColor"></li>
+                                    <li class="_editColor"></li>
+                                    <li class="_editColor"></li>
+                                    <li class="_editColor"></li>
+                                    <li class="_editColor"></li>
+                                    <li class="_editColor"></li>
+                                    <li class="_editColor"></li>
+                                    <li class="_editColor"></li>
+                                    <li class="_editColor"></li>
+                                    <li class="_editColor"></li>
+                                    <li class="_editColor"></li>
+                                    <li class="_editColor"></li>
+                                    <li class="_editColor"></li>
+                                    <li class="_editColor"></li>
+                                    <li class="_editColor"></li>
+                                    <li class="_editColor"></li>
+                                    <li class="_editColor"></li>
+                                    <li class="_editColor"></li>
+                                </ul>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- end -->
+                </div>
+
+
+                <div id="schedule">
+                    <div id="lnb">
+                        <div class="lnb-new-schedule">
+                            <button class="btn btn-default btn-block lnb-new-schedule-btn" data-toggle="modal"
+                                id="btn-new-schedule" type="button">
+                                스케줄 추가
+                            </button>
+                        </div>
+                        <div class="lnb-calendars" id="lnb-calendars">
+
+                            <div>
+                                <span>
+                                    <div class="lnb-calendars-item">
+                                        <label>
+                                            <input checked class="tui-full-calendar-checkbox-square" type="checkbox"
+                                                value="all">
+                                            <span></span>
+                                            <strong>내 캘린더</strong>
+                                            <button id="popUp" th:if="${employeeCode == employeeLoginCode}"><img
+                                                    src="/images/img/schedule_icon.png"></button>
+
+                                        </label>
+                                    </div>
+
+                                </span>
+
+                            </div>
+
+                            <div class="lnb-calendars-d1" id="calendarList">
+
+                            </div>
+                        </div>
+
+
+                        <div id="today">
+                            <div class="lnb-calendars">
+                                <div>
+                                    <span>
+                                        <div class="">
+                                            <label>
+                                                <strong>오늘 해야 할 일</strong>
+                                            </label>
+                                        </div>
+
+                                    </span>
+
+                                </div>
+
+                                <div class="lnb-calendars-d1">
+                                    <div th:each=" tsl: ${todayScheduleList}">
+                                        <label>
+                                            <span class="_todayStyle">· [[${tsl.title}]] </span>
+                                        </label>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                    <div id="right">
+                        <div id="menu">
+                            <span class="dropdown">
+                                <button aria-expanded="true" aria-haspopup="true"
+                                    class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
+                                    id="dropdownMenu-calendarType" type="button">
+                                    <i class="calendar-icon ic_view_month" id="calendarTypeIcon"
+                                        style="margin-right: 4px;"></i>
+                                    <span id="calendarTypeName">Dropdown</span>&nbsp;
+                                    <i class="calendar-icon tui-full-calendar-dropdown-arrow"></i>
+                                </button>
+                                <ul aria-labelledby="dropdownMenu-calendarType" class="dropdown-menu" role="menu">
+                                    <li role="presentation">
+                                        <a class="dropdown-menu-title" data-action="toggle-daily" role="menuitem">
+                                            <i class="calendar-icon ic_view_day"></i>Daily
+                                        </a>
+                                    </li>
+                                    <li role="presentation">
+                                        <a class="dropdown-menu-title" data-action="toggle-weekly" role="menuitem">
+                                            <i class="calendar-icon ic_view_week"></i>Weekly
+                                        </a>
+                                    </li>
+                                    <li role="presentation">
+                                        <a class="dropdown-menu-title" data-action="toggle-monthly" role="menuitem">
+                                            <i class="calendar-icon ic_view_month"></i>Month
+                                        </a>
+                                    </li>
+                                    <li role="presentation">
+                                        <a class="dropdown-menu-title" data-action="toggle-weeks2" role="menuitem">
+                                            <i class="calendar-icon ic_view_week"></i>2 weeks
+                                        </a>
+                                    </li>
+                                    <li role="presentation">
+                                        <a class="dropdown-menu-title" data-action="toggle-weeks3" role="menuitem">
+                                            <i class="calendar-icon ic_view_week"></i>3 weeks
+                                        </a>
+                                    </li>
+                                    <li class="dropdown-divider" role="presentation"></li>
+                                    <li role="presentation">
+                                        <a data-action="toggle-workweek" role="menuitem">
+                                            <input checked class="tui-full-calendar-checkbox-square" type="checkbox"
+                                                value="toggle-workweek">
+                                            <span class="checkbox-title"></span>Show weekends
+                                        </a>
+                                    </li>
+                                    <li role="presentation">
+                                        <a data-action="toggle-start-day-1" role="menuitem">
+                                            <input class="tui-full-calendar-checkbox-square" type="checkbox"
+                                                value="toggle-start-day-1">
+                                            <span class="checkbox-title"></span>Start Week on Monday
+                                        </a>
+                                    </li>
+                                    <li role="presentation">
+                                        <a data-action="toggle-narrow-weekend" role="menuitem">
+                                            <input class="tui-full-calendar-checkbox-square" type="checkbox"
+                                                value="toggle-narrow-weekend">
+                                            <span class="checkbox-title"></span>Narrower than weekdays
+                                        </a>
+                                    </li>
+                                </ul>
+                            </span>
+                            <span id="menu-navi">
+                                <button class="btn btn-default btn-sm move-today" data-action="move-today"
+                                    type="button">Today</button>
+                                <button class="btn btn-default btn-sm move-day" data-action="move-prev" type="button">
+                                    <i class="calendar-icon ic-arrow-line-left" data-action="move-prev"></i>
+                                </button>
+                                <button class="btn btn-default btn-sm move-day" data-action="move-next" type="button">
+                                    <i class="calendar-icon ic-arrow-line-right" data-action="move-next"></i>
+                                </button>
+
+                            </span>
+                            <span class="render-range" id="renderRange">
+
+                            </span>
+
+                            <span>
+
+
+
+                                <div class="calendar_right">
+
+                                    <select class="belong_select _belong_select" name="belong"
+                                        sec:authorize="hasAnyAuthority('SCHEDULE_SELECT_DEPARTMENT_ONE_DEPTH')">
+                                        <option disabled selected>본부</option>
+                                        <option th:if="${departmentCode != null and !departmentCode.empty}"
+                                            value="cancel">선택취소</option>
+                                            <option th:each="sdl :${selectDepartmentMap.salesDepartmentList}" th:text="${sdl.departmentName}"
+                                            th:value="${sdl.departmentCode}">
+                                    </option>
+                                    </select>
+
+                                    <select class="department_select _department_select" name="department"
+                                        sec:authorize="hasAnyAuthority('SCHEDULE_SELECT_DEPARTMENT_ONE_DEPTH', 'SCHEDULE_SELECT_DEPARTMENT_TWO_DEPTH')">
+                                        <option disabled selected>지점</option>
+                                        <option
+                                            th:if="${selectDepartmentMap.departmentList != null and !selectDepartmentMap.departmentList.empty}"
+                                            value="cancel">선택취소</option>
+                                        <option th:each="dl :${selectDepartmentMap.departmentList}"
+                                            th:text="${dl.departmentName}" th:value="${dl.departmentCode}">
+                                        </option>
+                                    </select>
+
+                                    <select class="team_select _team_select" name="team"
+                                        sec:authorize="hasAnyAuthority('SCHEDULE_SELECT_DEPARTMENT_ONE_DEPTH', 'SCHEDULE_SELECT_DEPARTMENT_TWO_DEPTH', 'SCHEDULE_SELECT_DEPARTMENT_THREE_DEPTH')">
+                                        <option disabled selected>팀</option>
+                                        <option
+                                            th:if="${selectDepartmentMap.teamList != null and !selectDepartmentMap.teamList.empty}"
+                                            value="cancel">선택취소</option>
+                                        <option th:each="tl :${selectDepartmentMap.teamList}"
+                                            th:text="${tl.departmentName}" th:value="${tl.departmentCode}">
+                                        </option>
+                                    </select>
+
+                                    <select class="person_select _employee_select" name="person"
+                                        sec:authorize="hasAnyAuthority('SCHEDULE_SELECT_DEPARTMENT_ONE_DEPTH', 'SCHEDULE_SELECT_DEPARTMENT_TWO_DEPTH', 'SCHEDULE_SELECT_DEPARTMENT_THREE_DEPTH')">
+                                        <option disabled selected>담당자</option>
+                                        <option
+                                            th:if="${selectDepartmentMap.employeeList != null and !selectDepartmentMap.employeeList.empty}"
+                                            value="cancel">선택취소</option>
+                                        <option class="salesEmployeeName"
+                                            th:each="el :${selectDepartmentMap.employeeList}"
+                                            th:text="${el.employeeName}" th:value="${el.employeeCode}"></option>
+                                    </select>
+
+
+                                    <div class="search_box">
+                                        <input placeholder="스케줄 찾기" type="text">
+                                        <img src="/images/img/search_icon.png">
+                                    </div>
+
+                                </div>
+
+                            </span>
+
+
+                        </div>
+                        <div id="calendar"></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var defaultCalendarList = /*[[${defaultCalendarList}]]*/ ;
+
+        var counselingDefaultCalendarList = /*[[${counselingDefaultCalendarList}]]*/ ;
+        
+        /*]]>*/
+    </script>
+</th:block>
+<th:block layout:fragment="pageScript">
+    <!-- js파일 -->
+    <script src="/lib/jquery-3.6.0.min.js"></script>
+    <script th:src="@{/toast-calendar/js/calendar-edit.js(date=${todayFormat})}"></script>
+
+    <script src="/toast-calendar/js/bootstrap.js"></script>
+    <script src="/toast-calendar/js/tui-code-snippet.min.js"></script>
+    <script src="/toast-calendar/js/tui-time-picker.min.js"></script>
+    <script src="/toast-calendar/js/tui-date-picker.min.js"></script>
+    <script src="/toast-calendar/js/moment.min.js"></script>
+    <script src="/toast-calendar/js/chance.min.js"></script>
+    <script src="/toast-calendar/js/tui-calendar.js"></script>
+    <script th:src="@{/toast-calendar/js/calendars.js(date=${todayFormat})}"></script>
+    <script th:src="@{/toast-calendar/js/schedules.js(date=${todayFormat})}"></script>
+    <script th:src="@{/toast-calendar/js/select.js(date=${todayFormat})}"></script>
+
+    <!-- <script src="./js/theme/dooray.js"></script> -->
+    <script th:src="@{/toast-calendar/js/app.js(date=${todayFormat})}"></script>
+
+</th:block>
+
+
+
+
+</html>

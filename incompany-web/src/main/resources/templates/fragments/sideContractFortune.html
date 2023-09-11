@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<!-- Left CompanyChart Start -->
+<div class="slide_down_wrap" th:fragment="sideContractFortuneFragment">
+    <div class="top_slide arrowOn">
+        <h2>계약 관리</h2>
+    </div>
+    <ul class="top_slide_sub on_block arrowOn arrowOff">
+        <li class="sub_arrowOn" onclick="location.href='/contractFortune/contractFortune'"
+            th:classappend="${(mainUrl == 'contractFortune' ? 'on_block' : 'arrowoff arrowon')}">
+            <a href="#">목돈</a>
+        </li>
+        <ul class="top_slide_sub2" th:classappend="${mainUrl == 'contractFortune' ? 'on_block' : ''}">
+            <li onclick="location.href='/contractFortune/addContractFortune'">
+                <a th:classappend="${requestUrl == '/contractFortune/addContractFortune'} ? 'on_color'"
+                   sec:authorize="hasAnyAuthority('CONTRACT_MANAGER')"
+                   href="#">· 목돈 계약 추가</a></li>
+            <li onclick="location.href='/contractFortune/contractFortune'">
+                <a th:classappend="${requestUrl == '/contractFortune/contractFortune'} ? 'on_color'"
+                   href="#">· 목돈 계약 리스트</a></li>
+            <li onclick="location.href='/contractFortune/checkContractFortune'">
+                <a th:classappend="${requestUrl == '/contractFortune/checkContractFortune'} ? 'on_color'"
+                   href="#">· 목돈 계약 확인 리스트</a></li>
+            <li onclick="location.href='/contractFortune/privateContractFortune'"
+                sec:authorize="hasAnyAuthority('CONTRACT_PRIVATE')">
+                <a th:classappend="${requestUrl == '/contractFortune/privateContractFortune'} ? 'on_color'"
+                   sec:authorize="hasAnyAuthority('CONTRACT_PRIVATE')"
+                   href="#">· 목돈 비공개 계약 리스트</a></li>
+            <li onclick="location.href='/contractFortune/monthlyInterestContractFortune'">
+                <a th:classappend="${requestUrl == '/contractFortune/monthlyInterestContractFortune'} ? 'on_color'"
+                   sec:authorize="hasAnyAuthority('CONTRACT_PAYMENT_CHECK')"
+                   href="#">· 목돈 월 이자 리스트</a></li>
+            <li onclick="location.href='/contractFortune/repaymentContractFortune'">
+                <a th:classappend="${requestUrl == '/contractFortune/repaymentContractFortune'} ? 'on_color'"
+                   sec:authorize="hasAnyAuthority('CONTRACT_REPAYMENT_CHECK', 'CONTRACT_REPAYMENT_MANAGER')"
+                   href="#">· 목돈 상환 리스트</a></li>
+            <li onclick="location.href='/contractFortune/repaymentRealEstateContractFortune'">
+                <a th:classappend="${requestUrl == '/contractFortune/repaymentRealEstateContractFortune'} ? 'on_color'"
+                   href="#">· 부동산 상환 리스트</a></li>
+        </ul>
+
+        <li class="sub_arrowOn"
+            th:classappend="${(mainUrl == 'insurance' ? 'on_block' : 'arrowoff arrowon')}"
+            onclick="location.href='/insurance/insurance'">
+            <a href="#">보험</a>
+        </li>
+        <ul class="top_slide_sub2" th:classappend="${mainUrl == 'insurance' ? 'on_block' : ''}">
+            <li onclick="location.href='/insurance/addInsurance'">
+                <a th:classappend="${requestUrl == '/insurance/addInsurance'} ? 'on_color'"
+                   sec:authorize="hasAnyAuthority('CONTRACT_MANAGER')"
+                   href="#">· 보험 계약 추가</a></li>
+            <li onclick="location.href='/insurance/insurance'">
+                <a th:classappend="${requestUrl == '/insurance/insurance'} ? 'on_color'"
+                   href="#">· 보험 계약 리스트</a></li>
+            <li onclick="location.href='/insurance/checkInsurance'">
+                <a th:classappend="${requestUrl == '/insurance/checkInsurance'} ? 'on_color'"
+                   href="#">· 보험 계약 확인 리스트</a></li>
+        </ul>
+
+
+        <li class="sub_arrowOn" onclick="location.href='/fund/fund'"
+            th:classappend="${(mainUrl == 'fund' ? 'on_block' : 'arrowoff arrowon')}">
+            <a href="#">펀드</a>
+        </li>
+        <ul class="top_slide_sub2" th:classappend="${mainUrl == 'fund' ? 'on_block' : ''}">
+            <li onclick="location.href='/fund/addFund'">
+                <a th:classappend="${requestUrl == '/fund/addFund'} ? 'on_color'"
+                   sec:authorize="hasAnyAuthority('CONTRACT_MANAGER')"
+                   href="#">· 펀드 계약 추가</a></li>
+            <li onclick="location.href='/fund/fund'">
+                <a th:classappend="${requestUrl == '/fund/fund'} ? 'on_color'"
+                   href="#">· 펀드 계약 리스트</a></li>
+            <li onclick="location.href='/fund/checkFund'">
+                <a th:classappend="${requestUrl == '/fund/checkFund'} ? 'on_color'"
+                   href="#">· 펀드 계약 확인 리스트</a></li>
+        </ul>
+
+        <li class="sub_arrowOn" onclick="location.href='/salesTarget/salesTarget'"
+            th:classappend="${(mainUrl == 'salesTarget' ? 'on_block' : 'arrowoff arrowon')}">
+            <a href="#">목표</a>
+        </li>
+        <ul class="top_slide_sub2" th:classappend="${mainUrl == 'salesTarget' ? 'on_block' : ''}">
+            <li onclick="location.href='/salesTarget/salesTarget'">
+                <a th:classappend="${requestUrl == '/salesTarget/salesTarget'} ? 'on_color'"
+                   sec:authorize="hasAnyAuthority('SALES_TARGET_ALL', 'SALES_TARGET_BRANCH', 'SALES_TARGET_TEAM', 'SALES_TARGET')"
+                   href="#">· 영업 목표 리스트</a>
+            </li>
+        </ul>
+
+    </ul>
+
+    <div class="top_slide arrowOn">
+        <h2><a>계약 통계</a></h2>
+    </div>
+    <ul class="top_slide_sub on_block arrowOn arrowOff">
+        <!-- .top_slide_sub > li 에 `_notChild` 클래스 추가 하면 아래 화살표 사라짐 -->
+        <li class="sub_arrowOn _notChild"
+            th:classappend="${requestUrl == '/statistics/contractRanking'} ? 'on_block' : ''"
+            onclick="location.href='/statistics/contractRanking'">
+            <a href="#">TOP 10</a>
+        </li>
+        <ul></ul>
+        <li class="sub_arrowOn _notChild"
+            th:classappend="${requestUrl == '/contractStatus/teamStatusList'} ? 'on_block' : ''"
+            onclick="location.href='/contractStatus/teamStatusList'"
+            sec:authorize="hasAnyAuthority('CONTRACT_STATISTICS')">
+            <a href="#">팀 랭킹</a>
+        </li>
+        <ul></ul>
+        <li class="sub_arrowOn _notChild"
+            th:classappend="${requestUrl == '/contractStatus/statusList'} ? 'on_block' : ''"
+            onclick="location.href='/contractStatus/statusList'"
+            sec:authorize="hasAnyAuthority('CONTRACT_STATISTICS')">
+            <a href="#">관리사 랭킹</a>
+        </li>
+        <ul></ul>
+        <li class="sub_arrowOn _notChild"
+            th:classappend="${requestUrl == '/statistics/statistics'} ? 'on_block' : ''"
+            onclick="location.href='/statistics/statistics'"
+            sec:authorize="hasAnyAuthority('CONTRACT_STATISTICS')">
+            <a href="#">계약 통계</a>
+        </li>
+        <ul></ul>
+
+        <li class="sub_arrowOn _notChild"
+            th:classappend="${requestUrl == '/statistics/d3'} ? 'on_block' : ''"
+            onclick="location.href='/statistics/d3'"
+            sec:authorize="hasAnyAuthority('CONTRACT_STATISTICS_BRANCH_MANAGER')">
+            <a href="#">지점 계약 통계</a>
+        </li>
+        <ul></ul>
+
+        <li sec:authorize="hasAnyAuthority('ADDITIONAL_SCORE')"
+            class="sub_arrowOn _notChild"
+            th:classappend="${requestUrl == '/statistics/additionalScore'} ? 'on_block' : ''"
+            onclick="location.href='/statistics/additionalScore'">
+            <a href="#">상담,로그인 점수</a>
+        </li>
+        <ul></ul>
+
+        <li sec:authorize="hasAnyAuthority('SCHEDULE_PER_DAY')"
+            class="sub_arrowOn _notChild"
+            th:classappend="${requestUrl == '/statistics/teamFullSchedule'} ? 'on_block' : ''"
+            onclick="location.href='/statistics/teamFullSchedule'">
+            <a href="#">일자별 팀원 스케줄</a>
+        </li>
+        <ul></ul>
+        <li
+            class="sub_arrowOn _notChild"
+            th:classappend="${requestUrl == '/statistics/salesManager'} ? 'on_block' : ''"
+            onclick="location.href='/statistics/salesManager'"
+            sec:authorize="hasAnyAuthority('STATISTICS_ALL', 'STATISTICS_BRANCH', 'STATISTICS_TEAM')">
+            <a href="#">영업 통계</a>
+        </li>
+        <ul></ul>
+
+
+    </ul>
+
+    <div class="top_slide arrowOn">
+        <h2><a th:href="@{/event/eventAll}">EVENT</a></h2>
+    </div>
+    <ul class="top_slide_sub on_block arrowOn arrowOff">
+        <!-- .top_slide_sub > li 에 `_notChild` 클래스 추가 하면 아래 화살표 사라짐 -->
+        <li class="sub_arrowOn _notChild"
+            th:classappend="${requestUrl == '/event/promotionByKh'} ? 'on_block' : ''"
+            onclick="location.href='/event/promotionByKh'">
+            <a href="#">KH 프로모션</a>
+        </li>
+        <ul></ul>
+        <li class="sub_arrowOn _notChild"
+            th:classappend="${requestUrl == '/event/promotionByBranch'} ? 'on_block' : ''"
+            onclick="location.href='/event/promotionByBranch'">
+            <a href="#">지점 프로모션</a>
+        </li>
+        <ul></ul>
+    </ul>
+</div>
+</html>

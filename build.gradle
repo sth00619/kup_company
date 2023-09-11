@@ -1,0 +1,136 @@
+buildscript {
+    ext {
+        springBootVersion = '2.5.6'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath "io.spring.gradle:dependency-management-plugin:1.0.11.RELEASE"
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    group = 'com.kupstudio'
+    version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = 11
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-security'
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'org.springframework.boot:spring-boot-starter-mail'
+        implementation "org.springframework:spring-context-support"
+        implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0'
+        implementation 'org.jasypt:jasypt:1.9.3'
+        implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4'
+        implementation 'org.seleniumhq.selenium:selenium-java:4.1.0'
+        implementation 'com.spothero.emailvalidator:EmailValidator:1.0.0'
+
+        runtimeOnly 'mysql:mysql-connector-java'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testImplementation 'org.springframework.security:spring-security-test'
+        testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:2.2.0'
+
+        implementation 'com.opencsv:opencsv:5.5.2'
+        // jUnit5 추가
+//          testImplementation 'org.junit.jupiter:junit-jupiter-api:5.1.0'
+//          testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.1.0'
+//          testCompileOnly 'junit:junit:4.12'
+//          testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.1.0'
+        // validation 추가
+        implementation 'org.springframework.boot:spring-boot-starter-validation'
+        // lombok 추가
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+        // h2 추가
+        runtimeOnly 'com.h2database:h2'
+        // https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
+        implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+
+        implementation 'org.slf4j:slf4j-api:1.7.25'
+        implementation 'org.slf4j:jcl-over-slf4j:1.7.25'
+        implementation 'ch.qos.logback:logback-classic:1.2.3'
+
+        implementation 'org.springframework.boot:spring-boot-starter-mail'
+        implementation 'org.springframework:spring-context-support'
+
+        // https://mvnrepository.com/artifact/commons-codec/commons-codec
+        implementation group: 'commons-codec', name: 'commons-codec', version: '1.9'
+
+        //파일읽기
+        // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
+        implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.2'
+
+
+        implementation 'commons-io:commons-io:2.8.0'
+        implementation 'commons-fileupload:commons-fileupload:1.4'
+
+        implementation group: 'com.github.pagehelper', name: 'pagehelper-spring-boot-starter', version: '1.2.10'
+
+        // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-maven-plugin
+        implementation group: 'org.springframework.boot', name: 'spring-boot-maven-plugin', version: '2.6.0'
+        // health check 추가
+        implementation('org.springframework.boot:spring-boot-starter-actuator')
+
+
+        // https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk
+        implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.11.238'
+
+        // https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api
+        implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.2.2'
+
+        implementation group: 'org.json', name: 'json', version: '20090211'
+
+        // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-cache
+        implementation group: 'org.springframework.boot', name: 'spring-boot-starter-cache'
+
+        implementation 'com.google.api-client:google-api-client:1.33.0'
+        implementation 'com.google.oauth-client:google-oauth-client-jetty:1.32.1'
+        implementation 'com.google.apis:google-api-services-calendar:v3-rev20211026-1.32.1'
+
+        // https://mvnrepository.com/artifact/org.springframework.session/spring-session-jdbc
+        implementation group: 'org.springframework.session', name: 'spring-session-jdbc', version: '2.7.0'
+        implementation group: 'org.springframework.boot', name: 'spring-boot-starter-parent', version: '2.7.4', ext: 'pom'
+    }
+}
+
+
+project(':incompany-core') {
+    dependencies {
+    }
+}
+
+project(':incompany-batch') {
+    dependencies {
+        implementation project(':incompany-core')
+        implementation 'org.springframework.boot:spring-boot-starter-batch'
+        testImplementation 'org.springframework.batch:spring-batch-test'
+    }
+}
+
+project(':incompany-web') {
+    dependencies {
+        implementation project(':incompany-core')
+        implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+        implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+        implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+        implementation 'org.springframework:spring-web'
+
+        developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+
+    }
+}
+
+repositories {
+    mavenCentral()
+}

@@ -1,0 +1,8 @@
+.list_view04 #editor {
+    height: auto !important;
+    width: 1155px;
+}
+
+#editor > .toastui-editor-defaultUI {
+    border: 0;
+}

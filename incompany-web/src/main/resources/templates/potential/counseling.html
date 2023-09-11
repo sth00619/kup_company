@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<th:block layout:fragment="pageCss">
+    <style>
+        ._contents {
+            white-space: pre-wrap;
+        }
+
+        ._deleteForm {
+            display: none;
+        }
+
+        ._off {
+            display: none;
+        }
+
+        ._on {
+            display: block;
+        }
+    </style>
+</th:block>
+<th:block layout:fragment="side_contents">
+
+    <div th:unless="${#authorization.expression('hasAnyAuthority(''SI_COMPANY'', ''FA_COMPANY'')')}">
+        <div  th:replace="fragments/sidePotential :: sidePotentialFragment"></div>
+    </div>
+
+    <!--si company 권한 있을 경우 사이드바 -->
+    <div th:if="${#authorization.expression('hasAnyAuthority(''SI_COMPANY'')')}">
+        <div th:replace="fragments/sideSiCompany :: sideSiCompanyFragment"></div>
+    </div>
+
+    <!--fa company 권한 있을 경우 사이드바 -->
+    <div th:if="${#authorization.expression('hasAnyAuthority(''FA_COMPANY'')')}">
+        <div th:replace="fragments/sideFaCompany :: sideFaCompanyFragment"></div>
+    </div>
+
+</th:block>
+<th:block layout:fragment="contents">
+    <!-- 처리 결과 여부 -->
+    <input id="isSuccess" th:value="${isSuccess}" type="hidden" />
+    <input id="message" th:value="${message}" type="hidden" />
+
+    <input id="getEmployeeLoginCode" th:value="${employeeLoginCode}" type="hidden" />
+
+    <!-- main start ! -->
+    <div class="top_center_menu_visual">
+
+        <div class="top_center-menu">
+
+            <div class="top_left_menu">
+                <!-- 부서, 팀, 담당자 선택 select -->
+                <!-- select 유지 데이터 세팅 영역 -->
+                <input id="getDepartmentCode" th:value="${departmentCode}" type="hidden" />
+                <input id="getEmployeeCode" th:value="${employeeCode}" type="hidden" />
+                <input id="getTeamCode" type="hidden" />
+                <input id="isLeader" type="hidden" th:classappend="${#authorization.expression('hasAnyAuthority(''SELECT_SALES_LEADER'')')}? '_true_leader'">
+                <select class="belong_select _belong_select" name="belong"
+                        sec:authorize="hasAnyAuthority('SELECT_DEPARTMENT_ONE_DEPTH')">
+                    <option disabled selected>본부</option>
+                    <option th:if="${departmentCode != null and !departmentCode.empty}" value="cancel">선택취소</option>
+                    <option th:each="sdl :${selectDepartmentMap.salesDepartmentList}" th:text="${sdl.departmentName}"
+                            th:value="${sdl.departmentCode}">
+                    </option>
+                </select>
+
+                <select class="department_select _department_select" name="department"
+                        sec:authorize="hasAnyAuthority('SELECT_DEPARTMENT_ONE_DEPTH', 'SELECT_DEPARTMENT_TWO_DEPTH')" >
+                    <option disabled selected>지점</option>
+                    <option th:if="${selectDepartmentMap.departmentList != null and !selectDepartmentMap.departmentList.empty}" value="cancel">선택취소</option>
+                    <option th:each="dl :${selectDepartmentMap.departmentList}" th:text="${dl.departmentName}"
+                            th:value="${dl.departmentCode}">
+                    </option>
+                </select>
+                <select class="team_select _team_select" name="team"
+                        sec:authorize="hasAnyAuthority('SELECT_DEPARTMENT_ONE_DEPTH', 'SELECT_DEPARTMENT_TWO_DEPTH', 'SELECT_DEPARTMENT_THREE_DEPTH')">
+                    <option disabled selected>팀</option>
+                    <option th:if="${selectDepartmentMap.teamList != null and !selectDepartmentMap.teamList.empty}" value="cancel">선택취소</option>
+                    <option th:each="tl :${selectDepartmentMap.teamList}" th:text="${tl.departmentName}"
+                            th:value="${tl.departmentCode}">
+                    </option>
+                </select>
+
+                <select class="person_select _employee_select" name="person"
+                        sec:authorize="hasAnyAuthority('SELECT_DEPARTMENT_ONE_DEPTH', 'SELECT_DEPARTMENT_TWO_DEPTH', 'SELECT_DEPARTMENT_THREE_DEPTH')">
+                    <option disabled selected>담당자</option>
+                    <option th:if="${selectDepartmentMap.employeeList != null and !selectDepartmentMap.employeeList.empty}" value="cancel">선택취소</option>
+                    <option class="salesEmployeeName" th:each="el :${selectDepartmentMap.employeeList}"
+                            th:text="${el.employeeName}" th:value="${el.employeeCode}"></option>
+                </select>
+
+                <div class="guest_menu" th:unless="${#authorization.expression('hasAnyAuthority(''SI_COMPANY'')')}">
+                    <p><a href="addPotentialUser">고객 추가</a></p>
+                </div>
+
+                <!-- <button>신청</button> -->
+            </div>
+
+            <input th:value="${searchType}" id="searchType" hidden>
+            <div class="top_right_menu">
+
+                <select class="select_box">
+                    <!-- <option value="all">전체</option> -->
+                    <!-- <option value="">NO</option>
+                    <option value="">상담횟수</option> -->
+                    <option th:selected="${searchType}=='name'" value="name">이름</option>
+                    <option th:selected="${searchType}=='mobile'" value="mobile">연락처</option>
+                    <!-- <option value="">거주지</option>
+                    <option value="">성별</option>
+                    <option value="">생년월일</option>
+                    <option value="">직업</option>
+                    <option value="">월급여</option>
+                    <option value="">출처</option>
+                    <option value="">통화가능시간</option>
+                    <option value="">관심분야</option>
+                    <option value="">상담내용</option>
+                    <option value="">외부코드</option>
+                    <option value="">외부출처</option> -->
+                </select>
+
+                <div class="salesman_search">
+                    <input id="keyword" placeholder="검색" th:value="${originalKeyword}" type="text">
+                    <img alt="검색" src="/images/img/search_icon.png" class="_searchBtn"/>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="main_center_wrap">
+
+            <div class="main_top">
+                <div class="main_title_addition">
+                    <ul class="main_title">
+                        <li class="sub_first_txt">
+                            <label for="checkbox"></label>
+                            <input id="checkbox" type="checkbox">
+                        </li>
+                        <li>NO</li>
+                        <li>담당자</li>
+                        <li>상담횟수</li>
+                        <li>이름</li>
+                        <li>연락처</li>
+                        <li>거주지</li>
+                        <li>성별</li>
+                        <li>생년월일</li>
+                        <li>직업</li>
+                        <li>월급여</li>
+                        <li>출처</li>
+                        <li>통화가능시간</li>
+                        <li>관심분야</li>
+                        <li>상담내용</li>
+                        <li>외부코드</li>
+                        <li>외부출처</li>
+                        <li>상담추가</li>
+                        <li>상세정보</li>
+                    </ul>
+                </div>
+
+                <div class="addition_sub_txt">
+                    <div>
+
+                        <div>
+                            <ul class="sub_title" th:each=" pul: ${potentialUserList.getList()}">
+                                <li class="sub_first_txt">
+                                    <label for="checkbox"></label>
+                                    <input class="checkbox" type="checkbox">
+                                </li>
+                                <li class="deta _potentialUserNo" th:text="${pul.potentialUserNo}"></li>
+                                <li class="deta _employee" th:value="${pul.employeeCode}" th:text="${pul.employeeName}">
+                                </li>
+                                <li class="deta _count" th:text="${pul.counselingCount} + 회"
+                                    th:value="${pul.counselingCount}"></li>
+                                <li class="deta _potentialUserName" th:text="${pul.potentialUserName}"></li>
+                                <li class="deta" th:text="${pul.mobile}"></li>
+                                <li class="deta" th:text="${pul.postCodeNoneLocation}"></li>
+                                <li class="deta" th:text="${pul.gender}"></li>
+                                <li class="deta" th:text="${pul.birthday}"></li>
+                                <li class="deta" th:text="${pul.job}"></li>
+                                <li class="deta" th:text="${pul.averagePay}"></li>
+                                <li class="deta" th:text="${pul.sourceName}"></li>
+                                <li class="deta" th:text="${pul.possibleTime}"></li>
+                                <li class="deta" th:text="${pul.note}"></li>
+                                <li class="deta" th:text="${pul.counseling}"></li>
+                                <li class="deta" th:text="${pul.externalCode}"></li>
+                                <li class="deta" th:text="${pul.externalFrom}"></li>
+                                <li class="advice_click" th:classappend="${pul.isMyPotentialUser == true} ? '_isTrue'"
+                                    th:text="${pul.isMyPotentialUser == true} ? '+' : ''">
+                                </li>
+                                <li class="revice_click">
+                                    <a class="_updateBtn"
+                                       th:href="@{/potential/potentialUserInfo(potentialUserNo=${pul.potentialUserNo},employeeCode=${pul.employeeCode})}"
+                                       type="button">상세</a>
+                                </li>
+                            </ul>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <th:block th:replace="fragments/page_nation :: page_nation" ></th:block>
+
+        </div>
+
+
+        <!-- 상담추가 -->
+        <div class="advice_save_visual pop2">
+
+            <div class="close_btn_wrap">
+                <div class="close_btn_img"><img src="/images/img/close_btn.png"></div>
+            </div>
+
+            <div class="deta_advice_wrap" id="counselingFormList">
+
+                <div class="advice_menu">
+
+                    <div class="advice_left_menu">
+                        <div class="sign">
+                            <span id="sign">체결</span>
+                            <div class="sign_show">
+                                <span><a href="javascript:void(0);" class="_sign_contract_fortune">목돈</a></span>
+                                <span><a href="javascript:void(0);" class="_sign_insurance">보험</a></span>
+                                <span><a class="_no" href="#">펀드</a></span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <ul>
+
+                        <li class=" _counseling_title" th:each=" ctl: ${counselingTitleList}" th:text="${ctl.meaning}" th:value="${ctl.index}">
+                        </li>
+
+                    </ul>
+                </div>
+
+                <div class="advice_txt_wrap">
+                    <input th:value="${potentialUserNo}" class="_potentialUserNoForm" hidden>
+                    <input th:value="${potentialUserName}" class="_potentialUserNameForm" hidden>
+
+                    <div class="advice_txt_inner" id="advice">
+                        <div th:each=" cl: ${counselingList}">
+                            <div class="advice_txt_box" th:each=" pcd: ${cl.potentialCounselingDetailList}">
+                                <input th:value="${cl.counselingNo}" class="_counselingNo" hidden>
+                                <input th:value="${pcd.detailNo}" class="_detailNo" hidden>
+                                <h3 th:text="${pcd.titleMeaning}" th:value="${pcd.title}"></h3>
+                                <p th:text="${cl.counselingTime}"></p>
+                                <div class="advice_txt">
+                                    <textarea class="advice_box _contentsForm" th:text="${pcd.contents}"  th:readonly="${cl.counselingCase == 2}"></textarea>
+                                    <div th:if="${cl.counselingCase == 0}" class="close _deleteClose"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="save_btn_wrap">
+                    <div>
+                        <button class="close_btn cbt" id="counselingClose">취소</button>
+                        <button id="counselingSaveBtn" class="close_btn btn_color">저장</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <!-- end -->
+
+
+
+        <!-- 상담정보 -->
+        <div class="advice_save_visual pop1">
+
+            <div class="close_btn_wrap">
+                <div class="close_btn_img" id="counselginDetailClose"><img src="/images/img/close_btn.png"></div>
+            </div>
+
+            <div class="deta_advice_wrap" id="counselingList">
+
+                <div class="advice_menu">
+
+                    <div class="advice_left_menu">
+                        <div class="advice_left_menu">
+
+                            <div class="feed_box" sec:authorize="hasAnyAuthority('POTENTIAL_FEEDBACK')">
+                                <button class="feedback">피드백</button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="feed_box_txt _off">
+                    <input id="pUser" th:value="${potentialUserNo}" hidden>
+                    <div class="feed_txt">
+                        <textarea id="feedback"></textarea>
+                        <div class="close _feedbackClose"></div>
+                    </div>
+
+                </div>
+
+                <div class="advice_txt_wrap">
+
+                    <div class="advice_txt_inner">
+                        <div class="advice_inner">
+                            <div th:each=" cl: ${counselingList}">
+                                <div class="advice_txt_box" th:each=" pcd: ${cl.potentialCounselingDetailList}">
+                                    <h3 th:text="${pcd.titleMeaning}"></h3>
+                                    <p th:text="${cl.counselingTime}"></p>
+                                    <div class="advice_txt">
+                                        <span class="_contents" th:text="${pcd.contents}">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+                <div class="save_btn_wrap save_none _off" >
+                    <div>
+                        <button id="feedackCloseBtn" class="close_btn cbt">취소</button>
+                        <button id="feedbackSaveBtn" class="close_btn btn_color">저장</button>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+
+        <!-- end -->
+
+    </div>
+
+</th:block>
+
+
+<th:block layout:fragment="pageScript">
+
+    <script th:src="@{/js/potential/potentialPage.js(date=${todayFormat})}"></script>
+
+    <script th:src="@{/js/potential/counseling.js(date=${todayFormat})}"></script>
+
+    <script th:src="@{/js/select_department_employee.js(date=${todayFormat})}" type="text/javascript"></script>
+</th:block>
+
+
+</html>

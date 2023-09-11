@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <style>
+        input{
+            border: 1px solid
+        }
+    </style>
+</th:block>
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideOperation :: sideOperationFragment"></div>
+</th:block>
+<th:block layout:fragment="contents" sec:authorize="hasAnyAuthority('ROLL_APPENDIX_UPDATE')">
+
+
+    <h1>기본 권한 다시 부여</h1>
+    <br><br><br>
+
+    <label><input type="radio" name="role" value="department">해당 부서 전체사원 </label>
+    <div style="display: none;" class="_departmentList">
+        <input list="departmentList" type="text" id="department">
+        <datalist id="departmentList">
+            <option th:label="${ad.departmentName}" th:each="ad : ${allDepartment}" th:value="${ad.departmentCode}">
+        </datalist>
+    </div>
+<br><br>
+    <label><input type="radio" name="role" value="lowerDepartment">해당 하위 부서 전체사원 </label>
+    <div style="display: none;" class="_lowerDepartmentList">
+        <input list="lowerDepartmentList" type="text" id="lowerDepartment">
+        <datalist id="lowerDepartmentList">
+            <option th:label="${ad.departmentName}" th:each="ad : ${allDepartment}" th:value="${ad.departmentCode}">
+        </datalist>
+    </div>
+    <br><br>
+
+    <label><input type="radio" name="role" value="employee">해당사원 </label>
+
+    <div style="display: none;" class="_allEmployeeList">
+        <input list="employeeListList" id="employee" type="text">
+        <datalist id="employeeListList">
+            <option th:label="${ae.employeeName}" th:each="ae : ${allEmployee}" th:value="${ae.employeeCode}">
+        </datalist>
+    </div>
+
+    <br>
+    <br>
+
+    <label><input type="radio" name="role" value="allEmployee">전체사원 </label>
+
+
+
+
+
+    <br>
+    <br>
+    <br><br>
+
+    <button id="updateRoleBtn" hidden>권한 다시 세팅하기</button>
+
+    <script th:src="@{/js/role/form.js(date=${todayFormat})}"></script>
+
+</th:block>
+
+</html>

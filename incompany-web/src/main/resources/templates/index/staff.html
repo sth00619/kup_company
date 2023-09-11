@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="@{layout/mainDefaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <link rel="stylesheet" th:href="@{/css/index/index_contract_chart.css(date=${todayFormat})}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/index/index.css(date=${todayFormat})}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/index/commandBoard.css(date=${todayFormat})}" type="text/css">
+    <link href="/toast-calendar/css/tui-time-picker.css" rel="stylesheet" type="text/css">
+    <link href="/toast-calendar/css/tui-date-picker.css" rel="stylesheet" type="text/css">
+    <link href="/toast-calendar/css/tui-calendar-home.css" rel="stylesheet" type="text/css">
+    <link href="/toast-calendar/css/default-home.css" rel="stylesheet" type="text/css">
+    <link href="/toast-calendar/css/icon.css" rel="stylesheet" type="text/css">
+    <link href="/toastUi/css/toastUi.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"/>
+</th:block>
+
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideIndex :: sideIndexFragment"></div>
+</th:block>
+
+<th:block layout:fragment="contents">
+    <!-- 처리 결과 여부 -->
+    <input id="isSuccess" th:value="${isSuccess}" type="hidden"/>
+    <input id="message" th:value="${message}" type="hidden"/>
+
+    <input hidden id="employeeCode" th:value="${employeeCode}">
+    <input hidden id="employeeLoginCode" th:value="${employeeLoginCode}">
+
+    <!-- 공지사항 -->
+    <div class="post_visual">
+        <!-- 지점장공지사항 -->
+        <div th:replace="index/commandBoard :: commandBoardFragment"></div>
+
+<!--        <div th:replace="index/banner :: bannerFragment"></div>-->
+        <div class="top_post_wrap">
+            <!-- Kh 소식 -->
+            <div class="post_container">
+
+                <div class="post_title">
+                    <h2>KH소식</h2>
+                </div>
+
+
+                <div class="news_story_wrap">
+                    <div class="news_story">
+
+                        <div class="post_sub_title">
+                            <h3><a th:href="@{/notice/list?type=0}">공지사항</a></h3>
+                        </div>
+
+                        <ul>
+                            <li th:each="nl : ${noticeList}">
+                                <a th:href="@{/notice/contents(noticeNo=${nl.noticeNo},pageNum=1,type=0)}">
+                                    <div class="list_inner" th:text="${nl.title}"></div>
+                                    <div class="new2" th:if="${nl.isNew}"><img src="/images/img/new.png"></div>
+                                </a>
+                            </li>
+                        </ul>
+
+                    </div>
+
+                    <div class="news_story">
+
+                        <div class="post_sub_title">
+                            <h3><a th:href="@{/notice/list?type=1}">지점공지</a></h3>
+                        </div>
+
+                        <ul>
+                            <li th:each="ml : ${monthlyList}">
+                                <a th:href="@{/notice/contents(noticeNo=${ml.noticeNo},pageNum=1,type=1)}">
+                                    <div class="list_inner"><em th:text="${ml.categoryName}"></em>[[${ml.title}]]</div>
+                                    <div class="new2" th:if="${ml.isNew}"><img src="/images/img/new.png"></div>
+                                </a>
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                    <div class="news_story">
+
+                        <div class="post_sub_title">
+                            <h3><a th:href="@{/notice/list?type=3}">교육자료</a></h3>
+                        </div>
+
+                        <ul>
+                            <li th:each="el : ${eduList}">
+                                <a th:href="@{/notice/contents(noticeNo=${el.noticeNo},pageNum=1,type=3)}">
+                                    <div class="list_inner" th:text="${el.title}"></div>
+                                    <div class="new2" th:if="${el.isNew}"><img src="/images/img/new.png"></div>
+                                </a>
+                            </li>
+                        </ul>
+
+                    </div>
+
+                    <div class="news_story ">
+
+                        <div class="post_sub_title">
+                            <h3><a th:href="@{/notice/list?type=2}">보도자료</a></h3>
+                        </div>
+
+                        <ul>
+
+                            <li th:each="al : ${articleList}">
+                                <a th:href="@{/notice/contents(noticeNo=${al.noticeNo},pageNum=1,type=2)}">
+                                    <div class="list_inner"><em th:text="${al.categoryName}"></em>[[${al.title}]]</div>
+                                    <div class="new2" th:if="${al.isNew}"><img src="/images/img/new.png"></div>
+                                </a>
+                            </li>
+
+                        </ul>
+
+                    </div>
+                </div>
+
+            </div>
+            <!-- 커뮤니티 -->
+            <div class="post_container">
+
+                <div class="post_title">
+                    <h2>커뮤니티</h2>
+                </div>
+
+                <div class="news_story_wrap">
+                    <div class="news_story">
+
+                        <div class="post_sub_title">
+                            <h3><a th:href="@{/faq/list}">FAQ</a></h3>
+                        </div>
+
+                        <ul class="Faq">
+
+                            <li th:each="fl : ${faqList}">
+                                <a th:href="@{/faq/list(faqNo=${fl.faqNo})}">
+                                    <div class="list_inner">
+                                        <em id="emFaq" th:text="${fl.getTypeMeaning}"></em>[[${fl.title}]]
+                                    </div>
+                                    <div class="new2" th:if="${fl.isNew}"><img src="/images/img/new.png"></div>
+                                </a>
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                    <div class="news_story">
+
+                        <div class="post_sub_title">
+                            <h3><a th:href="@{/board/list}">자유 게시판</a></h3>
+                        </div>
+
+                        <ul class="Faq">
+
+                            <li th:each="bl : ${boardList}">
+                                <a th:href="@{/board/boardInfo(boardNo=${bl.boardNo})}">
+                                    <div class="list_inner">
+                                        <em th:text="${bl.getCategoryMeaning}"></em>[[${bl.title}]]
+                                    </div>
+                                    <div class="new2" th:if="${bl.isNew}"><img src="/images/img/new.png"></div>
+                                </a>
+                            </li>
+
+                        </ul>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- 리스트-->
+        <div class="manage_visual">
+            <div class="manage_box">
+                <div class="post_title">
+                    <h2>업무요청</h2>
+                    <span class="view_more2"><a th:href="@{/worksheet/request/list}">더보기</a></span>
+                </div>
+                <div class="business_sub_list bsl1">
+                    <h3>최신 요청권</h3>
+
+                    <table>
+                        <tbody>
+                        <tr th:each="rl : ${requestList}">
+                            <td style="width:18%"><a
+                                    th:href="@{/worksheet/request/contents(requestNo=${rl.requestNo})}">[[${rl.categoryName}]]</a>
+                            </td>
+                            <td><a
+                                    th:href="@{/worksheet/request/contents(requestNo=${rl.requestNo})}">[[${rl.title}]]</a>
+                            </td>
+                            <td style="width:18%"><a
+                                    th:href="@{/worksheet/request/contents(requestNo=${rl.requestNo})}">[[${rl.requestEmployeeName}]]</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div class="business_sub_list">
+                    <h3>업무 처리 현황</h3>
+                    <div>
+                        <div class="business_gage_wrap" th:each="crl : ${currentStateOfRequestList}">
+                            <p>[[${crl.title}]]</p>
+                            <a th:href="@{/worksheet/request/contents(requestNo=${crl.requestNo})}">
+                                <div class="business_gage">
+
+                                    <div class="business_call">
+                                        <span th:unless="${crl.state} == 3">0/1</span>
+                                        <span th:if="${crl.state} == 3">1/1</span>
+                                        <span th:if="${crl.replyCount} > 0"><img
+                                                src="images/img/request.png">[[${crl.replyCount}]]</span>
+                                        <span>[[${crl.getStateName}]]</span>
+                                    </div>
+
+                                    <div class="business_gage_box">
+                                        <div class="business_gage_bar business_gage_bar1">
+                                            <input class="_chartOfRequest" th:value="${crl.state}" type="hidden">
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="manage_box">
+                <div class="post_title">
+                    <h2>프로젝트</h2>
+                    <span class="view_more2"><a th:href="@{/worksheet/project/list}">더보기</a></span>
+                </div>
+                <div class="business_sub_list">
+                    <h3>진행중인 프로젝트</h3>
+                </div>
+                <div class="confirm_title">
+                    <div class="confirm_item"><span class="confirm_view expected_item"></span>진행예정</div>
+                    <div class="confirm_item"><span class="confirm_view progress_item"></span>진행중</div>
+                    <div class="confirm_item"><span class="confirm_view demand_item"></span>컨펌요청</div>
+                    <div class="confirm_item"><span class="confirm_view finish_item"></span>완료</div>
+                </div>
+                <div class="project_group _project_group">
+                    <div class="project_box _project_box" th:each="pl : ${projectList}">
+                        <span class="confirm_view expected_item"></span>
+                        <span class="confirm_view progress_item"
+                              th:if="${pl.state == 1 || pl.state == 2 || pl.state == 3 }"></span>
+                        <span class="confirm_view demand_item" th:if="${pl.state == 2 || pl.state == 3 }"></span>
+                        <span class="confirm_view finish_item" th:if="${ pl.state == 3 }"></span>
+                        <input class="_state" hidden style="display: none" th:value="${pl.state}">
+
+                        <a th:href="@{/worksheet/project/contents(projectNo=${pl.projectNo})}">
+                            <h4 class="_projectTitle">[[${pl.title}]]</h4>
+                        </a>
+                        <ul>
+                            <li id="contents" th:text="${pl.replaceTagFromContents}"></li>
+                        </ul>
+
+                        <div class="p_people_wrap">
+                            <div class="p_people _peopleCount" th:each="mpl : ${pl.myProjectList}"
+                                 th:value="${mpl.employeeCode}">
+
+                                <img th:if="${#strings.isEmpty(mpl.imageUrl)}" src="images/img/quick_my.png">
+                                <img th:unless="${#strings.isEmpty(mpl.imageUrl)}" th:src="${mpl.imageUrl}">
+
+                                <p class="hover_name">[[${mpl.employeeName}]]</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="manage_box managebox_num3">
+                <div class="mini_manage_box">
+                    <input id="getEmployeeCode" th:value="${employeeCode}" type="hidden"/>
+
+                    <div id="menu">
+                        <div class="post_title">
+                            <span id="menu-navi">
+                                <button class="btn btn-default btn-sm move-day" data-action="move-prev" type="button">
+                                    <i class="calendar-icon ic-arrow-line-left" data-action="move-prev"></i>
+                                </button>
+                                <button class="btn btn-default btn-sm move-day" data-action="move-next" type="button">
+                                    <i class="calendar-icon ic-arrow-line-right" data-action="move-next"></i>
+                                </button>
+                            </span>
+                            <span class="render-range" id="renderRange"></span>
+
+                            <span class="view_more2"><a href="/schedule/schedule">더보기</a></span>
+                        </div>
+                    </div>
+
+
+                    <div id="calendar"></div>
+
+
+                </div>
+
+
+                <div class="mini_manage_box">
+
+                    <div class="post_title">
+                        <h2>업무일지</h2>
+                        <span class="view_more2"><a th:href="@{/worksheet/document/documentList}">더보기</a></span>
+                    </div>
+
+                    <ul th:each="wl : ${workLogList}">
+                        <li>
+                            <a th:href="@{/worksheet/document/documentInfo(workLogNo=${wl.workLogNo})}">
+
+                                <div class="main_today_img">
+
+                                    <img th:if="${#strings.isEmpty(wl.imageUrl)}" src="images/img/quick_my.png">
+                                    <img th:unless="${#strings.isEmpty(wl.imageUrl)}" th:src="${wl.imageUrl}">
+                                    <p class="hover_name" th:text="${wl.employeeName}"></p>
+
+                                </div>
+
+                                <div class="main_today_txt">
+                                    <p class="_workLogTitle">[[${wl.title}]]</p>
+                                    <dl class="today_subtxt sub_item">
+                                        <dt>작성일 :</dt>
+                                        <dd>[[${wl.createTime}]]</dd>
+                                    </dl>
+                                    <dl class="today_subtxt">
+                                        <dt>결제일 :</dt>
+                                        <dd>[[${wl.paymentWorkLogTime}]]</dd>
+                                    </dl>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+<th:block layout:fragment="pageScript">
+    <script src="/toastUi/js/toastUi.js"></script>
+    <script src="/toast-calendar/js/bootstrap.js"></script>
+    <script src="/toast-calendar/js/tui-code-snippet.min.js"></script>
+    <script src="/toast-calendar/js/tui-time-picker.min.js"></script>
+    <script src="/toast-calendar/js/tui-date-picker.min.js"></script>
+    <script src="/toast-calendar/js/moment.min.js"></script>
+    <script src="/toast-calendar/js/chance.min.js"></script>
+    <script src="/toast-calendar/js/tui-calendar.js"></script>
+    <script src="/toast-calendar/js/tui-calendar-home.js"></script>
+    <script th:src="@{/toast-calendar/js/calendars.js(date=${todayFormat})}"></script>
+    <script th:src="@{/toast-calendar/js/schedules.js(date=${todayFormat})}"></script>
+    <script th:src="@{/toast-calendar/js/app-home.js(date=${todayFormat})}"></script>
+
+    <script th:src="@{/js/index/index_contract_chart.js(date=${todayFormat})}" type="text/javascript"></script>
+    <script th:src="@{/js/index/index_request_chart.js(date=${todayFormat})}" type="text/javascript"></script>
+    <script th:src="@{/js/index/staffHome.js(date=${todayFormat})}" type="text/javascript"></script>
+
+<!--    <script th:src="@{/js/banner/youtubeIframeApi.js(date=${todayFormat})}" type="text/javascript"></script>-->
+<!--    <script th:src="@{/js/banner/swiper.js(date=${todayFormat})}" type="text/javascript"></script>-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>-->
+</th:block>
+
+</html>

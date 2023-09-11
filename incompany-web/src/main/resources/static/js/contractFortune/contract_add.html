@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>계약추가</title>
+
+    <link href="../css/reset.css" rel="stylesheet" type="text/css">
+    <link href="../css/css.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+          rel="stylesheet">
+
+    <script src="../js/jquery-3.6.0.js"></script>
+    <script src="../js/js.js"></script>
+</head>
+
+<body>
+
+<div id="wrap">
+
+    <!-- header -->
+    <header class="header">
+        <div class="main_inner">
+            <h1><a href="../main_staff.html">KH GROUP</a></h1>
+
+            <nav>
+                <ul>
+                    <li>
+                        <a href="../1_group/group_list.html">조직도</a>
+                        <ul class="sub_menu">
+                            <li><a href="../1_group/group_list.html">KH자산관리법인센터</a></li>
+                            <li><a href="#">KH사우스코리아</a></li>
+                            <li><a href="#">케이업스튜디오</a></li>
+                            <li><a href="#">더함</a></li>
+                            <li><a href="#">카페 시그니처</a></li>
+                            <li><a href="#">케이에이치트레이드</a></li>
+                            <li><a href="#">케코</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="../2_client/client list_admin.html">고객관리</a>
+                        <ul class="sub_menu">
+                            <li><a href="../2_client/client list_admin.html">고객리스트</a></li>
+                            <li><a href="../2_client/client_add.html">나만의 고객추가</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="../3_contract/contract_admin.html">계약관리</a>
+                        <ul class="sub_menu">
+                            <li><a href="../3_contract/contract_admin.html">목돈</a></li>
+                            <li><a href="#">보험</a></li>
+                            <li><a href="#">펀드</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#">업무관리</a>
+                        <ul class="sub_menu">
+                            <li><a href="#">업무일지</a></li>
+                            <li><a href="#">업무요청</a></li>
+                            <li><a href="#">프로젝트</a></li>
+                            <li><a href="#">결제</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="../5_customer/notice.html">KH소식</a>
+                        <ul class="sub_menu">
+                            <li><a href="../5_customer/notice.html">공지사항</a></li>
+                            <li><a href="../5_customer/monthly.html">지점공지</a></li>
+                            <li><a href="../5_customer/article.html">보도자료</a></li>
+                            <li><a href="../5_customer/edu.html">교육자료</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="../6_Hboard/hboard_free.html">커뮤니티</a>
+                        <ul class="sub_menu">
+                            <li><a href="../6_Hboard/hboard_free.html">자유게시판</a></li>
+                            <li><a href="../6_Hboard/hboard_Qna.html">자주하는 질문</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sub_slide_wrap"></div>
+
+            <div class="mypage">
+                <div class="header_search">
+                    <input placeholder="Search" type="text">
+                    <img alt="검색" src="../img/search_icon.png"/>
+                </div>
+
+                <div class="my_box">
+
+                    <a href="#">
+                        <img src="../img/my.png">
+                        <!-- <div class=my_box_tell>
+                            <img src="../img/red_circle.png">
+                        </div> -->
+                    </a>
+                    <a href="#"><img src="../img/back.png"></a>
+
+                </div>
+
+            </div>
+
+        </div>
+    </header>
+    <!-- main start ! -->
+    <main>
+        <section class="main_section">
+            <div class="main_inner">
+
+                <div class="main_section-flex">
+                    <!-- side -->
+                    <div class="main_side_wrap">
+
+                        <div class="quick_box">
+
+                            <div class="today_box">
+
+                                <div class="my_today_img">
+                                    <img src="../img/quick_my.png">
+                                    <div class="my_today_tell">
+                                        <img src="../img/red_circle.png">
+                                    </div>
+                                </div>
+                                <div class="my_today_txt">
+                                    <h3>TODAY</h3>
+                                    <p>2022.01.01 월요일</p>
+                                    <span>KH자산관리법인</span>
+                                    <span>경영지원 팀<em>박지윤</em></span>
+                                </div>
+
+                            </div>
+
+                            <div class="daily_box">
+                                <a href="#">업무일지</a>
+                                <a href="../schedule/schedule.html">스케줄 확인</a>
+                            </div>
+                            <th:block th:replace="fragments/coffeePointBox :: coffeePointBox"></th:block>
+
+                            <div class="slide_down_wrap">
+
+                                <div class="top_slide">
+                                    <h2>계약관리</h2>
+                                </div>
+                                <ul class="top_slide_sub con">
+
+                                    <li><a href="../3_contract/contract_admin.html">목돈</a></li>
+                                    <ul class="top_slide_sub2 con con_2">
+                                        <li><a href="../3_contract/contract_admin.html">· 계약리스트</a></li>
+                                        <li><a href="../3_contract/contract_add.html">· 계약 추가</a></li>
+                                    </ul>
+
+                                    <li><a href="#">보험</a></li>
+                                    <ul class="top_slide_sub2">
+                                        <li><a href="#">· 계약리스트</a></li>
+                                        <li><a href="#">· 계약 추가</a></li>
+                                    </ul>
+
+                                    <li>펀드</li>
+                                    <ul class="top_slide_sub2">
+                                        <li><a href="#">· 계약리스트</a></li>
+                                        <li><a href="#">· 계약 추가</a></li>
+                                    </ul>
+
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <!-- center -->
+                    <div class="main_center">
+
+                        <div class="location">
+                            <a href="../main_staff.html">HOME</a>
+                            <a href="../3_contract/contract_admin.html">계약관리</a>
+                            <span>계약 추가</span>
+                        </div>
+
+                        <div class="guest_deta_wrap">
+
+                            <div class="guest_deta_box">
+
+                                <h2>계약추가</h2>
+
+                                <div class="guest_deta">
+
+                                    <div class="contract_list">
+                                        <div class="contract_list_name star">
+                                            <p>계약번호</p>
+                                        </div>
+                                        <div class="contract_list_box">
+                                            <div class="name_box">
+                                                <input id="number" type="text">
+                                                <label for="number"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="contract_list">
+                                        <div class="contract_list_name star">
+                                            <p>계약구분</p>
+                                        </div>
+                                        <div class="contract_list_box">
+                                            <select id="dvsion_select" name="dvsion">
+                                                <option value="">신규</option>
+                                                <option value="">연장</option>
+                                                <option value="">상환</option>
+                                                <option value="">증액</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="contract_list">
+                                        <div class="contract_list_name">
+                                            <p>본부</p>
+                                        </div>
+                                        <div class="contract_list_box">
+                                            <select id="central_select" name="central">
+                                                <option value="">본부 선택</option>
+                                                <option value="">본사</option>
+                                                <option value="">신사본부</option>
+                                                <option value="">강남본부</option>
+                                                <option value="">역삼본부</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="contract_list">
+                                        <div class="contract_list_name">
+                                            <p>지점</p>
+                                        </div>
+                                        <div class="contract_list_box">
+                                            <select id="fulcrum_select" name="fulcrum">
+                                                <option value="">지점선택</option>
+                                                <option value="">명문지점</option>
+                                                <option value="">위너지점</option>
+                                                <option value="">오너지점</option>
+                                                <option value="">리더지점</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="contract_list">
+                                        <div class="contract_list_name">
+                                            <p>담당자 구분</p>
+                                        </div>
+                                        <div class="contract_list_box">
+                                            <select id="manager_select" name="manager">
+                                                <option value="">담당자 구분</option>
+                                                <option value="">대표</option>
+                                                <option value="">부사장</option>
+                                                <option value="">본부장</option>
+                                                <option value="">지점장</option>
+                                                <option value="">팀장</option>
+                                                <option value="">대리</option>
+                                                <option value="">주임</option>
+                                                <option value="">총무</option>
+                                                <option value="">관리사</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="contract_list">
+                                        <div class="contract_list_name">
+                                            <p>담당자</p>
+                                        </div>
+                                        <div class="contract_list_box">
+                                            <select id="manager_select" name="manager">
+                                                <option value="">담당자 선택</option>
+                                                <option value="">홍길동</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+                            <div class="guest_deta_box"></div>
+
+                            <div class="guest_deta_box">
+
+                                <div class="guest_deta">
+
+                                    <div class="contract_list">
+                                        <div class="contract_list_name star">
+                                            <p>고객</p>
+                                        </div>
+                                        <div class="contract_list_box">
+                                            <select id="customer_select" name="customer">
+                                                <option value="">고객선택</option>
+                                                <option value="">홍길동</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="contract_list">
+                                        <div class="contract_list_name star">
+                                            <p>금액</p>
+                                        </div>
+                                        <div class="contract_list_box">
+                                            <div class="name_box">
+                                                <input placeholder="000,000,000" type="text">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="contract_list">
+                                        <div class="contract_list_name star">
+                                            <p>이자율</p>
+                                        </div>
+                                        <div class="contract_list_box">
+                                            <div class="name_box txt_align">
+                                                <input placeholder="%" type="text">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="contract_list">
+                                        <div class="contract_list_name">
+                                            <p>이자</p>
+                                        </div>
+                                        <div class="contract_list_box">
+                                            <div class="name_box">
+                                                <input type="text">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="contract_list">
+                                        <div class="contract_list_name">
+                                            <p>계좌번호</p>
+                                        </div>
+                                        <div class="contract_list_box">
+                                            <select id="eunh_select" name="eunhaeng">
+                                                <option value="eunhaeng">은행/증권사</option>
+                                            </select>
+
+                                            <div class="name_box"><input tpye="text"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="contract_list">
+                                        <div class="contract_list_name">
+                                            <p class="none">ㅇ</p>
+                                        </div>
+                                        <div class="contract_list_box"></div>
+                                    </div>
+
+                                    <div class="contract_list">
+                                        <div class="contract_list_name">
+                                            <p>계약일</p>
+                                        </div>
+                                        <div class="contract_list_box">
+                                            <div class="date_box"><input type="date" value="0000-00-00"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="contract_list">
+                                        <div class="contract_list_name">
+                                            <p>계약기간</p>
+                                        </div>
+                                        <div class="contract_list_box">
+                                            <div class="date_box"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="contract_list">
+                                        <div class="contract_list_name">
+                                            <p>입금날짜</p>
+                                        </div>
+                                        <div class="contract_list_box">
+                                            <div class="date_box"><input type="date" value="0000-00-00"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="contract_list">
+                                        <div class="contract_list_name">
+                                            <p>종료일</p>
+                                        </div>
+                                        <div class="contract_list_box">
+                                            <div class="date_box"><input type="date" value="0000-00-00"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="contract_list">
+                                        <div class="contract_list_name">
+                                            <p>상환날짜</p>
+                                        </div>
+                                        <div class="contract_list_box">
+                                            <div class="date_box"><input type="date" value="0000-00-00"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="contract_list">
+                                        <div class="contract_list_name">
+                                            <p>이자구분</p>
+                                        </div>
+                                        <div class="contract_list_box">
+                                            <div class="interest">
+                                                <input id="month" name="interest" type="radio">
+                                                <label for="month">월 이자</label>
+                                            </div>
+
+                                            <div class="interest">
+                                                <input id="year" name="interest" type="radio">
+                                                <label for="year">연 이자</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="save_btn_wrap">
+                                <button class="close_btn"><a href="#">취소</a></button>
+                                <button class="close_btn btn_color"><a
+                                        href="../3_contract/contract_admin.html">저장</a></button>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+</div>
+
+</body>
+
+</html>

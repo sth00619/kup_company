@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="page_nation">
+    <!-- 페이징 관련 데이터 세팅 -->
+    <input id="prePage" th:value="${pageList.getNavigateFirstPage()}" type="hidden"/>
+    <input id="nextPage" th:value="${pageList.getNavigateLastPage()}" type="hidden"/>
+    <input id="pages" th:value="${pageList.getPages()}" type="hidden"/>
+    <input id="pageNum" th:value="${pageNum}" type="hidden"/>
+
+    <div class="next_btn_wrap">
+        <div class="double_prev_btn pn_btn _page"
+             th:classappend="${(pageList.getNavigateFirstPage() - 1) == 0} ? 'disabled'">
+            <a aria-label="first" class="page-link first _a_first" href="javascript:void(0)">
+                <span>이전 따블</span>
+            </a>
+        </div>
+        <div class="prev_btn pn_btn _page"
+             th:classappend="${(pageList.getNavigateFirstPage() - 1) == 0} ? 'disabled'">
+            <a aria-label="Previous" class="page-link previous _a_pre" href="javascript:void(0)">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </div>
+        <ul>
+            <li class="_page" th:classappend="${page == pageList.getPageNum()} ? 'on'"
+                th:each="page: ${#numbers.sequence(pageList.getNavigateFirstPage(),pageList.getNavigateLastPage())}">
+                <a class="page-link page _a_page" href="javascript:void(0)" th:text="${page}">
+                </a>
+            </li>
+        </ul>
+        <div class="next_btn pn_btn _page"
+             th:if="${pageList.getPages() > 10}"
+             th:classappend="${(pageList.getNavigateLastPage() % 10) != 0} ? 'disabled'">
+            <a aria-label="Next" class="page-link next _a_next" href="javascript:void(0)">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </div>
+        <div class="double_next_btn pn_btn _page"
+             th:if="${pageList.getPages() > 10}"
+             th:classappend="${(pageList.getNavigateLastPage() % 10) != 0} ? 'disabled'">
+            <a aria-label="Last" class="page-link last _a_last" href="javascript:void(0)">
+                <span>다음 따블</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- pageNation -->
+    <script th:src="@{/js/page_nation.js(date=${todayFormat})}" type="text/javascript"></script>
+</th:block>
+</html>

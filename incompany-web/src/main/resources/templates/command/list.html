@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org" th:import="com.kupstudio.incompany.dto.command.CommandDto">
+
+<th:block layout:fragment="pageCss">
+
+</th:block>
+<th:block layout:fragment="side_contents">
+  <div th:replace="fragments/sideWorksheet :: sideWorksheetFragment"></div>
+</th:block>
+
+<th:block layout:fragment="contents">
+  <input id="message" th:value="${message}" type="hidden">
+
+  <div class="top_center_menu_visual">
+    <div class="top_center-menu">
+      <button class="writing_btn"><a th:href="@{/command/addCommand}">글쓰기</a></button>
+      <div class="notice_search">
+        <select class="select_box">
+          <!-- <option value="all">전체</option> -->
+          <option value="title">제목</option>
+          <!-- <option value="contents">내용</option> -->
+          <!-- <option value="titleContents">제목+내용</option> -->
+          <!-- <option value="attachFile">첨부파일</option> -->
+          <option th:selected="${searchType}=='writer'" value="writer">작성자</option>
+          <option th:selected="${searchType}=='createTime'" value="createTime">등록일</option>
+        </select>
+
+        <div class="salesman_search">
+          <input id="keyword" placeholder="검색" th:value="${keyword}" type="text">
+          <img alt="검색" class="_searchBtn" src="/images/img/search_icon.png" />
+        </div>
+      </div>
+
+    </div>
+
+    <div class="main_center_wrap">
+
+      <div class="notice_title">
+        <ul>
+          <li style="width:150px;">NO</li>
+          <li style="width:700px;">제목</li>
+          <li style="width:150px;">조회수</li>
+          <li style="width:150px;">작성자</li>
+          <li style="width:150px;">등록일</li>
+        </ul>
+      </div>
+
+      <div class="notice_sub_txt">
+        <ul class="_commandList" th:each="cl : ${commandList.getList()}" th:value="${cl.commandNo}">
+          <li style="width: 150px;"><a th:text="${cl.commandNo}"></a></li>
+          <li style="width: 700px;">
+            <a>
+              <div class="title_inner">
+                <div class="praise" th:text="${cl.getCategoryMeaning}"></div>
+                [[${cl.title}]]
+              </div>
+              <div class="new" th:if="${cl.isNew}"><img src="/images/img/new.png"></div>
+              <div class="title_file" th:if="${cl.isFileExist}"><img src="/images/img/file.png"></div>
+              <div class="comment" th:if="${cl.replyCount > 0}"><img src="/images/img/comment.png"></div>
+            </a>
+          </li>
+          <li style="width: 150px;"><a th:text="${cl.hit}"></a></li>
+          <li style="width: 150px;"><a th:text="${cl.createEmployeeName}"></a></li>
+          <li style="width: 150px;"><a th:text="${cl.getCreateTime()}"></a></li>
+        </ul>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- pageNation -->
+  <th:block th:replace="fragments/page_nation :: page_nation"></th:block>
+
+  </div>
+
+  </div>
+
+
+</th:block>
+
+
+<th:block layout:fragment="pageScript">
+  <script th:src="@{/js/command/list.js(date=${todayFormat})}"></script>
+</th:block>
+
+
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageScriptTop">
+    <script th:src="@{/js/main_left_company_chart.js(date=${todayFormat})}"></script>
+</th:block>
+
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideCompanyChart :: sideCompanyChartFragment"></div>
+</th:block>
+<th:block layout:fragment="contents">
+
+    <!-- 처리 결과 여부 -->
+    <input id="isSuccess" th:value="${isSuccess}" type="hidden"/>
+    <input id="message" th:value="${message}" type="hidden"/>
+
+    <input id="getEmployeeLoginCode" th:value="${employeeLoginCode}" type="hidden"/>
+
+    <!-- 사원정보 -->
+    <div class="member_deta_wrap" th:each="el : ${employeeList}">
+
+
+        <div class="member_deta_box">
+            <input id="departmentCode" name="departmentCode" th:value="${el.departmentCode}" type="hidden">
+            <input id="companyCode" name="companyCode" th:value="${el.companyCode}" type="hidden">
+            <h2>사원 정보</h2>
+
+            <div class="member_deta">
+
+                <div class="deta_list">
+
+                    <div class="list_name">
+                        <p>법인</p>
+                    </div>
+                    <div class="list_box report">
+                        <p th:text="${el.companyName}"></p>
+                    </div>
+                </div>
+
+                <div class="deta_list">
+                    <div class="list_name">
+                        <p>소속</p>
+                    </div>
+                    <div class="list_box report">
+                        <p class="_depth" id="D1" th:each="info : ${departmentInfo.get('departmentInfo1')}"
+                           th:text="${departmentInfo.get('departmentInfo1').departmentName}"
+                           th:value="${departmentInfo.get('departmentInfo1').departmentCode}"></p>
+                        <p class="_depth" id="D2" th:each="info : ${departmentInfo.get('departmentInfo2')}"
+                           th:text="${departmentInfo.get('departmentInfo2').departmentName}"
+                           th:value="${departmentInfo.get('departmentInfo2').departmentCode}"></p>
+                        <p class="_depth" id="D3" th:each="info : ${departmentInfo.get('departmentInfo3')}"
+                           th:text="${departmentInfo.get('departmentInfo3').departmentName}"
+                           th:value="${departmentInfo.get('departmentInfo3').departmentCode}"></p>
+                    </div>
+
+
+                </div>
+                <div class="deta_list">
+
+                    <div class="list_name">
+                        <p>직급</p>
+                    </div>
+
+                    <div class="list_box report">
+                        <p th:text="${el.positionName}"></p>
+                    </div>
+                </div>
+
+                <div class="deta_list">
+
+                    <div class="list_name star">
+                        <p>이름</p>
+                    </div>
+
+                    <div class="list_box report">
+                        <p th:text="${el.employeeName}"></p>
+                    </div>
+                </div>
+
+                <div class="deta_list">
+
+                    <div class="list_name star">
+                        <p>사번</p>
+                    </div>
+
+                    <div class="list_box report">
+                        <p id="employeeCode" th:text="${el.employeeCode}" th:value="${el.employeeCode}"></p>
+                    </div>
+
+
+                </div>
+
+                <div class="deta_list">
+
+                    <div class="list_name star">
+                        <p>생일</p>
+                    </div>
+
+                    <div class="list_box report">
+
+                        <p id="birthday" th:text="${el.getBirthdayWithMonthAndDay()}"
+                           th:value="${el.getBirthdayWithMonthAndDay()}"></p>
+
+                    </div>
+
+                </div>
+
+                <div class="deta_list">
+
+                    <div class="list_name star">
+                        <p>연락처</p>
+                    </div>
+
+                    <div class="list_box report">
+                        <p id="mobile" th:text="${el.mobile}" th:value="${el.mobile}"></p>
+                    </div>
+
+                </div>
+
+                <div class="deta_list">
+
+                    <div class="list_name star">
+                        <p>거주지</p>
+                    </div>
+
+                    <div class="list_box report">
+                        <p id="location"
+                           th:text="${employeeLoginCode == el.employeeCode} or ${#authorization.expression('hasAnyAuthority(''COMPANY_EMPLOYEE_PERSONAL_INFO'')')} ? ${el.postCodeIncludeLocation} : '비공개'"></p>
+                    </div>
+
+                </div>
+                <div class="deta_list">
+
+                    <div class="list_name star">
+                        <p>재직여부</p>
+                    </div>
+
+                    <div class="list_box report">
+                        <p th:text="${el.workingMeaning}"></p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="member_deta_box">
+
+            <h2>상세 정보</h2>
+
+            <div class="member_deta">
+
+                <div class="deta_list">
+
+                    <div class="list_name">
+                        <p>입사일자</p>
+                    </div>
+
+                    <div class="list_box report">
+                        <p id="joinDate"
+                           th:value="${employeeLoginCode == el.employeeCode} or ${#authorization.expression('hasAnyAuthority(''COMPANY_EMPLOYEE_PERSONAL_INFO'')')} ? ${el.joinDate} : '비공개'"></p>
+                    </div>
+
+                </div>
+
+                <div class="deta_list">
+
+                    <div class="list_name">
+                        <p>이메일</p>
+                    </div>
+
+                    <div class="list_box report">
+                        <p id="email" th:text="${el.email}"></p>
+                    </div>
+
+                </div>
+
+                <div class="deta_list" th:if="${myProfileDto.employeeCode.contains('K') or myProfileDto.employeeCode == 'qatest00'}">
+
+                    <div class="list_name">
+                        <p>사내 이메일</p>
+                    </div>
+
+                    <div class="list_box report">
+                        <p id="companyEmail" th:text="${el.companyEmail}"></p>
+                    </div>
+
+                </div>
+
+                <div class="license_charge">
+
+                    <div class="license_charge_name">
+                        <p>담당업무</p>
+                    </div>
+
+                    <div class="license_charge_box report">
+
+                        <p th:text="${el.assignedTask}"></p>
+
+                    </div>
+
+                </div>
+
+                <div class="license_charge">
+
+                    <div class="license_charge_name">
+                        <p>자격증</p>
+                    </div>
+
+                    <div class="license_charge_box report">
+
+                        <p th:text="${el.certificate}"></p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- 저장버튼  -->
+        <div class="save_btn_wrap">
+            <div>
+                <!-- pageNum setting 미구현 -->
+                <a
+                        th:href="@{/companyChart(departmentCode=${departmentCode},searchKey=${searchKey},searchValue=${searchValue})}">
+                    <button class="close_btn _closeBtn" type="button">취소</button>
+                </a>
+                <a>
+                    <button class="close_btn btn_color" id="updateBtn"
+                            th:if="${employeeLoginCode == el.employeeCode} or ${#authorization.expression('hasAnyAuthority(''COMPANY_EMPLOYEE_UPDATE'')')}"
+                            type="button">수정
+                    </button>
+                </a>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+<th:block layout:fragment="pageScript">
+    <script th:src="@{/js/employee/employeeInfo.js(date=${todayFormat})}"></script>
+</th:block>
+
+</html>

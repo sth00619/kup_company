@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <!-- css작성, 파일 -->
+<style>
+    .day_check_list{
+        width: 415px;
+    }
+    .coffee_status.gray { 
+    background: #FFF;
+    color: #FF5C00;
+    border: 1px solid #ff5c00;
+    cursor: default;
+    }
+</style>
+</th:block>
+
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideMypage :: sideMypageFragment"></div>
+</th:block>
+
+
+<th:block layout:fragment="contents">
+
+
+
+<div class="coffee_area_wrap">
+    <div class="coffee_postvisual">
+        <!-- 유튜브 영상, 배너 -->
+        <div class="calendar_container">
+            <div class="calendar_wrap">
+                <input id="searchEmployeeCode" th:value="${employeeCode}" hidden>
+                <div class="my_point_data">
+                    <span class="my_point">나의 포인트</span>
+                    <span class="my_cash" th:text="${attendance_pnt}"></span><span class="my_cash"> P</span>
+                </div>
+                <div class="my_coffee_change">
+                    <button class="coffee_change_btn _coffee_change_btn">커피 교환하기</button>
+                    <button class="coffee_change_btn _my_attendance_btn">출석 체크</button>
+                </div>
+
+                <div class="y_m_point">
+                    <div class="ym_box">
+                        <span class="y_data _y_data"></span>
+                        <span class="m_data _m_data"></span>
+                    </div>
+                    <div class="y_m_btnbox">
+                        <button class="ym_btn _ym_btn_prev">
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                        d="M9.74809 11.9618C9.91603 11.7939 10 11.5802 10 11.3206C10 11.0611 9.91603 10.8473 9.74809 10.6794L6.17557 7.10687L9.74809 3.53435C9.91603 3.36641 10 3.15267 10 2.89313C10 2.63359 9.91603 2.41985 9.74809 2.25191C9.58015 2.08397 9.36641 2 9.10687 2C8.84733 2 8.63359 2.08397 8.46565 2.25191L4.25191 6.46565C4.16031 6.55725 4.09527 6.65649 4.05679 6.76336C4.01893 6.87023 4 6.98473 4 7.10687C4 7.22901 4.01893 7.34351 4.05679 7.45038C4.09527 7.55725 4.16031 7.65649 4.25191 7.74809L8.46565 11.9618C8.63359 12.1298 8.84733 12.2137 9.10687 12.2137C9.36641 12.2137 9.58015 12.1298 9.74809 11.9618Z"
+                                        fill="#333333" />
+                            </svg>
+                        </button>
+                        <button class="ym_btn _ym_btn_next">
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                        d="M4.25191 11.9618C4.08397 11.7939 4 11.5802 4 11.3206C4 11.0611 4.08397 10.8473 4.25191 10.6794L7.82443 7.10687L4.25191 3.53435C4.08397 3.36641 4 3.15267 4 2.89313C4 2.63359 4.08397 2.41985 4.25191 2.25191C4.41985 2.08397 4.63359 2 4.89313 2C5.15267 2 5.36641 2.08397 5.53435 2.25191L9.74809 6.46565C9.83969 6.55725 9.90473 6.65649 9.94321 6.76336C9.98107 6.87023 10 6.98473 10 7.10687C10 7.22901 9.98107 7.34351 9.94321 7.45038C9.90473 7.55725 9.83969 7.65649 9.74809 7.74809L5.53435 11.9618C5.36641 12.1298 5.15267 12.2137 4.89313 12.2137C4.63359 12.2137 4.41985 12.1298 4.25191 11.9618Z"
+                                        fill="#333333" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="day_check_list">
+                    <ul class="week_list_box">
+                        <li class="day_week sunday">일</li>
+                        <li class="day_week monday">월</li>
+                        <li class="day_week tuesday">화</li>
+                        <li class="day_week wednesday">수</li>
+                        <li class="day_week thursday">목</li>
+                        <li class="day_week friday">금</li>
+                        <li class="day_week saturday">토</li>
+                    </ul>
+                    <div class="weekly _weekly">
+                        <!-- 출석체크 시 check_stamp에 active -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 리스트-->
+    </div>
+    <div class="coffee_listwrap" id="attendanceList">
+        <!-- 
+            관리자는 두개(user_my_coffeelist, sysop_my_coffeelist) 모두 노출입니다. 
+            요청이 1개도 없을때 target_tabel가 들어간 ul태그 첨부 x
+        -->
+        <!-- 개인유저에게 노출 본인것만 usercoffeever 클래스 넣으면 dispaly:none -->
+        <div class="user_my_coffeelist">
+            <div class="table_group_wrap">
+
+                <div class="table_group_box">
+                    <div class="table_gp_nav">
+                        <div class="table_title">커피 교환내역 리스트</div>
+                    </div>
+                    <div class="ta_group">
+                        <div class="target_tabletitle">
+                            <ul class="main_title_area">
+                                <li class="target_hd"><span class="main_title_name">신청일자</span></li>
+                                <li class="target_hd"><span class="main_title_name">발급여부</span></li>
+                            </ul>
+                            <ul class="target_tabel" th:each=" mal: ${myAttendanceList}">
+                                <li><span class="employee_ymd emp_cell" th:text="${mal.changeTimeFormat}"></span></li>
+                                <li><span class="employee_status emp_cell" th:text="${mal.isUsedMeaning}"></span></li>
+                            </ul>
+                            
+                        </div>
+
+                    </div>
+                    
+                </div>
+             
+
+            </div>
+        </div>
+        <!-- 관리자에게만 노출 sysopver 클래스 넣으면 dispaly:none-->
+        <div class="sysop_my_coffeelist" sec:authorize="hasAnyAuthority('CAFE_COFFEE_BARCODE_INPUT')">
+            <div class="table_group_wrap">
+                <!-- 앞에 팀 이름/클래스 해당지점으로 변경해주세요 -->
+                <!-- 지점 / 팀 셀렉박스 오더 대기 (선택 및 전체보기)-->
+                <!-- texthidden 안에 텍스트 변경하지말아주세요. 레이아웃과 연관되어있습니다. -->
+                <div class="table_group_box">
+                    <div class="table_gp_nav">
+                        <div class="team_name table_title">커피 교환요청 리스트</div>
+                    </div>
+                    <div class="ta_group">
+                        <div class="target_tabletitle">
+                            <ul class="main_title_area">
+                                <li class="target_hd"><span class="main_title_name">이름</span></li>
+                                <li class="target_hd"><span class="main_title_name">부서</span></li>
+                                <li class="target_hd"><span class="main_title_name">사번</span></li>
+                                <li class="target_hd"><span class="main_title_name">신청일자</span></li>
+                                <li class="target_hd"><span class="main_title_name">요청</span></li>
+                            </ul>
+                            <ul class="target_tabel" th:each=" eal: ${employeeAttendanceList}">
+                                <li><span class="employee_name emp_cell" th:text="${eal.employeeName}">홍길동</span></li>
+                                <li><span class="employee_team emp_cell" th:text="${eal.departmentName}">오너지점</span></li>
+                                <li><span class="employee_num emp_cell" th:text="${eal.employeeCode}">20020201</span></li>
+                                <li><span class="employee_ymd emp_cell" th:text="${eal.changeTimeFormat}">2023-03-01</span></li>
+                                <li><span class="employee_accept emp_cell">
+                                    <button class="coffee_status _barcodeBtn" th:value="${eal.barcode}" th:if="${#strings.equals(eal.isUsed, '0')}" >발급</button>
+
+                                    <button class="coffee_status gray" th:unless="${#strings.equals(eal.isUsed, '0')}"  th:text="${eal.usedTimeFormat}"></button>
+
+                                </span></li>
+                            </ul>
+                            
+                        </div>
+
+                    </div>
+                    
+                </div>
+             
+
+            </div>
+        </div>                                   
+    </div>
+</div>
+
+
+
+
+
+    
+
+    <script th:src="@{/js/myPage/attendance/myAttendance.js}" type="text/javascript"></script>
+
+
+</th:block>
+
+</html>

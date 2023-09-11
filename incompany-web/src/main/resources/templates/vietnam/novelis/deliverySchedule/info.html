@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>메인</title>
+
+    <link th:href="@{/css/common.css(date=${todayFormat})}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/inCompany.css(date=${todayFormat})}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/vietnam/css.css(date=${todayFormat})}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+        rel="stylesheet">
+    <script src="/lib/jquery-3.6.0.min.js"></script>
+    <script th:src="@{/js/vietnam/form.js(date=${todayFormat})}"></script>
+    <script th:src="@{/lib/moment.js(date=${todayFormat})}"></script>
+    <script th:src="@{/js/side_drop_down.js(date=${todayFormat})}" type="text/javascript"></script>
+</head>
+
+<body>
+    <input id="cloudUrlAndPath" th:value="${cloudUrlAndPath}" hidden="true">
+
+    <div id="wrap">
+
+        <!-- header -->
+        <header class="header" sec:authorize="hasAnyAuthority('VIETNAM')">
+
+            <div class="main_inner">
+
+                <h1><a th:href="@{/}">HOME</a></h1>
+
+                <div class="mypage">
+
+                    <div class="my_box">
+
+                        <a href="/logout"><img src="/images/img/back.png"></a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+        <header sec:authorize="hasAnyAuthority('VIETNAM_ADMIN')" th:replace="fragments/header :: headerFragment">
+        </header>
+        <!-- main start ! -->
+        <main>
+            <section class="main_section">
+                <div class="main_inner">
+
+                    <div class="main_section-flex">
+                        <!-- side -->
+                        <div class="main_side_wrap">
+
+                            <div class="quick_box">
+
+                                <th:block layout:fragment="side_contents">
+                                    <div th:replace="fragments/sideVietnam :: sideVietnamFragment"></div>
+                                </th:block>
+                            </div>
+
+                        </div>
+                        <!-- center -->
+                        <div class="main_center">
+
+
+                            <form id="form">
+
+                                <input th:value="${ds.poIdxNo}" name="poIdxNo" hidden>
+
+
+                                <div class="top_center_menu_visual">
+
+                                    <div class="top_center-menu">
+
+                                    </div>
+
+                                    <div class="main_center_wrap">
+                                        <!-- table -->
+
+                                        <div class="table-topmenu">
+                                            <h2 class="tw_title">DELIVERY SCHEDULE</h2>
+                                        </div>
+
+                                        <table id="table-wrap">
+
+                                            <tbody>
+
+                                                <tr>
+                                                    <th class="title-bgc03">PO NO.<br />(Purchase order)</th>
+                                                    <td colspan="3" th:text="${ds.poNo}"></td>
+                                                    <th class="title-bgc03">BL NO.</th>
+                                                    <td colspan="3" th:text="${ds.blNo}"></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <th class="title-bgc03">INCOTERMS</th>
+                                                    <td th:text="${ds.incoterms}"></td>
+                                                    <th class="title-bgc03">NET<br />WEIGTH</th>
+                                                    <td><input class="typing-txt" type="text" th:value="${ds.netWeight}"></td>
+                                                    <th class="title-bgc03">INVOICE.NO</th>
+                                                    <td colspan="3"><input class="typing-txt" type="text" name="invoiceNo" th:value="${ds.invoiceNo}" disabled></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <th class="title-bgc02" colspan="4">ESTIMATED VESSEL SCHEDULE</th>
+                                                    <th class="title-bgc02" rowspan="2">TRANSTIME</th>
+                                                    <th class="title-bgc02" colspan="3">NO. OF CONTAINERS</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <th class="title-bgc04" colspan="2">ETD</th>
+                                                    <th class="title-bgc04" colspan="2">ETA</th>
+                                                    <th class="title-bgc04" colspan="1">20'</th>
+                                                    <th class="title-bgc04" colspan="2">40'</th>
+                                                </tr>
+
+                                                <tr>
+                                                    <td colspan="2" th:text="${ds.etd}">2022-01-01</td>
+                                                    <td colspan="2" th:text="${ds.eta}">2022-01-01</td>
+                                                    <td th:text="${ds.transTime}">20</td>
+                                                    <td><input type="text" class="typing-txt" name="cTwentyNo" th:value="${ds.cTwentyNo}" disabled></td>
+                                                    <td colspan="2"><input type="text" class="typing-txt" name="cFortyNo" th:value="${ds.cFortyNo}" disabled></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <th class="title-bgc02" colspan="4">PORT OF LOADING<br />(선적지)</th>
+                                                    <th class="title-bgc02" colspan="4">FIANL DESTINATION<br />(도착지)
+                                                    </th>
+                                                </tr>
+
+                                                <tr>
+                                                    <th class="title-bgc04" colspan="2">POL<br />COUNTRY</th>
+                                                    <th class="title-bgc04" colspan="2">POL<br />PORT NAME</th>
+                                                    <th class="title-bgc04" colspan="2">DEST<br />COUNTRY</th>
+                                                    <th class="title-bgc04" colspan="2">DEST<br />PORT NAME</th>
+                                                </tr>
+
+                                                <tr>
+                                                    <td colspan="2"><input class="typing-txt" type="text" name="pc" th:value="${ds.pc}" disabled></td>
+                                                    <td colspan="2"><input class="typing-txt" type="text" name="pn" th:value="${ds.pn}" disabled></td>
+                                                    <td colspan="2"><input class="typing-txt" type="text" name="dc" th:value="${ds.dc}" disabled></td>
+                                                    <td colspan="2"><input class="typing-txt" type="text" name="dpn" th:value="${ds.dpn}" disabled></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <th class="title-bgc01" colspan="8">NOTES</th>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="td-text" colspan="8">
+                                                        <textarea name="notes" th:text="${ds.notes}"  disabled></textarea>
+                                                    </td>
+                                                </tr>
+
+                                            </tbody>
+
+                                        </table>
+
+                                        <div class="save_btn_wrap">
+                                            <div>
+                                                <a>
+                                                    <button class="close_btn _closeBtn" id="closeBtn"
+                                                    type="button">CANCEL</button>
+                                                <button class="close_btn btn_color deta _editBtn"
+                                                    type="button"  th:if="${ds.state == 1}">UPDATE</button>
+                                            </div>
+                                        </div>
+
+
+                                        <!-- table end -->
+                                    </div>
+
+
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </section>
+
+            <footer id="footer">
+
+
+
+
+
+            </footer>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>

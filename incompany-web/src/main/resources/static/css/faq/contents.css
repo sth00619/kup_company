@@ -1,0 +1,32 @@
+table.faqContents {
+  border-collapse: separate;
+  border-spacing: 0;
+  text-align: left;
+  line-height: 1.5;
+  border-top: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  margin : 20px 10px;
+  margin-bottom : 5px;
+}
+table.faqContents th {
+  width: 100px;
+  padding: 10px;
+  font-weight: bold;
+  vertical-align: middle;
+  text-align:center;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #fff;
+  border-left: 1px solid #fff;
+  background: #eee;
+}
+table.faqContents td {
+  width: 500px;
+  padding: 10px;
+  vertical-align: top;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+#createTime {
+    float : right;
+}

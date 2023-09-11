@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>메인</title>
+
+    <link th:href="@{/css/common.css(date=${todayFormat})}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/inCompany.css(date=${todayFormat})}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/vietnam/css.css(date=${todayFormat})}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+        rel="stylesheet">
+    <script src="/lib/jquery-3.6.0.min.js"></script>
+    <script th:src="@{/js/vietnam/purchaseOrder.js(date=${todayFormat})}"></script>
+
+    <script th:src="@{/js/side_drop_down.js(date=${todayFormat})}" type="text/javascript"></script>
+</head>
+
+<body>
+
+    <div id="wrap">
+
+        <!-- header -->
+        <header class="header" sec:authorize="hasAnyAuthority('VIETNAM')">
+
+            <div class="main_inner">
+
+                <h1><a th:href="@{/}">HOME</a></h1>
+
+                <div class="mypage">
+
+                    <div class="my_box">
+
+                        <a href="/logout"><img src="/images/img/back.png"></a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+        <header sec:authorize="hasAnyAuthority('VIETNAM_ADMIN')" th:replace="fragments/header :: headerFragment">
+        </header>
+        <!-- main start ! -->
+        <main>
+            <section class="main_section">
+                <div class="main_inner">
+
+                    <div class="main_section-flex">
+                        <!-- side -->
+                        <div class="main_side_wrap">
+
+                            <div class="quick_box">
+
+
+                                <th:block layout:fragment="side_contents">
+                                    <div th:replace="fragments/sideVietnam :: sideVietnamFragment"></div>
+                                </th:block>
+
+                            </div>
+
+                        </div>
+                        <!-- center -->
+                        <div class="main_center">
+
+
+
+                            <div class="top_center_menu_visual">
+
+                                <div class="top_center-menu">
+
+                                </div>
+
+                                <div class="main_center_wrap">
+                                    <!-- table -->
+
+                                    <div class="table-topmenu">
+                                        <h2 class="tw_title">PO LIST</h2>
+                                    </div>
+
+                                    <div class="Add-number">
+                                        <input type="text" id="addPoNo" maxlength="200" autofocus />
+                                        <button type="button" class="add-box" id="addPoNoBtn">ADD PO NO</button>
+                                    </div>
+
+                                    <table id="table-wrap">
+                                        <thead>
+                                            <tr>
+                                                <th class="title-bgc03">NO.</th>
+                                                <th class="title-bgc03">PO NO.<br />(Purchase order)</th>
+                                                <th class="title-bgc03">BL NO.</th>
+                                                <th class="title-bgc03">STATE</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <tr class="Hold-box _pList" th:classappend="|${pl.state == 2 ? '_finish' : ''} ${pl.state == 3 ? '_hold' : ''} |" th:each=" pl: ${purchaseOrderNoList}">
+                                                <td class="_poIdxNo" th:text="${pl.poIdxNo}"></td>
+                                                <td class="_poNo">
+                                                    <input class="typing-txt _poNoVal" type="text" th:value="${pl.poNo}" columnName="po_no" disabled>
+                                                    <button class="Edit-btn _updateBtn" type="button" th:if="${pl.state} == 1">EDIT</button>
+                                                </td>
+                                                <td class="_blNo">
+                                                    <input class="typing-txt" type="text" th:value="${pl.blNo}" maxlength="200" columnName="bl_no" disabled>
+                                                    <button class="Edit-btn _updateBtn" type="button" th:if="${pl.state} == 1">EDIT</button>
+                                                </td>
+                                                <td cl>
+                                                    <div class="process-box">
+                                                        <button class="process_btn Doing _updateState" th:classappend="${pl.state} == 1 ? '_stateCheck'" type="button" value="1">DOING</button>
+                                                        <button class="process_btn _updateState" th:classappend="${pl.state} == 2 ? '_stateCheck'" type="button" value="2">FINISH</button>
+                                                        <button class="process_btn Hold _updateState" th:classappend="${pl.state} == 3 ? '_stateCheck'" type="button" value="3">HOLD</button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+
+                                        </tbody>
+                                    </table>
+
+                                    <!-- table end -->
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </section>
+
+            <footer id="footer">
+
+
+            </footer>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>

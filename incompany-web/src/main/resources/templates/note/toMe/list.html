@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <!-- css작성, 파일 -->
+
+    <link rel="stylesheet" th:href="@{/css/list_check_box.css(date=${todayFormat})}" type="text/css">
+
+    <style>
+        .note_title>ul {
+            border-bottom: 1px solid #304260;
+            height: 54px;
+            box-sizing: border-box;
+        }
+
+        .note_title>ul>li {
+            float: left;
+            height: 54px;
+            line-height: 54px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            color: #304260;
+        }
+
+        .note_title>ul>li:nth-child(1),
+        .note_sub_txt>ul>li:nth-child(1) {
+            width: 95px;
+        }
+
+        .note_title>ul>li:nth-child(2),
+        .note_sub_txt>ul>li:nth-child(2) {
+            width: 870px;
+        }
+
+        .note_title>ul>li:nth-child(3),
+        .note_sub_txt>ul>li:nth-child(3) {
+            width: 280px;
+        }
+
+        .note_sub_txt>ul {
+            height: 70px;
+            border-bottom: 1px solid #e4e8f0;
+            cursor: pointer;
+        }
+
+        .note_sub_txt>ul>li {
+            float: left;
+            height: 70px;
+            line-height: 70px;
+            text-align: center;
+            font-size: 12px;
+            color: #9499a3;
+            position: relative;
+        }
+
+        .note_sub_txt>ul>li a {
+            color: #9499a3;
+            display: block;
+        }
+
+        /* .note_sub_txt > ul > li:nth-child(3){text-align: left;} */
+        .note_sub_txt>ul:hover {
+            background: #f9fbff;
+        }
+
+        .list_view03 .viewdt_flex {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        ._not_read {
+            font-weight: 900;
+        }
+    </style>
+
+
+</th:block>
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideNote :: sideNoteFragment"></div>
+</th:block>
+
+
+<th:block layout:fragment="contents">
+
+    <input id="nextPage" th:value="${pageList.getNavigateLastPage()}" type="hidden" />
+    <input id="prePage" th:value="${pageList.getNavigateFirstPage()}" type="hidden" />
+    <input id="pages" th:value="${pageList.getPages()}" type="hidden" />
+    <input id="pageNum" th:value="${pageNum}" type="hidden" />
+    <input id="type" th:value="${type}" hidden />
+
+
+    <div class="top_center_menu_visual">
+
+        <div class="top_center-menu">
+
+            <button class="writing_btn"><a th:href="@{/note/form}">글쓰기</a></button>
+        </div>
+
+        <div class="main_center_wrap">
+
+            <div class="note_title">
+                <ul>
+                    <li>NO</li>
+                    <li>내용</li>
+                    <li>보낸 날짜</li>
+                </ul>
+            </div>
+
+            <div class="note_sub_txt">
+
+
+                <ul th:each="p : ${pageList.getList()}">
+
+                    <li>
+                        <a th:href="@{/note/toMe/contents(noteNo=${p.noteNo},pageNum=${pageNum})}"
+                            th:text="${p.noteNo}"></a>
+                    </li>
+                    <li>
+                        <a th:href="@{/note/toMe/contents(noteNo=${p.noteNo},pageNum=${pageNum})}">
+
+                            <div class="title_inner">
+                                [[${p.contents}]]
+                            </div>
+                            <!-- <div class="new" th:if="${p.isNew}"><img src="/images/img/new.png"></div> -->
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            th:href="@{/note/toMe/contents(noteNo=${p.noteNo},pageNum=${pageNum})}">[[${p.createAtFormat}]]</a>
+                    </li>
+                </ul>
+
+            </div>
+
+
+
+
+
+        </div>
+
+    </div>
+
+    <div class="next_btn_wrap" th:unless="${pageList.size == 0}">
+
+        <div class="double_prev_btn pn_btn _page"
+            th:classappend="${(pageList.getNavigateFirstPage() - 1) == 0} ? 'disabled'">
+            <a aria-label="first" class="page-link first _a_first" href="javascript:void(0)">
+                <span>이전 따블</span>
+            </a>
+        </div>
+        <div class="prev_btn pn_btn _page" th:classappend="${(pageList.getNavigateFirstPage() - 1) == 0} ? 'disabled'">
+            <a aria-label="Previous" class="page-link previous _a_pre" href="javascript:void(0)">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </div>
+        <ul>
+            <li class="_page" th:classappend="${page == pageList.getPageNum()} ? 'on'"
+                th:each="page: ${#numbers.sequence(pageList.getNavigateFirstPage(),pageList.getNavigateLastPage())}">
+                <a class="page-link page _a_page" href="javascript:void(0)" th:text="${page}">
+                </a>
+            </li>
+        </ul>
+        <div class="next_btn pn_btn _page" th:classappend="${(pageList.getNavigateLastPage() % 10) != 0} ? 'disabled'">
+            <a aria-label="Next" class="page-link next _a_next" href="javascript:void(0)">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </div>
+        <div class="double_next_btn pn_btn _page"
+            th:classappend="${(pageList.getNavigateLastPage() % 10) != 0} ? 'disabled'">
+            <a aria-label="Last" class="page-link last _a_last" href="javascript:void(0)">
+                <span>다음 따블</span>
+            </a>
+        </div>
+    </div>
+
+
+</th:block>
+
+
+<th:block layout:fragment="pageScript">
+    <!-- js파일 -->
+
+    <script th:src="@{/js/note/list.js(date=${todayFormat})}"></script>
+
+
+</th:block>
+
+
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="signature_sales_chart_fragment">
+
+    <div class="advice_save_visual pop3">
+
+        <div class="close_btn_wrap">
+            <div class="close_btn_img"><img src="/images/img/close_btn.png"></div>
+        </div>
+
+        <div class="contract_chart">
+
+            <div class="contract_name Cn-pd">
+                <div>
+                    <p id="signatureName"></p>
+                    <span>의 매출 현황입니다.</span>
+                </div>
+
+                <div class="top_right_menu">
+                    <div class="date_box search_deta margin">
+                        <div><p style="color:red;">※날짜를 선택해 주세요.</p></div>
+                        <input id="chartDate"  type="month">
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="_signatureSalesChart">
+                <canvas id="signatureSalesChart"></canvas>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="black_screen _black_screen"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script th:src="@{/js/worksheet/signature/signature_sales_chart.js(date=${todayFormat})}" type="text/javascript"></script>
+
+</th:block>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <!-- css작성, 파일 -->
+    <style>
+        table {
+            width: 100%;
+            height: 100%;
+        }
+
+        tr,
+        td {
+            text-align: center;
+        }
+
+        #save {
+            display: inline-block;
+        }
+
+        ._buttonDiv {
+            width: 100%;
+            text-align: center;
+        }
+    </style>
+</th:block>
+
+
+<th:block layout:fragment="contents">
+
+    <p th:text=" |사원번호 :  ${employeeCode}|"></p>
+
+    <input type="hidden" th:value="${isNew}" id="isNew">
+
+    <select id="addDepartment">
+
+        <option th:text="${dl.departmentName}" th:value="${dl.departmentCode}" th:each=" dl: ${departmentList}">
+        </option>
+
+    </select>
+
+    <button id="addDepartmentBtn">추가</button>
+    <br><br><br>
+    <table>
+        <tr id="titleTr">
+            <th>지점 번호</th>
+            <th>지점 이름</th>
+            <th></th>
+        </tr>
+        <div th:if="${partialSelectBoxCondition != null} and ${!#strings.isEmpty(partialSelectBoxCondition.partDepartmentCodes)}" >
+            <tr th:each=" dil: ${partialSelectBoxCondition.partDepartmentInfoList}" class="_departmentList" >
+                <td class="_departmentCodeList" th:text="${dil.departmentCode}"></td>
+                <td th:text="${dil.departmentName}"></td>
+                <td> <button class="_deleteBtn">삭제</button></td>
+    
+            </tr>
+        </div>
+
+
+    </table>
+
+    <br><br><br><br>
+    <div class="_buttonDiv">
+        <button type="button" id="saveBtn">저장</button>
+    </div>
+
+
+
+
+
+</th:block>
+
+
+<th:block layout:fragment="pageScript">
+    <!-- js파일 -->
+    <script th:src="@{/lib/jquery-3.6.0.min.js}"></script>
+    <script th:src="@{/lib/main_js.js(date=${todayFormat})}"></script>
+    <script th:src="@{/js/partialSelectBox/condition.js(date=${todayFormat})}"></script>
+
+</th:block>
+
+
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="@{layout/defaultFragment}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <link rel="stylesheet" th:href="@{/css/contractFortune/contractFortune.css(date=${todayFormat})}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/chart/chart.css(date=${todayFormat})}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/list_check_box.css(date=${todayFormat})}" type="text/css">
+</th:block>
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideContractFortune :: sideContractFortuneFragment"></div>
+</th:block>
+<th:block layout:fragment="contents">
+    <!-- 부서 코드 -->
+    <input id="departmentCode" th:value="${departmentCode}" type="hidden"/>
+
+    <!-- 차트 데이터 : 목돈, 보험-->
+    <input class="_cfChartDataList" th:each="cdl : ${cfChartDataList}" th:value="${cdl.total}" th:data-date="${cdl.date}" type="hidden"/>
+    <input class="_iChartDataList" th:each="idl : ${iChartDataList}" th:value="${idl.total}" th:data-date="${idl.date}" type="hidden"/>
+
+    <!-- 처리 결과 여부 -->
+    <input id="isSuccess" th:value="${isSuccess}" type="hidden"/>
+
+    <strong style="color:#E9967A; line-height: 150%;">※ - 목돈 확인, 계약 확인이 된 계약만 통계에 포함됩니다. (확인을 완료해 주세요!)</strong>
+    <p style="color:#6667AB; line-height: 150%;">※ - 가동인원 : 목돈 500만원 이상 또는 보험 3만원 이상</p>
+    <p style="color:#6667AB; line-height: 150%;">※ - 실동인원 : 목돈 1000만원 이상 또는 보험 30만원 이상</p>
+    <p style="color:#6667AB; line-height: 150%;">※ - 가동률 : (가동 인원 수 / 부서 인원 수) * 100</p>
+    <p style="color:#6667AB; line-height: 150%;">※ - 실동률 : (실동 인원 수 / 부서 인원 수) * 100</p>
+    <p style="color:#6667AB; line-height: 150%;">※ - 목돈 생산성 : (목돈 총 합 / 부서 인원 수)</p>
+    <p style="color:#6667AB; line-height: 150%;">※ - 보험 생산성 : (보험 총 합 / 부서 인원 수)</p>
+
+    <!-- 목돈 차트-->
+    <div class="_chart1" style="height:170px; width:400px">
+        <canvas id="contractFortuneChart"></canvas>
+    </div>
+
+    <!-- 보험 차트-->
+    <div class="_chart2" style="height:170px; width:400px">
+        <canvas id="insuranceChart"></canvas>
+    </div>
+
+    <div class="top_center_menu_visual" style="margin-top:40px;">
+        <div class="top_center-menu">
+            <div class="top_left_menu _top_left_menu" style="margin-left:27px;">
+                <!-- 부서, 팀, 담당자 선택 select  (현재 코드를 직접 박는 형식으로 진행 - 추후에 아래 block 을 살려서 모든 부서 select 해서 사용해도 됨)-->
+                <!--            <th:block th:replace="fragments/select_department_employee :: select_department_employee"></th:block>-->
+                <div class="check_box _check_box_department">
+                    <input id="support" name="departmentCode" th:checked="${departmentCode} == 'D0101'" type="radio"
+                           value="D0101">
+                    <label for="support"></label>
+                    <span class="_check_department">경영지원</span>
+                </div>
+
+                <div class="check_box _check_box_department">
+                    <input id="owner" name="departmentCode" th:checked="${departmentCode} == 'D0201'" type="radio"
+                           value="D0201">
+                    <label for="owner"></label>
+                    <span class="_check_department">오너지점</span>
+                </div>
+
+                <div class="check_box _check_box_department">
+                    <input id="prestige" name="departmentCode" th:checked="${departmentCode} == 'D0301'" type="radio"
+                           value="D0301">
+                    <label for="prestige"></label>
+                    <span class="_check_department">명문지점</span>
+                </div>
+
+                <div class="check_box _check_box_department">
+                    <input id="winner" name="departmentCode" th:checked="${departmentCode} == 'D0401'" type="radio"
+                           value="D0401">
+                    <label for="winner"></label>
+                    <span class="_check_department">위너지점</span>
+                </div>
+
+                <div class="check_box _check_box_department">
+                    <input id="pb" name="departmentCode" th:checked="${departmentCode} == 'D0501'" type="radio"
+                           value="D0501">
+                    <label for="pb"></label>
+                    <span class="_check_department">PB지점</span>
+                </div>
+                <div class="check_box _check_box_department">
+                    <input id="wm" name="departmentCode" th:checked="${departmentCode} == 'D0502'" type="radio"
+                           value="D0502">
+                    <label for="wm"></label>
+                    <span class="_check_department">WM지점</span>
+                </div>
+            </div>
+            <div class="top_right_menu">
+                <!-- 기간 조회 -->
+                <th:block th:replace="fragments/date_search_by_period :: date_search_by_period"></th:block>
+            </div>
+        </div>
+
+
+        <!-- 목돈 계약 리스트 -->
+        <div class="main_center_wrap">
+            <div class="main_top _main_top">
+                <div>
+                    <ul class="contract_main_title">
+                        <li style="width:100px;">지점</li>
+                        <li style="width:100px;">총인원</li>
+                        <li style="width:120px;">목돈</li>
+                        <li style="width:100px;">목돈계약횟수</li>
+                        <li style="width:120px;">보험</li>
+                        <li style="width:100px;">보험계약횟수</li>
+                        <li style="width:100px;">가동인원</li>
+                        <li style="width:100px;">실동인원</li>
+                        <li style="width:100px;">가동률(%)</li>
+                        <li style="width:100px;">실동률(%)</li>
+                        <li style="width:120px;">목돈생산성</li>
+                        <li style="width:120px;">보험생산성</li>
+                    </ul>
+                </div>
+
+                <div class="contract_sub_txt _sub_parent_div">
+                    <ul class="_contract_sub_title _sub_ul"
+                        th:attr="data-department=${cfl.departmentName},
+                                 data-count-cont=${cfl.totalCountContractFortune},
+                                 data-count-ins=${cfl.totalCountInsurance}"
+                        th:each="cfl : ${statistics.statisticsList}"
+                        th:value="${cfl.departmentCode}">
+
+                        <!-- 이름 (지점 or 팀) -->
+                        <li class="_name _clickLi" th:text="${cfl.name}" style="width:100px;"></li>
+
+                        <!-- 총인원 -->
+                        <li style="width:100px;"
+                            th:text="${cfl.companyPositionName}"></li>
+
+                        <!-- 목돈 -->
+                        <li class="_totalAmountContractFortune _clickLi" style="width:120px;"
+                            th:value="${cfl.totalAmountContractFortune} == 0 ? '' : ${cfl.totalAmountContractFortune}">
+                            <a th:text="${cfl.addedCommaTotalAmountContractFortune}" target="_self"
+                               th:href="@{/contractFortune/contractFortune(departmentCode=${cfl.departmentCode}, employeeCode=${cfl.employeeCode}, startDate=${startDate}, endDate=${endDate})}">
+                            </a>
+                        </li>
+
+                        <!-- 목돈계약횟수 -->
+                        <li style="width:100px;"
+                            th:text="${cfl.totalCountContractFortune} == 0 ? '' : ${cfl.totalCountContractFortune}"
+                            th:href="@{/contractFortune/contractFortune(departmentCode=${cfl.departmentCode}, employeeCode=${cfl.employeeCode}, startDate=${startDate}, endDate=${endDate})}"></li>
+
+                        <!-- 보험 -->
+                        <li class="_totalAmountInsurance _clickLi" style="width:120px;"
+                            th:value="${cfl.totalAmountInsurance} == 0 ? '' : ${cfl.totalAmountInsurance}">
+                            <a th:text="${cfl.addedCommaTotalAmountInsurance}" target="_self"
+                               th:href="@{/insurance/insurance(departmentCode=${cfl.departmentCode}, employeeCode=${cfl.employeeCode}, startDate=${startDate}, endDate=${endDate})}">
+                            </a>
+                        </li>
+
+                        <!-- 보험계약횟수 -->
+                        <li style="width:100px;"
+                            th:text="${cfl.totalCountInsurance} == 0 ? '' : ${cfl.totalCountInsurance}"
+                            th:href="@{/insurance/insurance(departmentCode=${cfl.departmentCode}, employeeCode=${cfl.employeeCode}, startDate=${startDate}, endDate=${endDate})}"></li>
+
+                        <!-- 가동인원 -->
+                        <li style="width:100px;"
+                            th:text="${cfl.availablePeople} == 0 ? '' : ${cfl.availablePeople}"></li>
+
+                        <!-- 실동인원 -->
+                        <li style="width:100px;"
+                            th:text="${cfl.operationPeople} == 0 ? '' : ${cfl.operationPeople}"></li>
+
+                        <!-- 가동률 -->
+                        <li style="width:100px;" th:text="${cfl.availableRate} == 0 ? '' : ${cfl.availableRate}"></li>
+
+                        <!-- 실동률 -->
+                        <li style="width:100px;" th:text="${cfl.operationRate} == 0 ? '' : ${cfl.operationRate}"></li>
+
+                        <!-- 목돈생산성 -->
+                        <li style="width:120px;"
+                            th:text="${cfl.contractFortuneProductivity} == 0 ? '' : ${cfl.contractFortuneProductivity}"></li>
+
+                        <!-- 보험생산성 -->
+                        <li style="width:120px;"
+                            th:text="${cfl.insuranceProductivity} == 0 ? '' : ${cfl.insuranceProductivity}"></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+<th:block layout:fragment="pagePop">
+    <!-- 팝업 -->
+</th:block>
+
+<th:block layout:fragment="pageScript">
+    <!-- chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script th:src="@{/js/statistics/statisticsChart.js(date=${todayFormat})}" type="text/javascript"></script>
+
+    <script th:src="@{/js/statistics/d3_statics.js(date=${todayFormat})}" type="text/javascript"></script>
+
+    <!-- checkBox -->
+    <script th:src="@{/js/list_check_box.js(date=${todayFormat})}" type="text/javascript"></script>
+
+    <!-- 날짜 계산 -->
+    <script th:src="@{/js/utils/date_util.js(date=${todayFormat})}" type="text/javascript"></script>
+
+    <!-- 월간, 주간 조회 -->
+    <script th:src="@{/js/utils/date_search_by_period.js(date=${todayFormat})}" type="text/javascript"></script>
+</th:block>
+</html>

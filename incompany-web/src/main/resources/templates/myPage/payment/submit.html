@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <!-- css작성, 파일 -->
+
+</th:block>
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideMypage :: sideMypageFragment"></div>
+</th:block>
+
+<th:block layout:fragment="contents">
+
+    <input id="nextPage" th:value="${paymentList.getNavigateLastPage()}" type="hidden" />
+    <input id="prePage" th:value="${paymentList.getNavigateFirstPage()}" type="hidden" />
+    <input id="pages" th:value="${paymentList.getPages()}" type="hidden" />
+    <input id="pageNum" th:value="${pageNum}" type="hidden" />
+    <input id="status" th:value="${status}" type="hidden" />
+
+
+
+
+    <div class="top_center_menu_visual">
+
+        <div class="top_center-menu">
+
+            <div class="top_left_menu">
+
+
+                <div class="btn_box btn_on">
+
+                    <a th:href="@{/myPage/payment/form}">
+                        <p>글쓰기</p>
+                    </a>
+                </div>
+
+            </div>
+
+            <div class="notice_search">
+
+                <div class="interest">
+                    <input id="all" name="status" th:checked="${status} == null" type="radio" value="all">
+                    <label for="all" class="_status">전체</label>
+                </div>
+
+                <div class="interest">
+                    <input id="payment" name="status" th:checked="${status} == '1'" type="radio" value="1">
+                    <label for="payment" class="_status">상신</label>
+                </div>
+
+                <div class="interest">
+                    <input id="complete" name="status" th:checked="${status} == '2'" type="radio" value="2">
+                    <label for="complete" class="_status">결재완료</label>
+                </div>
+
+                <div class="interest">
+                    <input id="Keep" name="status" th:checked="${status} == '4'" type="radio" value="4">
+                    <label for="Keep" class="_status">임시보관</label>
+                </div>
+
+                <div class="interest">
+                    <input id="return" name="status" th:checked="${status} == '3'" type="radio" value="3">
+                    <label for="return" class="_status">반려</label>
+                </div>
+
+
+
+
+                <select class="select_box">
+                    <option value="paymentNo">번호</option>
+                    <option th:selected="${searchType}=='title'" value="title">제목</option>
+                </select>
+
+                <div class="salesman_search">
+                    <input id="keyword" placeholder="검색" th:value="${keyword}" type="text">
+                    <img alt="검색" class="_searchBtn" src="/images/img/search_icon.png" />
+                </div>
+            </div>
+
+        </div>
+
+        <div class="main_center_wrap">
+
+            <div class="mp_title">
+                <ul>
+                    <li>NO</li>
+                    <li>기안일자</li>
+                    <li>부서명</li>
+                    <li>기안자</li>
+                    <li>결재양식</li>
+                    <li>제목</li>
+                    <li>결재자</li>
+                    <li>결재일자</li>
+                    <li>진행 상태</li>
+
+                </ul>
+            </div>
+
+            <div class="mp_sub_txt">
+
+
+                <ul th:each=" pl: ${paymentList.getList()}" th:value="${pl.paymentNo}" class="_paymentList">
+                    <li th:text="${pl.paymentNo}"></li>
+
+                    <li th:text="${pl.draftCreateDate}">2022-03-29</li>
+
+                    <li th:text="${pl.draftDepartmentName}">디자인&마케팅</li>
+                    <li th:text="${pl.draftEmployeeName}"></li>
+                    <li th:text="${pl.paymentFormTitle}">업무기안</li>
+                    <li>
+                        <div class="title_inner" th:text="${pl.title}"></div>
+                        <div class="new" th:if="${pl.isNew}"><img src="/images/img/new.png"></div>
+                        <div class="title_file" th:if="${pl.isFileExist}"><img src="/images/img/file.png"></div>
+                    </li>
+                    <li>
+                        <p th:text="${pl.approverEmployeeName}"></p>
+                    </li>
+                    <li>
+                        <p th:if="${pl.status != 1}" th:text="${pl.paymentDate}"> </p>
+
+                    </li>
+                    <li th:text="${pl.statusMeaning}"></li>
+
+                </ul>
+
+            </div>
+
+            <!-- next btn -->
+            <th:block th:replace="fragments/page_nation :: page_nation"></th:block>
+
+
+        </div>
+
+    </div>
+
+
+
+
+</th:block>
+
+
+<th:block layout:fragment="pageScript">
+    <!-- js파일 -->
+
+    <script th:src="@{/js/myPage/payment/submit.js(date=${todayFormat})}"></script>
+
+</th:block>
+
+
+</html>

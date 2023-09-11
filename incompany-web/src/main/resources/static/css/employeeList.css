@@ -1,0 +1,52 @@
+table {
+    border: 1px solid #444444;
+    text-align: center;
+    margin-top: 4px;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th {
+    margin: 10px;
+    border-bottom: 1px solid #444444;
+    height: 30px;
+    font-size: 11pt;
+}
+
+td {
+    height: 24px;
+}
+
+#employeeName {
+    width: 80px;
+}
+
+#position {
+    width: 60px;
+}
+
+#department {
+    width: 150px;
+}
+
+#workplace {
+    width: 200px;
+}
+
+#mobile {
+    width: 150px;
+}
+
+#email {
+    width: 200px;
+}
+
+#counseling {
+    width: 500px;
+}
+
+/*마우스 오버 시 백그라운드 컬러 변경*/
+td.onMouseEnter {
+    background-color: #D8D8D8;
+    cursor: pointer;
+}

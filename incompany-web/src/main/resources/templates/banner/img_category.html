@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <style>
+        input {
+            text-align: center;
+            height: 30px;
+            margin-bottom: 7px;
+            margin-top: 7px;
+            background-color: transparent;
+            color: black;
+        }
+
+        td {
+            overflow: unset;
+        }
+
+        ._selectInput {
+            border: 1px solid;
+        }
+
+        .exTable {
+            width: 700px;
+            transform: translateX(40%);
+        }
+
+        .exTd {
+            width: 100px;
+        }
+
+        .btnTd {
+            width: 250px;
+        }
+
+        .bolder {
+            font-weight: bolder;
+        }
+
+    </style>
+</th:block>
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideOperation :: sideOperationFragment"></div>
+</th:block>
+
+<th:block layout:fragment="contents">
+    <!--  text-overflow: ellipsis;-->
+
+    <br><br>
+    <hr>
+    <br><br>
+    <table class="exTable">
+        <tbody>
+        <tr>
+            <td class="exTd bolder"></td>
+            <td class="bolder">설명</td>
+        </tr>
+        <tr>
+            <td class="bolder">번호</td>
+            <td>해당 번호 순서로 카테고리가 표시됩니다.</td>
+        </tr>
+        <tr>
+            <td class="bolder">카테고리 이름</td>
+            <td>배너에 표시될 카테고리의 이름입니다.</td>
+        </tr>
+        </tbody>
+    </table>
+    <br><br>
+    <hr>
+    <br><br>
+
+    <table class="_imgCategoryTable">
+        <tbody>
+        <tr class="bolder">
+            <td class="btnTd">번호</td>
+            <td>카테고리 이름</td>
+            <td class="btnTd"></td>
+        </tr>
+        <tr class="_biclList" th:each=" bicl: ${bannerImgCategoryList}">
+            <td>
+                <p class="_categoryNo" name="categoryNo" th:text="${bicl.categoryNo}"></p>
+            </td>
+            <td>
+                <input class="_categoryName" name="categoryName" type="text" th:value="${bicl.categoryName}" disabled="true">
+            </td>
+            <td>
+                <button class="_writeBtn" type="button">수정</button>
+                <button class="_exitBtn" type="button" hidden>취소</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</th:block>
+
+
+<th:block layout:fragment="pageScript">
+      <script th:src="@{/js/banner/bannerImgCategory.js}" type="text/javascript"></script>
+</th:block>
+
+</html>

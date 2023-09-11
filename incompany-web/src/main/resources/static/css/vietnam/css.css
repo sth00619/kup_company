@@ -1,0 +1,407 @@
+/*  */
+th,
+td {
+    border: 0;
+}
+
+.table-topmenu {
+    width: 100%;
+    margin-bottom: 20px;
+    display: inline-block;
+}
+
+.table-topmenu h2.tw_title {
+    font-size: 18px;
+    color: #314260;
+    font-weight: 600;
+    float: left;
+}
+
+.table-topmenu #year-select {
+    width: 100px;
+    height: 30px;
+    color: #9499a3;
+    border: 2px solid #e4e8f0;
+    outline: none;
+    float: right;
+    width: 180px;
+}
+
+#table-wrap a {
+    color: #314260;
+    text-decoration: underline
+}
+
+#table-wrap a:hover {
+    color: blue;
+}
+
+#table-wrap .title-bgc01 {
+    background: #edf0f5;
+}
+
+#table-wrap .title-bgc02 {
+    background: #a9b6c7;
+}
+
+#table-wrap .title-bgc03 {
+    background: #314260;
+    color: #fff;
+    position: relative;
+}
+
+#table-wrap .title-bgc04 {
+    background: #dae2f5;
+}
+
+#table-wrap .title-bgc05 {
+    background: #42ceb4;
+}
+
+#table-wrap th,
+#table-wrap td {
+    height: 30px;
+    color: #314260;
+    border-top: 1px solid #9499a3;
+    border-left: 1px solid #9499a3;
+    border-bottom: 1px solid #9499a3;
+    vertical-align: middle;
+    overflow-x: auto;
+}
+
+#table-wrap th::-webkit-scrollbar,#table-wrap td::-webkit-scrollbar{
+    width:10px; /*스크롤바의 너비*/
+    height:10px;
+}
+
+#table-wrap th::-webkit-scrollbar-thumb,#table-wrap td::-webkit-scrollbar-thumb{
+    background-color:#a7b5c3; /*스크롤바의 색상*/
+    border-radius: 4px;
+}
+#table-wrap th::-webkit-scrollbar-track,#table-wrap td::-webkit-scrollbar-track {
+    background-color:#e4e8ec; /*스크롤바 트랙 색상*/
+}
+
+#table-wrap th::-webkit-scrollbar-thumb:hover,#table-wrap td::-webkit-scrollbar-thumb:hover { background: #7c92a9; } /* 실질적 스크롤 바를 hover 했을때 */
+
+
+
+
+#table-wrap th:last-child,
+#table-wrap td:last-child {
+    border-right: 1px solid #9499a3;
+}
+
+#table-wrap th {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 18px;
+}
+
+#table-wrap td {
+    font-weight: 300;
+    font-size: 14px;
+    position: relative;
+}
+
+#table-wrap td input {
+    border: 1px solid rgb(237, 240, 245);
+    height: 30px;
+    box-sizing: border-box;
+    color: #7c7f84;
+}
+
+#table-wrap td input[type="text"] {
+    width: 80%;
+}
+
+#table-wrap tr td .date_box {
+    margin: 0;
+}
+
+/* #table-wrap tr td .date_box .date-txt{opacity: 0;} */
+#table-wrap tr td .insert {
+    text-align: center;
+}
+
+#table-wrap tr td .insert input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+}
+
+#table-wrap tr td .insert .file-addboxinner {
+    width: 72px;
+    height: 28px;
+    line-height: 28px;
+    border-radius: 2px;
+    font-size: 14px;
+    color: #fff;
+    background: #314260;
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+/*  */
+#table-wrap {
+    width: 100%;
+    color: #333333;
+    text-align: center;
+}
+
+#table-wrap tr td .process-box {
+    margin: 0 auto;
+    display: inline-block;
+}
+
+#table-wrap tr td .process-box .process_btn {
+    float: left;
+    margin-right: 10px;
+}
+
+#table-wrap tr td .process-box .process_btn:last-child {
+    margin: 0;
+}
+
+#table-wrap tr td .Hold.On {
+    background: #fe4f4f;
+}
+
+#table-wrap tr.Hold-box.On {
+    background: #fe4f4f;
+}
+
+#table-wrap tr td .Doing.On2 {
+    background: #fff;
+}
+
+#table-wrap tr td.Hold-box.On2 {
+    background: #fff;
+}
+
+#table-wrap tr td.td-text {
+    padding: 0 40px;
+    height: 180px;
+    position: relative;
+}
+
+#table-wrap tr td.td-text textarea {
+    width: 100%;
+    height: 100%;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 20px;
+    box-sizing: border-box;
+    border: 0;
+    outline: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#table-wrap tr td button {
+    width: 60px;
+    height: 25px;
+    border: 2px solid #edf0f5;
+    box-sizing: border-box;
+    background: #fff;
+    color: #314260;
+    border-radius: 2px;
+    display: block;
+    position: relative;
+    outline: none;
+    cursor: pointer;
+}
+
+#table-wrap tr td.td-text button {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#table-wrap tr td input.typing-txt {
+    display: inline-block;
+    background: transparent;
+    border: 0;
+    height: 30px;
+    box-sizing: border-box;
+    text-align: center;
+    color: #314260;
+    font-size: 14px;
+}
+
+#table-wrap tr td .typing-view {
+    margin-bottom: 12px;
+}
+
+#table-wrap tr td button.Delete-btn {
+    border: 0;
+    width: 60px;
+    background: #314260;
+    color: #fff;
+    border-radius: 2px;
+}
+
+#table-wrap tr td button.Edit-btn,
+#table-wrap tr td button.Delete-btn {
+    margin: 10px auto 0;
+}
+
+#table-wrap #result {
+    display: inline-block;
+    font-size: 22px;
+}
+
+#table-wrap input#number-up,
+#table-wrap input#number-down {
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
+    border: 0;
+    border-radius: 50%;
+    background: #fff;
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+}
+
+#table-wrap input#number-up {
+    position: absolute;
+    top: 50%;
+    left: 61.7%;
+    transform: translateY(-50%);
+}
+
+#table-wrap input#number-up:active,
+#table-wrap input#number-down:active,
+#table-wrap input#number-reset:active {
+    background: #f9fbff;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+}
+
+#table-wrap input#number-down {
+    position: absolute;
+    top: 50%;
+    left: 58.9%;
+    transform: translateY(-50%);
+}
+
+#table-wrap input#number-reset {
+    width: 70px;
+    height: 30px;
+    font-size: 14px;
+    border: 0;
+    background: #fff;
+    border-radius: 100px;
+    position: absolute;
+    top: 50%;
+    left: 53%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.Add-number {
+    font-size: 0;
+    margin-bottom: 20px;
+    ;
+}
+
+.Add-number input {
+    width: 148px;
+    height: 30px;
+    border: 2px solid #e4e8f0;
+    box-sizing: border-box;
+    outline: none;
+    padding: 0 8px;
+    margin-right: 10px;
+}
+
+.Add-number button {
+    height: 30px;
+    background: transparent;
+    color: #314260;
+    border: 2px solid #e4e8f0;
+    outline: none;
+    padding: 0 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.Add-number button:active {
+    background: #314260;
+    color: #fff;
+    border: 0;
+}
+
+/* 멀티파일 */
+.insert {
+    display: block;
+}
+
+.insert .file-list .filebox p {
+    font-size: 14px;
+    margin-top: 10px;
+    display: inline-block;
+    white-space: pre-line;
+    line-height: 15px;
+}
+
+#table-wrap .insert .file-list .filebox a {
+    color: #ff5353;
+    margin-left: 10px;
+    width: 10px;
+    height: 10px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+input {
+    text-align: center;
+}
+
+._stateCheck {
+    background-color: #314260 !important;
+    color: #fff !important;
+}
+
+._finish {
+    background-color: #FFE4E1;
+}
+
+._hold {
+    background-color: #E6E6FA;
+
+}
+
+.dleFileListBtn {
+    color: red !important;
+    text-decoration: none !important;
+    margin-left: 7px;
+    cursor: pointer !important;
+}
+
+.selectFile {
+    border: none !important;
+}
+
+.fileName {
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+
+}
+
+._downFile {
+    display: block;
+    margin: 10px;
+}
+
+._open {
+    display: block !important;
+}
+
+._trade {
+    color: #9499a3 !important;
+}

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<!-- Left CompanyChart Start -->
+<div class="slide_down_wrap" th:fragment="sideSiCompanyFragment">
+    <div class="top_slide guest_slide arrowOn">
+        <h2 >고객 관리</h2>
+    </div>
+    <ul class="top_slide_sub5">
+        <li onclick="location.href='/potential/counseling'">
+            <a th:classappend="${requestUrl == '/potential/counseling'} ? 'on_color'" href="#">고객 리스트</a>
+        </li>
+    </ul>
+
+    <br><br>
+    <div class="top_slide arrowOn">
+        <h2>계약 관리</h2>
+    </div>
+    <ul class="top_slide_sub on_block arrowOn arrowOff">
+        <li class="sub_arrowOn" onclick="location.href='/contractFortune/contractFortune'"
+            th:classappend="${(mainUrl == 'contractFortune' ? 'on_block' : 'arrowoff arrowon')}">
+            <a href="#">목돈</a>
+        </li>
+        <ul class="top_slide_sub2" th:classappend="${mainUrl == 'contractFortune' ? 'on_block' : ''}">
+            <li onclick="location.href='/contractFortune/contractFortune'">
+                <a th:classappend="${requestUrl == '/contractFortune/contractFortune'} ? 'on_color'"
+                   href="#">· 목돈 계약 리스트</a></li>
+            <li onclick="location.href='/contractFortune/checkContractFortune'">
+                <a th:classappend="${requestUrl == '/contractFortune/checkContractFortune'} ? 'on_color'"
+                   href="#">· 목돈 계약 확인 리스트</a></li>
+        </ul>
+
+        <li class="sub_arrowOn"
+            th:classappend="${(mainUrl == 'insurance' ? 'on_block' : 'arrowoff arrowon')}"
+            onclick="location.href='/insurance/insurance'">
+            <a href="#">보험</a>
+        </li>
+        <ul class="top_slide_sub2" th:classappend="${mainUrl == 'insurance' ? 'on_block' : ''}">
+            <li onclick="location.href='/insurance/addInsurance'">
+                <a th:classappend="${requestUrl == '/insurance/addInsurance'} ? 'on_color'"
+                   sec:authorize="hasAnyAuthority('CONTRACT_MANAGER')"
+                   href="#">· 보험 계약 추가</a></li>
+            <li onclick="location.href='/insurance/insurance'">
+                <a th:classappend="${requestUrl == '/insurance/insurance'} ? 'on_color'"
+                   href="#">· 보험 계약 리스트</a></li>
+            <li onclick="location.href='/insurance/checkInsurance'">
+                <a th:classappend="${requestUrl == '/insurance/checkInsurance'} ? 'on_color'"
+                   href="#">· 보험 계약 확인 리스트</a></li>
+        </ul>
+
+
+
+    </ul>
+
+</div>
+
+</html>

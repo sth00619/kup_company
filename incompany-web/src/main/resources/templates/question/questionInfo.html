@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <link href="/toastUi/css/toastUi.css" rel="stylesheet">
+    <link href="/toastUi/css/toastUi-editor-plugin-table-merged-cell.css" rel="stylesheet">
+    <link href="/toastUi/css/tui-color-picker.css" rel="stylesheet">
+    <link href="/toastUi/css/toastUi-editor-plugin-color-syntax.css" rel="stylesheet">
+</th:block>
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideFaCompany :: sideFaCompanyFragment"></div>
+</th:block>
+
+<th:block layout:fragment="contents">
+    <input th:value="${cloudUrl}" id="cloudUrl" hidden />
+
+    <form enctype="multipart/form-data" id="questionInfo" method="post" th:action="@{/}">
+        <input name="_method" type="hidden" value="DELETE"/>
+        <input id="questionNo" th:value="${questionContents.questionNo}" type="hidden">
+
+        <div class="top_center_menu_visual">
+            <div class="main_center_wrap">
+                <div class="top_title">
+                    <h2>질문 게시판</h2>
+                </div>
+                <div class="Khlist">
+                    <dl class="list_view01">
+                        <dt>작성자</dt>
+                        <dd><span th:text="${questionContents.createEmployeeName}"></span></dd>
+                    </dl>
+
+                    <dl class="list_view02">
+                        <dt>등록일</dt>
+                        <dd><span th:text="${questionContents.createDate}"></span></dd>
+                    </dl>
+
+                    <dl class="list_view01">
+                        <dt>제목</dt>
+                        <dd>
+                            <span th:text="${questionContents.title}"></span>
+                        </dd>
+                    </dl>
+
+                    <dl class="list_view02">
+                        <dt>조회수</dt>
+                        <dd><span th:text="${questionContents.hit}"></span></dd>
+                    </dl>
+
+                    <dl class="list_view04 heightUp">
+                        <dt>내용</dt>
+                        <p hidden id="contents" th:text="${questionContents.contents}"></p>
+                        <dd>
+                            <div id="viewer"></div>
+                        </dd>
+                    </dl>
+
+                    <dl class="list_view03 file_view">
+                        <dt>첨부파일</dt>
+                        <dd>
+                            <div th:if="${questionContents.isFileExist}">
+                                <a class="file_click"><img src="/images/img/file.png"></a>
+                                <div class="file_viewbox">
+                                    <ul th:each="  fl: ${fileList}">
+                                        <li id="downFile" th:text="${fl}"></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </dd>
+                    </dl>
+
+                </div>
+
+                <!-- 댓글 구현 -->
+                <th:block th:replace="fragments/reply :: reply"></th:block>
+
+                <div class="save_btn_wrap">
+                    <div>
+                        <a>
+                            <button class="close_btn full_list2 _fullListBtn" type="button">전체목록</button>
+                        </a>
+                        <button class="close_btn _updateBtn" th:if="${questionContents.createEmployeeCode} == ${loginEmployeeCode}" type="button">수정</button>
+                        <button class="close_btn btn_color _deleteBtn" th:if="${questionContents.createEmployeeCode} == ${loginEmployeeCode}">삭제</button>
+                    </div>
+                </div>
+
+                <div class="Khlist">
+                    <dl class="list_view07">
+                        <dt>이전글</dt>
+                        <a id="preBtn">
+                            <dd>
+                                <span id="preQuestion" th:text="${questionContents.preTitle}" th:value="${questionContents.preQuestionNo}"></span>
+                            </dd>
+                            <div class="today_itembox">
+                                <p class="today_item" th:text="${questionContents.preCreateTime}"></p>
+                            </div>
+                        </a>
+                    </dl>
+
+                    <dl class="list_view07">
+                        <dt>다음글</dt>
+                        <a id="nextBtn">
+                            <dd>
+                                <span id="nextQuestion" th:text="${questionContents.nextTitle}" th:value="${questionContents.nextQuestionNo}"></span>
+                            </dd>
+                            <div class="today_itembox">
+                                <p class="today_item" th:text="${questionContents.nextCreateTime}"></p>
+                            </div>
+                        </a>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </form>
+</th:block>
+
+
+<th:block layout:fragment="pageScript">
+    <!-- Color Picker -->
+    <script src="/toastUi/js/tui-color-picker.js"></script>
+    <!-- Editor -->
+    <script src="/toastUi/js/toastUi.js"></script>
+    <!-- Editor's Plugin -->
+    <script src="/toastUi/js/toastUi-editor-plugin-table-merged-cell.js"></script>
+    <script src="/toastUi/js/toastUi-editor-plugin-color-syntax.js"></script>
+    <script th:src="@{/js/question/questionInfo.js(date=${todayFormat})}"></script>
+</th:block>
+
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <!-- css작성, 파일 -->
+    <link href="/toastUi/css/toastUi.css" rel="stylesheet">
+    <link href="/toastUi/css/toastUi-editor-plugin-table-merged-cell.css" rel="stylesheet">
+    <link href="/toastUi/css/tui-color-picker.css" rel="stylesheet">
+    <link href="/toastUi/css/toastUi-editor-plugin-color-syntax.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/worksheet/worksheet.css(date=${todayFormat})}" type="text/css">
+</th:block>
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideWorksheet :: sideWorksheetFragment"></div>
+</th:block>
+
+<th:block layout:fragment="contents">
+    <form enctype="multipart/form-data" id="form" method="post" th:action="@{edit}">
+        <input name="_method" type="hidden" value="put">
+
+        <input hidden id="requestNo" name="requestNo" th:value="${rc.requestNo}" />
+
+        <div class="top_center_menu_visual">
+
+            <div class="main_center_wrap">
+
+                <div class="top_title">
+                    <h2>업무요청 수정하기</h2>
+                </div>
+                <div class="Khlist">
+
+                    <dl class="list_view01">
+                        <dt>요청자</dt>
+                        <dd><span>[[${rc.requestEmployeeName}]]</span></dd>
+                    </dl>
+
+                    <dl class="list_view02">
+                        <dt>담당자</dt>
+                        <dd>
+                            <span th:text="${rc.responseEmployeeName}" th:value="${rc.responseEmployeeCode}"></span>
+                        </dd>
+                    </dl>
+
+                    <dl class="list_view01">
+                        <dt>머리말</dt>
+                        <dd>
+                            <div class="name_box">
+                                <select class="preface_select" name="category">
+                                    <option th:selected="${rc.category} == '0'" value="0">이미지</option>
+                                    <option th:selected="${rc.category} == '1'" value="1">영상</option>
+                                    <option th:selected="${rc.category} == '2'" value="2">재직증명서발급</option>
+                                </select>
+                            </div>
+                        </dd>
+                    </dl>
+
+                    <dl class="list_view02 file_view">
+                        <dt>마감일</dt>
+                        <dd>
+                            <span th:text="${rc.responseDate}">
+
+                            </span>
+                        </dd>
+                    </dl>
+
+                    <dl class="list_view03">
+                        <dt>제목</dt>
+                        <dd>
+                            <div class="title_input"><input maxlength="50" name="title" th:value="${rc.title}"
+                                    type="text"></div>
+                        </dd>
+                    </dl>
+
+                    <dl class="list_view03">
+                        <dt>양식</dt>
+                        <dd>
+                            <span>
+                                <div class="interest" th:each="wf : ${writeFormList}">
+                                    <input class="_writeForm" name="writeFormat" th:value="${wf.contents}" type="radio">
+                                    <label>[[${wf.title}]]</label>
+                                </div>
+                            </span>
+                        </dd>
+                    </dl>
+
+
+                    <dl class="list_view04 heightUp">
+                        <dt>내용</dt>
+                        <p id="contents" th:text="${rc.contents}" hidden></p>
+                        <div id="editor"></div>
+                    </dl>
+
+                    <dl class="list_view03">
+                        <dt class="viewdt_flex">첨부파일</dt>
+                        <dd>
+                            <div id="fileListDiv">
+                                <p id="maxMsg" th:if="${#lists.size(fileList) == 5 }">파일은 최대 5개까지 업로드 가능합니다</p>
+
+                            <div class="fileNameBef" th:if="${#lists.size(fileList) < 5 }">
+                                <input name="file" type="file" class="selectFile">
+                            </div>
+                            <div th:each=" fl: ${fileList}"  class="fileName">
+                                <input th:value="${fl}" name='fileNameDb' hidden>
+                                <a id="dleFileListBtn">x</a> <span th:text="${fl}"></span>
+
+                            </div>
+                        </dd>
+                    </dl>
+
+                </div>
+
+                <div class="save_btn_wrap">
+                    <div>
+                        <button class="close_btn" id="goContents" type="button">취소</button>
+                        <button class="close_btn btn_color" id="updateBtn" type="button">저장</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+
+</th:block>
+
+
+<th:block layout:fragment="pageScript">
+    <!-- js파일 -->
+    <!-- Color Picker -->
+    <script src="/toastUi/js/tui-color-picker.js"></script>
+    <!-- Editor -->
+    <script src="/toastUi/js/toastUi.js"></script>
+    <!-- Editor's Plugin -->
+    <script src="/toastUi/js/toastUi-editor-plugin-table-merged-cell.js"></script>
+    <script src="/toastUi/js/toastUi-editor-plugin-color-syntax.js"></script>
+    <script th:src="@{/js/worksheet/request/edit.js(date=${todayFormat})}"></script>
+
+</th:block>
+
+
+</html>

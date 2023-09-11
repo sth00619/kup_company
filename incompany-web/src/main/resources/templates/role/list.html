@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <style>
+        input {
+            border: 1px solid
+        }
+    </style>
+</th:block>
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideOperation :: sideOperationFragment"></div>
+</th:block>
+<th:block layout:fragment="contents" sec:authorize="hasAnyAuthority('ROLL_APPENDIX_UPDATE')">
+
+    <input id="selectRole" th:value="${selectRole}" hidden>
+
+    <h1>권한이름으로 사원리스트 출력</h1>
+    <br><br><br>
+
+    <input list="authEnumList" type="text" id="role" th:value="${selectRole}" style="width: 400px; height: 30px">
+    <datalist id="authEnumList">
+        <option th:label="${anl.explain}" th:each="anl : ${authNameList}" th:value="${anl.meaning}" ></option>
+    </datalist>
+
+    <button id="search">검색</button>
+
+
+    <br><br><br><br>
+    <table>
+        <tr>
+            <th scope="col">사원번호</th>
+            <th scope="col">사원 이름</th>
+        </tr>
+        <tr th:each=" el : ${employeeList}" class="_employeeList"
+        th:style="${#strings.equals(selectRole, 'PARTIAL_SELECT_BOX')} ? 'cursor : pointer'">
+            <td th:text="${el.employeeCode}" class="_employeeCode"></td>
+            <td th:text="${el.employeeName}"></td>
+        </tr>
+
+    </table>
+
+
+    <script th:src="@{/js/role/list.js(date=${todayFormat})}"></script>
+
+
+
+</th:block>
+
+
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+<style>
+    #resetEmployeeCode{
+        border: 1px solid;
+    }
+</style>
+</th:block>
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideOperation :: sideOperationFragment"></div>
+</th:block>
+<th:block layout:fragment="contents">
+
+    <script th:src="@{/js/account/reset.js(date=${todayFormat})}"></script>
+
+    <div sec:authorize="hasAnyAuthority('RESET_PASSWORD')">
+        비밀번호 초기화할 사번을 입력해주세요 : 
+    
+        <input list="employeeList" id="resetEmployeeCode" name="employeeCode" type="text">
+        <datalist id="employeeList">
+          <option th:label="${ae.employeeName}" th:each="ae : ${allEmployee}" th:value="${ae.employeeCode}">
+        </datalist>
+        
+        <button id="resetBtn">초기화</button>
+        <br><br><a href="/">홈으로</a>
+    </div>
+
+</th:block>
+</html>

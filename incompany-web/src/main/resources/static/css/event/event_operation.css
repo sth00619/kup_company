@@ -1,0 +1,34 @@
+.eventOperation1 {
+    width : 100px !important;
+}
+
+.eventOperation2 {
+    width : 600px !important;
+}
+
+.eventOperation3 {
+    width : 220px !important;
+}
+
+.eventOperation4 {
+    width : 100px !important;
+}
+
+.eventOperation5 {
+    width : 200px !important;
+}
+
+.eventOperation6 {
+    width : 50px !important;
+}
+
+.eventOperation7 {
+    width : 50px !important;
+}
+
+.add_box > a {
+    background: #304260;
+    color: #fff;
+    border-color: transparent;
+}
+

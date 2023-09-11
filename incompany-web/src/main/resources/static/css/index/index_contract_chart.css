@@ -1,0 +1,47 @@
+/* dataList 화살표시 삭제 */
+._searchUserList::-webkit-calendar-picker-indicator {
+    opacity: 0;
+}
+
+/* MONTHLY REPORT 영역 */
+/* 1) 퍼센트 바 위의 숫자 -> contract_chart.js 에서 아래 attr 조작 */
+.money:after {
+    content : attr(data-content) '';
+}
+/*.money_bar1:after, .money_bar2:after, .money_bar3:after {
+      content : attr(data-content) '';
+  }
+*/
+
+/* 2) 퍼센트 바 -> contract_chart.js 에서 아래 var() 조작 - Default = 0*/
+.money > .money_bar1, .money > .money_bar2, .money > .money_bar3 {
+    width : var(--width, '0%');
+}
+
+/* ACHIEVEMENT 영역 */
+/*   1) 360도 퍼센트 바 */
+.chart_bar1 {
+    background: var(--background, conic-gradient(#304260 0deg, #f4f6fa 50deg));
+}
+.chart_bar2 {
+    background: var(--background, conic-gradient(#42ceb5 0deg, #f4f6fa 50deg));
+}
+.chart_bar3 {
+    background: var(--background, conic-gradient(#9199a6 0deg, #f4f6fa 50deg));
+}
+.chart_bar4 {
+    background: var(--background, conic-gradient(#a9b5c7 0deg, #f4f6fa 50deg));
+}
+
+/*   2) 퍼센트 문자열 표기 */
+.chart:nth-child(1):after, .chart:nth-child(2):after, .chart:nth-child(3):after, .chart:nth-child(4):after{
+    content : attr(data-after-content) '';
+}
+
+/*   3) 클래스 명 표기 (A, B, C, D) */
+.chart:nth-child(1)::before, .chart:nth-child(2)::before, .chart:nth-child(3)::before, .chart:nth-child(4)::before{
+    content : attr(data-before-content) '';
+}
+
+/* 임시 적용 나중에 지울 것 */
+.Escalation_visual{display: none;}

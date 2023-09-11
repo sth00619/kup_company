@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+
+<th:block layout:fragment="pageCss">
+    <style>
+        ._totalScore {
+            font-weight: bold !important;
+        }
+
+        ._explain{
+            color:#E9967A;
+            line-height: 150%;
+        }
+    </style>
+</th:block>
+
+
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideContractFortune :: sideContractFortuneFragment"></div>
+</th:block>
+
+
+<th:block layout:fragment="contents">
+    <input id="departmentCode" th:value="${departmentCode}" type="hidden">
+    <input id="employeeCode" th:value="${employeeCode}" type="hidden">
+    <input id="requestUrl" th:value="${requestUrl}" type="hidden">
+
+    <input id="searchDate" th:value="${searchDate}" type="hidden">
+
+    <strong class="_explain">※ - 상담, 로그인 점수는 10분마다 갱신됩니다. </strong>
+
+    <div class="top_center_menu_visual">
+        <div class="top_left_menu _top_left_menu">
+            <!-- 부서, 팀, 담당자 선택 select -->
+            <th:block th:replace="fragments/select_department_employee :: select_department_employee"></th:block>
+
+        </div>
+        <div class="top_right_menu">
+            <div class="salesman_search">
+                <div class="prev_btn pn_btn _prePage">
+                    <a aria-label="Previous" class="page-link previous _a_pre" href="javascript:void(0)">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 기간 조회 -->
+            <div class="salesman_search">
+                <input class="_search_month_date" readonly th:value="${searchDate}" type="text">
+            </div>
+
+            <div class="salesman_search">
+                <div class="next_btn pn_btn _nextPage">
+                    <a aria-label="Next" class="page-link next _a_next" href="javascript:void(0)">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+
+
+        <div class="main_center_wrap">
+            <div class="main_top">
+                <div>
+                    <ul class="st_contract_main_title">
+
+                        <li>본부</li>
+                        <li>지점</li>
+                        <li>팀</li>
+                        <li>담당자</li>
+                        <li>TA</li>
+                        <li>AP</li>
+                        <li>PC</li>
+                        <li>CS</li>
+                        <li>OT</li>
+                        <li>상담기타</li>
+                        <li>고객등록</li>
+                        <li>로그인</li>
+                        <li>합계</li>
+                    </ul>
+                </div>
+
+                <div class="st_contract_sub_txt">
+                    <ul class="_additionList" th:each=" asl: ${additionalScoreList}">
+                        <li th:text="${asl.departmentSettingDto.centralDepartmentName}"></li>
+                        <li th:text="${asl.departmentSettingDto.salesDepartmentName}"></li>
+                        <li class="_departmentCode" th:value="${asl.dCodeByEmployeeCodeOfList}" th:text="${asl.departmentSettingDto.teamDepartmentName}"></li>
+                        <li class="_employeeCode" th:value="${asl.employeeCodeOfList}" th:text="${asl.employeeName}"></li>
+                        <li th:text="${asl.taScore}"></li>
+                        <li th:text="${asl.apScore}"></li>
+                        <li th:text="${asl.pcScore}"></li>
+                        <li th:text="${asl.csScore}"></li>
+                        <li th:text="${asl.otScore}"></li>
+                        <li th:text="${asl.counselingScore}"></li>
+                        <li th:text="${asl.addPotentialUserScore}"></li>
+                        <li th:text="${asl.loginScore}"></li>
+                        <li class="_totalScore" th:text="${asl.totalScore}"></li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+<th:block layout:fragment="pageScript">
+    <script th:src="@{/js/utils/date_util.js(date=${todayFormat})}" type="text/javascript"></script>
+    <script th:src="@{/js/select_department_employee.js(date=${todayFormat})}" type="text/javascript"></script>
+    <script th:src="@{/js/statistics/additionalScore/additionalScoreDatePicker.js(date=${todayFormat})}" type="text/javascript"></script>
+    <script th:src="@{/js/statistics/additionalScore/additionalScore.js(date=${todayFormat})}" type="text/javascript"></script>
+
+
+
+</th:block>
+
+</html>

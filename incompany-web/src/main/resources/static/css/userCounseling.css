@@ -1,0 +1,76 @@
+table {
+    border: 1px solid #444444;
+    text-align: center;
+    margin-top: 4px;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#AddCounselingBtn {
+    background-color: white;
+
+}
+
+.hide {
+    display: none;
+}
+
+.show {
+    display: table-row;
+}
+
+#contents {
+    width: 750px;
+    height: 100px;
+    margin-top: 10px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+#showDetailBtn {
+    border: 0;
+    background-color: white;
+}
+
+.detailUser {
+    width: 15px;
+    height: 15px;
+}
+
+.formDetail {
+    padding-top: 35px;
+    padding-bottom: 35px;
+    width: 250px;
+    text-align: center;
+}
+
+.form-select {
+    width: 300px;
+    float: right;
+}
+
+#title {
+    padding-top: 20px;
+    width: 200px;
+}
+.possibleTime{
+    width: 180px
+}
+.note{
+    width: 140px;
+}
+.counseling{
+    width: 400px
+}
+#userList{
+    cursor: pointer;
+}
+#userList:hover{
+    background-color: rgb(233, 233, 233);
+}
+.updatePotential {
+    text-decoration-line: none;
+    color : #000000;
+
+}

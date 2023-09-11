@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="infoFormBottom">
+    <!-- 결재자 -->
+    <div class="save_btn_wrap" th:if="${payment.isApprover}">
+        <a href="javascript:void(0);">
+            <!-- /vacation/vacationInfo.js 하단 전체목록 버튼 클릭 이벤트 참고 -->
+            <button class="close_btn btn_color _payment_list_button" type="button">전체목록</button>
+        </a>
+        <div th:if="${payment.isApproverNow}">
+            <button class="close_btn btn_color _paymentBtn" type="button" value="1">결재</button>
+            <button class="close_btn btn_color _paymentBtn" type="button" value="3">반려</button>
+        </div>
+    </div>
+
+    <!-- 참조자 or 본인 -->
+    <div class="save_btn_wrap" th:unless="${payment.isApprover}">
+        <a href="javascript:void(0);">
+            <!-- /vacation/vacationInfo.js 하단 전체목록 버튼 클릭 이벤트 참고 -->
+            <button class="close_btn btn_color _my_list_button" type="button">전체목록</button>
+        </a>
+
+        <div th:if="(${payment.paymentStatusEnum.index} == 0 or ${payment.paymentStatusEnum.index} == 4) and ${loginEmployeeCode == payment.draftEmployeeCode}">
+            <a href="javascript:void(0);">
+                <button class="close_btn _update_payment" type="button">수정</button>
+            </a>
+            <a href="javascript:void(0);">
+                <button class="close_btn btn_color _delete_payment" type="button">삭제</button>
+            </a>
+        </div>
+    </div>
+</th:block>
+</html>

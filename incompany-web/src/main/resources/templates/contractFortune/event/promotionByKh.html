@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+
+</th:block>
+
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideContractFortune :: sideContractFortuneFragment"></div>
+</th:block>
+
+<th:block layout:fragment="contents">
+    <div th:replace="fragments/eventListFragment :: eventListFragment"></div>
+</th:block>
+
+<th:block layout:fragment="pageScript">
+
+</th:block>
+</html>

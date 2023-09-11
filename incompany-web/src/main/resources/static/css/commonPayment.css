@@ -1,0 +1,27 @@
+._khlist {
+    border-top: 1px solid #304260;
+}
+
+._add_form_payment {
+    margin-bottom : 0px !important;
+}
+
+._add_command {
+    margin-bottom : 0px !important;
+}
+
+/*
+    글자 왼쪽 정렬 방식의 게시판 일 경우 아래 css 를 해당 게시판의 css 에 추가 해 주세요.
+    참고 : addVacation.html > 상단 style 태그
+*/
+/*
+    .Khlist dt {
+        text-align: left !important;
+        padding-left: 22px !important;
+        justify-content: left !important;
+    }
+
+    .list_view03 dt {
+        width: 118px;
+    }
+*/

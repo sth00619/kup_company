@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
+
+  <style>
+    .writing_sum {
+      top: 0;
+      left: 0;
+      position: fixed;
+    }
+
+    .modify_sum {
+      top: 0;
+      left: 0;
+      position: fixed;
+    }
+  </style>
+</th:block>
+
+<th:block layout:fragment="side_contents">
+  <div th:unless="${#authorization.expression('hasAnyAuthority(''SI_COMPANY'', ''FA_COMPANY'')')}">
+    <div th:replace="fragments/sideContractFortune :: sideContractFortuneFragment"></div>
+  </div>
+
+  <!--si company 권한 있을 경우 사이드바 -->
+  <div th:if="${#authorization.expression('hasAnyAuthority(''SI_COMPANY'')')}">
+    <div th:replace="fragments/sideSiCompany :: sideSiCompanyFragment"></div>
+  </div>
+
+  <!--fa company 권한 있을 경우 사이드바 -->
+  <div th:if="${#authorization.expression('hasAnyAuthority(''FA_COMPANY'')')}">
+    <div th:replace="fragments/sideFaCompany :: sideFaCompanyFragment"></div>
+  </div>
+</th:block>
+
+<th:block layout:fragment="contents">
+  <!-- 작성하기 클릭 시 writing_sum
+  수정하기 클릭 시 modify_sum -->
+  <div class="writing_sum">
+    <div class="writing_per">
+      <div class="writing_nav">
+        <button class="close_writing">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14.5 9.50001L9.5 14.5M9.5 9.50001L14.5 14.5M7 3.33801C8.51952 2.45891 10.2445 1.99731 12 2.00001C17.523 2.00001 22 6.47701 22 12C22 17.523 17.523 22 12 22C6.477 22 2 17.523 2 12C2 10.179 2.487 8.47001 3.338 7.00001" stroke="black" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+        </button>
+        <!-- 날짜 고객명 금액 확률 모두 입력 시 완료버튼 클릭가능. writing_submit active 클래스 붙음. -->
+        <button class="writing_submit" disabled>완료</button>
+      </div>
+      <p class="sumcategory_title">작성하기</p>
+      <div class="confirm_editbox">
+        <div>
+          <div class="point_category_list">
+            <ul class="category_box">
+              <li class="anticipation_amount_title">
+                <div class="confirm_amount_title">
+                  <div class="two_column">
+                    <span class="two_column_title long_title">날짜</span>
+                    <span class="two_column_title long_title">고객명</span>
+                    <span class="two_column_title long_title">금액</span>
+                    <span class="two_column_title long_title">확률</span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="person_databox">
+          <div class="category_box">
+            <div class="one_column_title">
+              <input class="person_data _estimatedDate" type="text" placeholder="날짜 입력" required>
+            </div>
+            <div class="one_column_title">
+              <input class="person_data _estimatedUserName" spellcheck="false" type="text" placeholder="이름 입력" required>
+            </div>
+            <div class="one_column_title">
+              <input class="person_data right_data _estimatedAmount" spellcheck="false" type="text" placeholder="금액 입력" required>
+            </div>
+            <div class="one_column_title">
+              <input class="person_data right_data _probability" spellcheck="false" type="text" placeholder="확률 입력" required>
+            </div>
+          </div>
+        </div>
+        <div class="sumnote_area">
+          <div class="one_column_title">
+            비고
+          </div>
+          <div class="sumnote_box">
+            <!-- 최대 글자 수 100글자 -->
+            <textarea class="sumnote _note" name="sumnote" id="sumnote_write" maxlength="100" spellcheck="false" placeholder="비고를 입력해주세요."></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modify_sum">
+    <div class="modify_per">
+      <div class="modify_nav">
+        <button class="close_modify">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14.5 9.50001L9.5 14.5M9.5 9.50001L14.5 14.5M7 3.33801C8.51952 2.45891 10.2445 1.99731 12 2.00001C17.523 2.00001 22 6.47701 22 12C22 17.523 17.523 22 12 22C6.477 22 2 17.523 2 12C2 10.179 2.487 8.47001 3.338 7.00001" stroke="black" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+        </button>
+        <!-- 날짜 고객명 금액 확률 모두 입력 시 완료버튼 클릭가능. modify_submit active 클래스 붙음. -->
+        <button class="modify_submit" disabled>완료</button>
+      </div>
+      <p class="sumcategory_title">수정하기</p>
+      <div class="confirm_editbox">
+        <div>
+          <div class="point_category_list">
+            <ul class="category_box">
+              <li class="anticipation_amount_title">
+                <div class="confirm_amount_title">
+                  <div class="two_column">
+                    <span class="two_column_title long_title">날짜</span>
+                    <span class="two_column_title long_title">고객명</span>
+                    <span class="two_column_title long_title">금액</span>
+                    <span class="two_column_title long_title">확률</span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="person_databox">
+          <div class="category_box">
+            <input class="_estimatedNo" type="hidden">
+            <div class="one_column_title">
+              <input class="person_data _estimatedDate" type="text" placeholder="날짜 입력" required>
+            </div>
+            <div class="one_column_title">
+              <input class="person_data _estimatedUserName" spellcheck="false" type="text" placeholder="이름 입력" required>
+            </div>
+            <div class="one_column_title">
+              <input class="person_data _estimatedAmount" spellcheck="false" type="text" placeholder="금액 입력" required>
+            </div>
+            <div class="one_column_title">
+              <input class="person_data _probability" spellcheck="false" type="text" placeholder="확률 입력" required>
+            </div>
+          </div>
+        </div>
+        <div class="sumnote_area">
+          <div class="one_column_title">
+            비고
+          </div>
+          <div class="sumnote_box">
+            <textarea class="sumnote _note" name="sumnote" id="sumnote_modify" maxlength="100" spellcheck="false" placeholder="비고를 입력해주세요."></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sum_container sum">
+    <div class="sum_month_nav">
+      <div class="days_col">
+        <div class="the_year_month">
+          <span id="year" class="the_weekbtn" th:text="${year} + '년 '"></span>
+          <span id="month" class="the_weekbtn" th:text="${month}+'월'"></span>
+        </div>
+        <button id="last_month" class="sumprev_btn">
+          <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6.32609 9.27693L9.15217 12.1609C9.49638 12.5121 9.89022 12.5905 10.3337 12.396C10.7772 12.2016 10.9993 11.8551 11 11.3567L11 5.64426C11 5.14512 10.7779 4.7983 10.3337 4.60382C9.88949 4.40934 9.49565 4.48809 9.15217 4.84008L6.32609 7.72404C6.21739 7.83496 6.13587 7.95512 6.08152 8.08453C6.02717 8.21394 6 8.35259 6 8.50048C6 8.64838 6.02717 8.78703 6.08152 8.91644C6.13587 9.04585 6.21739 9.16601 6.32609 9.27693Z" fill="#8E8E93" />
+          </svg>
+        </button>
+        <button id="next_month" class="sumnext_btn">
+          <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9.67391 7.72307L6.84783 4.83911C6.50362 4.48786 6.10978 4.40948 5.6663 4.60396C5.22283 4.79844 5.00072 5.14489 5 5.64329L5 11.3557C5 11.8549 5.2221 12.2017 5.6663 12.3962C6.11051 12.5907 6.50435 12.5119 6.84783 12.1599L9.67391 9.27596C9.78261 9.16504 9.86413 9.04488 9.91848 8.91547C9.97283 8.78606 10 8.64741 10 8.49952C10 8.35162 9.97283 8.21297 9.91848 8.08356C9.86413 7.95415 9.78261 7.83399 9.67391 7.72307Z" fill="#8E8E93" />
+          </svg>
+        </button>
+      </div>
+      </button>
+      <div id="week_range" class="sum_weeknav">
+        <!-- 주차 클릭 시 클릭한것 1개만 active클래스 부여 -->
+        <button class="the_weekbtn _week" th:classappend="${week == 0} ? 'active' : ''">전체</button>
+        <button class="the_weekbtn _week" th:each="monthOfWeek : ${#numbers.sequence(1, weekRange)}" th:classappend="${week == monthOfWeek} ? 'active' : ''" th:text="${monthOfWeek}+'주차'"></button>
+      </div>
+    </div>
+
+    <div class="sum_weeknav slide_down_wrap">
+
+      <div class="the_category">
+
+        <div class="top_slide_category">
+          <span class="select_category">
+            <!-- 처음 진입 시 닫힌상태로 보여주게 이벤트 추가해야함. -->
+            <input id="category" type="hidden" th:value="${category}">
+            <span class="_category" th:text="${category == 1 ? '목돈' : '보험'}"></span>
+            <!-- 클릭 시 point_ani에 active 클래스 부여-->
+            <button class="point_ani">
+              <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8.77693 9.67391L11.6609 6.84783C12.0121 6.50362 12.0905 6.10978 11.896 5.6663C11.7016 5.22283 11.3551 5.00072 10.8567 5L5.14426 5C4.64512 5 4.2983 5.2221 4.10382 5.6663C3.90934 6.11051 3.98809 6.50435 4.34008 6.84783L7.22404 9.67391C7.33496 9.78261 7.45512 9.86413 7.58453 9.91848C7.71394 9.97283 7.85259 10 8.00048 10C8.14838 10 8.28703 9.97283 8.41644 9.91848C8.54585 9.86413 8.66601 9.78261 8.77693 9.67391Z" fill="#8E8E93" />
+              </svg>
+            </button>
+          </span>
+        </div>
+
+        <div class="_category_list" style="display: none;">
+          <ul class="the_category_select con_1">
+            <li><span th:class="${category == 1 ? 'top_slide_sub5' : ''}">목돈</span></li>
+            <li><span th:class="${category == 2 ? 'top_slide_sub5' : ''}">보험</span></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <button class="the_plusbtn" sec:authorize="hasAnyAuthority('SALES_TARGET_BRANCH', 'SALES_TARGET_TEAM', 'SALES_TARGET')">
+        작성하기
+        <svg width="11" height="10" viewBox="0 0 11 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8.54167 3.71879L6.77083 1.96879L7.35417 1.38546C7.51389 1.22574 7.71014 1.14587 7.94292 1.14587C8.17542 1.14587 8.37153 1.22574 8.53125 1.38546L9.11458 1.96879C9.2743 2.12851 9.35764 2.32129 9.36458 2.54712C9.37153 2.77268 9.29514 2.96532 9.13542 3.12504L8.54167 3.71879ZM7.9375 4.33337L3.52083 8.75004H1.75V6.97921L6.16667 2.56254L7.9375 4.33337Z" fill="black" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="sum" th:each="branch : ${salesBranchList}">
+    <div class="each_pointwrap" th:id="${branch.departmentCode}">
+    <!-- 이벤트걸때 각 지점별 아이디 값 부여 하셔도됩니다. -->
+      <div class="each_point">
+        <!-- point_skill 클릭 시 point_amount와 group_amount_lists에 active 클래스 부여 -->
+        <div class="point_skill">
+          <h3 class="point_title" th:text="${branch.departmentName}"></h3>
+          <button class="point_ani">
+            <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8.77693 9.67391L11.6609 6.84783C12.0121 6.50362 12.0905 6.10978 11.896 5.6663C11.7016 5.22283 11.3551 5.00072 10.8567 5L5.14426 5C4.64512 5 4.2983 5.2221 4.10382 5.6663C3.90934 6.11051 3.98809 6.50435 4.34008 6.84783L7.22404 9.67391C7.33496 9.78261 7.45512 9.86413 7.58453 9.91848C7.71394 9.97283 7.85259 10 8.00048 10C8.14838 10 8.28703 9.97283 8.41644 9.91848C8.54585 9.86413 8.66601 9.78261 8.77693 9.67391Z" fill="#8E8E93" />
+            </svg>
+          </button>
+        </div>
+        <div class="_info">
+          <th:block th:if="${active}">
+            <th:block th:each="branchList : ${salesTargetBranchList}">
+              <div class="point_amount active">
+                <!-- 개인페이지에서는 해당 요소 제거 fixed_column -->
+                <div class="fixed_column" th:if="${#authorization.expression('hasAnyAuthority(''SALES_TARGET_ALL'', ''SALES_TARGET_BRANCH'', ''SALES_TARGET_TEAM'')')}">
+                  <span class="person_namebox my-team" th:text="${branchList.departmentName}"></span>
+                </div>
+                <div class="personal_boxs">
+                  <div class="point_category_list">
+                    <ul class="category_box">
+
+                      <li class="fixed_amounttitle">
+
+                        <div class="one_column_title">담당자</div>
+                        <div class="one_column_title defined_title_amount">
+                          <span class="defined_title">목돈</span>
+                          <span class="defined_title">확정 합계</span>
+                        </div>
+                        <div class="one_column_title defined_title_amount">
+                          <span class="defined_title">보험</span>
+                          <span class="defined_title">확정 합계</span>
+                        </div>
+
+                      </li>
+                      <li class="confirm_amount_title">
+                        <div class="confirm__title">확정</div>
+                        <div class="two_column">
+                          <span class="two_column_title">날짜</span>
+                          <span class="two_column_title">고객명</span>
+                          <span class="two_column_title">금액</span>
+                        </div>
+
+                      </li>
+                      <li class="anticipation_amount_title">
+                        <div class="confirm_amount_title">
+                          <div class="confirm__title">예상</div>
+                          <div class="two_column">
+                            <span class="two_column_title long_title">날짜</span>
+                            <span class="two_column_title long_title">고객명</span>
+                            <span class="two_column_title long_title">금액</span>
+                            <span class="two_column_title long_title">확률</span>
+                            <span class="two_column_title long_title">비고</span>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <th:block th:each="goalList : ${branchList.salesTargetList}">
+                    <th:block th:if="${branchList.isBranchManager == 1}">
+                      <div class="person_textbox">
+                        <div class="individual_box">
+                          <div class="person_namebox manager_box">
+                            <span class="per_nametxt" th:text="${goalList.amount.employeeName}"></span>
+                            <span>(지점장)</span>
+                          </div>
+                          <div class="person_numberbox"><span th:text="${goalList.amount.totalAmountContractFortunePlusComma}"></span></div>
+                          <div class="person_numberbox"><span th:text="${goalList.amount.totalAmountInsurancePlusComma}"></span></div>
+                        </div>
+                        <div class="individual_personal_box confirm_box">
+                          <th:block th:each="confirmedItem : ${goalList.confirmed}">
+                            <ul class="target_tabel ttb">
+                              <li class="person_textarea _confirmed">
+                                <input class="_confirmedNo" type="hidden" th:value="${confirmedItem.confirmedNo}">
+                                <span class="emp_cell" th:text="${confirmedItem.confirmedDate}"></span>
+                                <span class="emp_cell" th:text="${confirmedItem.potentialUserName}"></span>
+                                <span class="emp_cell" th:text="${confirmedItem.amountPlusComma}"></span>
+                              </li>
+                            </ul>
+                          </th:block>
+                        </div>
+                        <div class="individual_personal_box not_comfirmbox">
+                          <!-- long_title은 예상 집계에만 추가됨. -->
+                          <th:block th:each="estimatedItem : ${goalList.estimated}">
+                            <ul class="target_tabel ttb">
+                              <li class="person_textarea">
+                                <div class="modif_box">
+                                  <input class="_estimatedNo" type="hidden" th:value="${estimatedItem.estimatedNo}">
+                                  <span class="long_title emp_cell _estimatedDate" th:text="${estimatedItem.estimatedDate}"></span>
+                                  <span class="long_title emp_cell _estimatedUserName" th:text="${estimatedItem.estimatedUserName}"></span>
+                                  <span class="long_title emp_cell _estimatedAmount" th:text="${estimatedItem.estimatedAmountPlusComma}"></span>
+                                  <span class="long_title emp_cell _probability" th:text="|${estimatedItem.probability} %|"></span>
+                                  <th:block th:if="${employeeCode == goalList.amount.employeeCode}">
+                                    <div class="sum_modify">
+                                      <span class="amount_modify_btn _estimated">수정하기</span>
+                                      <button class="del_amount _delete_button">삭제</button>
+                                    </div>
+                                  </th:block>
+                                </div>
+                                <!-- per_note는 비고. 8글자부터 ... 처리 및 마우스 호버 시 sclae적용 -->
+                                <input class="_note_value" type="hidden" th:value="${estimatedItem.note}">
+                                <input class="_note_formatted_value" type="hidden" th:value="${estimatedItem.noteFormatted}">
+                                <span class="long_title emp_cell _note" th:text="${estimatedItem.noteFormatted}"></span>
+                              </li>
+                            </ul>
+                          </th:block>
+                        </div>
+                      </div>
+                    </th:block>
+
+                    <th:block th:unless="${branchList.isBranchManager == 1}">
+                      <div class="person_textbox">
+                        <div class="individual_box">
+                          <div class="person_namebox">
+                            <span class="per_nametxt" th:text="${goalList.amount.employeeName}"></span>
+                          </div>
+                          <div class="person_numberbox"><span th:text="${goalList.amount.totalAmountContractFortunePlusComma}"></span></div>
+                          <div class="person_numberbox"><span th:text="${goalList.amount.totalAmountInsurancePlusComma}"></span></div>
+                        </div>
+                        <div class="individual_personal_box confirm_box">
+                          <th:block th:each="confirmedItem : ${goalList.confirmed}">
+                            <ul class="target_tabel ttb">
+                              <li class="person_textarea _confirmed">
+                                <input class="_confirmedNo" type="hidden" th:value="${confirmedItem.confirmedNo}">
+                                <span class="emp_cell" th:text="${confirmedItem.confirmedDate}"></span>
+                                <span class="emp_cell" th:text="${confirmedItem.potentialUserName}"></span>
+                                <span class="emp_cell" th:text="${confirmedItem.amountPlusComma}"></span>
+                              </li>
+                            </ul>
+                          </th:block>
+                        </div>
+                        <div class="individual_personal_box not_comfirmbox">
+                          <!-- long_title은 예상 집계에만 추가됨. -->
+                          <th:block th:each="estimatedItem : ${goalList.estimated}">
+                            <ul class="target_tabel ttb">
+                              <li class="person_textarea">
+                                <div class="modif_box">
+                                  <input class="_estimatedNo" type="hidden" th:value="${estimatedItem.estimatedNo}">
+                                  <span class="long_title emp_cell _estimatedDate" th:text="${estimatedItem.estimatedDate}"></span>
+                                  <span class="long_title emp_cell _estimatedUserName" th:text="${estimatedItem.estimatedUserName}"></span>
+                                  <span class="long_title emp_cell _estimatedAmount" th:text="${estimatedItem.estimatedAmountPlusComma}"></span>
+                                  <span class="long_title emp_cell _probability" th:text="|${estimatedItem.probability} %|"></span>
+                                  <th:block th:if="${employeeCode == goalList.amount.employeeCode}">
+                                    <div class="sum_modify">
+                                      <span class="amount_modify_btn _estimated">수정하기</span>
+                                      <button class="del_amount _delete_button">삭제</button>
+                                    </div>
+                                  </th:block>
+                                </div>
+                                <!-- per_note는 비고. 8글자부터 ... 처리 및 마우스 호버 시 sclae적용 -->
+                                <input class="_note_value" type="hidden" th:value="${estimatedItem.note}">
+                                <input class="_note_formatted_value" type="hidden" th:value="${estimatedItem.noteFormatted}">
+                                <span class="long_title emp_cell _note" th:text="${estimatedItem.noteFormatted}"></span>
+                              </li>
+                            </ul>
+                          </th:block>
+                        </div>
+                      </div>
+                    </th:block>
+                  </th:block>
+                </div>
+              </div>
+              <div class="group_amount_lists active" th:if="${#authorization.expression('hasAnyAuthority(''SALES_TARGET_ALL'', ''SALES_TARGET_BRANCH'', ''SALES_TARGET_TEAM'')')}">
+                <div class="two_column">
+                  <!-- 단위는 천단위부터. -->
+                  <div class="two_column_title hidden_box">hidden</div>
+                  <span class="two_column_title">총 합계</span>
+                  <span class="two_column_title" th:text="${branchList.teamTotalAmountContract}"></span>
+                  <span class="two_column_title" th:text="${branchList.teamTotalAmountInsurance}"></span>
+                </div>
+
+                <div class="two_column definite_sum">
+                  <div class="sum_data">
+                    <span th:text="|${category == 1 ? '목돈' : '보험'} 확정 합계 : |"></span>
+                    <span th:text="${branchList.teamTotalAmountConfirmed}"></span>
+                  </div>
+                </div>
+
+                <div class="two_column estimated_sum">
+                  <div class="sum_data">
+                    <span th:text="|${category == 1 ? '목돈' : '보험'} 예상 합계 : |"></span>
+                    <span th:text="${branchList.teamTotalAmountEstimated}"></span>
+                  </div>
+                </div>
+              </div>
+            </th:block>
+          </th:block>
+        </div>
+      </div>
+    </div>
+  </div>
+</th:block>
+
+<th:block layout:fragment="pageScript">
+  <script th:src="@{/js/salesTarget/salesTarget.js(date=${todayFormat})}" type="text/javascript"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+</th:block>
+
+</html>
+

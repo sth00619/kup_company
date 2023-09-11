@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 리스트</title>
+
+    <link href="css/reset.css" rel="stylesheet" type="text/css">
+    <link href="css/2.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+
+    <script src="js/jquery-3.6.0.js"></script>
+    <script src="js/main_js.js"></script>
+</head>
+<body>
+    
+    <div id="wrap">
+
+        <header class="header">
+            <div class="main_inner">
+                <h1><a href="#">KH GROUP</a></h1>
+
+                <nav>
+                    <ul>
+                        <li><a href="../1.11 조직도/organization.html">조직도</a></li>
+                        <li><a href="./manager.html">고객관리</a></li>
+                        <li><a href="#">계약관리</a></li>
+                        <li><a href="#">업무일지</a></li>
+                        <li><a href="#">공지사항</a></li>
+                    </ul>
+                </nav>
+
+                <div class="mypage">
+                    <div class="header_search">
+                        <input type="text" placeholder="Search">
+                        <img src="img/search_icon.png" alt="검색"/>
+                    </div>
+    
+                    <div class="my_box">
+                        <a href="#">
+                            <img src="img/my.png">
+                            <!-- <div class=my_box_tell>
+                                <img src="img/red_circle.png">
+                            </div> -->
+                        </a>
+                        <a href="#"><img src="img/back.png"></a>
+                    </div>
+    
+                </div>
+
+            </div>
+
+        </header>
+        <!-- main start ! -->
+        <main>
+            <section id="main_section">
+                <div class="main_inner">
+
+                    <div class="main_section-flex">
+                        <!-- side -->
+                        <div id="main_side_wrap">
+
+                            <div class="quick_box">
+
+                                <div class="today_box">
+
+                                    <div class="my_today_img">
+                                        <img src="img/quick_my.png">
+                                        <div class="my_today_tell">
+                                            <img src="img/red_circle.png">
+                                        </div>
+                                    </div>
+                                    <div class="my_today_txt">
+                                        <h3>TODAY</h3>
+                                        <p>2022.01.01 월요일</p>
+                                        <span>KH자산관리법인</span>
+                                        <span>경영지원 팀<em>박지윤</em></span>
+                                    </div>
+
+                                </div>
+
+                                <div class="daily_box">
+                                    <a href="#">업무일지</a>
+                                    <a href="#">스케줄 확인</a>
+                                </div>
+                                <th:block th:replace="fragments/coffeePointBox :: coffeePointBox"></th:block>
+
+                                <div class="slide_down_wrap">
+
+                                    <div class="top_slide"><h2>고객 관리</h2></div>
+                                    <ul class="top_slide_sub2 salesman_on guest_report_on">
+                                        <li><a href="./manager.html">고객리스트</a></li>
+                                        <li><a href="#">나만의 고객 추가</a></li>
+                                    </ul>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <!-- center -->
+                        <div id="main_center">
+
+                            <div class="location">
+                                <a href="#">HOME</a>
+                                <a href="#">고객관리</a>
+                                <span>고객 리스트</span>
+                            </div>
+                        
+                            <div class="top_center_menu_visual">
+
+                            <div id="top_center-menu">
+
+                                <div id="top_left_menu">
+
+                                    <select class="department_select" name="department">
+                                        <option value="department">영업부서</option>
+                                    </select>
+
+                                    <select class="team_select" name="team">
+                                        <option value="team">팀</option>
+                                    </select>
+
+                                    <select class="person_select" name="person">
+                                        <option value="person">담당자 선택</option>
+                                    </select>
+
+                                    <div class="left_white_box"><p>회수</p></div>
+                                    <div class="left_white_box"><p>할당</p></div>
+                                    
+
+                                </div>
+
+                                <div id="top_right_menu">
+                                    
+                                    <div class="check_box">
+                                        <input type="radio" id="assign_1" name="check">
+                                        <label for="assign_1"></label>
+                                        <span>미할당</span>
+                                    </div>
+                                    <div class="check_box">
+                                        <input type="radio" id="assign_2" name="check">
+                                        <label for="assign_2"></label>
+                                        <span>할당</span>
+                                    </div>
+                                    
+                                    <div class="check_box">
+                                        <input type="radio" id="assign_3" name="check">
+                                        <label class="onon2" for="assign_3"></label>
+                                        <span class="onon">전체보기</span>
+                                    </div>
+
+                                    <div class="search_box">
+                                        <input type="text" placeholder="고객 찾기">
+                                        <img src="img/search_icon.png" alt="검색"/>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div id="main_center_wrap">
+
+                                <div class="main_top">
+                                    <div>
+                                        <ul class="guest_main_title">
+                                            <li><label for="checkbox"></label>
+                                                <input type="checkbox" id="checkbox">
+                                            </li>
+                                            <li>구분</li>
+                                            <li>고객번호</li>
+                                            <li>담당부서</li>
+                                            <li>담당자</li>
+                                            <li>외부출처</li>
+                                            <li>이름</li>
+                                            <li>연락처</li>
+                                            <li>거주지</li>
+                                            <li>성별</li>
+                                            <li>생년월일</li>
+                                            <li>직업</li>
+                                            <li>월급여</li>
+                                            <li>출처</li>
+                                            <li>통화가능시간</li>
+                                            <li>관심분야</li>
+                                            <li>상담내용</li>
+                                            <li>등록일자</li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="main_sub_txt">
+        
+                                            <ul>
+                                                <li class="sub_first_txt">
+                                                    <label for="checkbox"></label>
+                                                    <input type="checkbox" id="checkbox">
+                                                </li>
+                                                <li>O</li>
+                                                <li>2443</li>
+                                                <li>부서이름</li>
+                                                <li>홍길동</li>
+                                                <li>가계부-퍼미션</li>
+                                                <li>이세희</li>
+                                                <li>010-3230-0000</li>
+                                                <li>경기도</li>
+                                                <li>여자</li>
+                                                <li>1997-03-31</li>
+                                                <li>디자이너,마케팅</li>
+                                                <li>200만원대</li>
+                                                <li>DB</li>
+                                                <li>퇴근시간 후(19:00 ~ 22:00)</li>
+                                                <li>전반적인 월급관리</li>
+                                                <li>경기도 안산시 상록구 이동 상록수역/11월26일(금)오후 5시30분</li>
+                                                <li>2021-12-22 / 10:20:09</li>
+                                            </ul>
+
+                                        <ul>
+                                            <li class="sub_first_txt">
+                                                <label for="checkbox"></label>
+                                                <input type="checkbox">
+                                            </li>
+                                            <li>X</li>
+                                                <li>2443</li>
+                                                <li>부서이름</li>
+                                                <li>홍길동</li>
+                                                <li>가계부-퍼미션</li>
+                                                <li>이세희</li>
+                                                <li>010-3230-0000</li>
+                                                <li>경기도</li>
+                                                <li>여자</li>
+                                                <li>1997-03-31</li>
+                                                <li>디자이너,마케팅</li>
+                                                <li>200만원대</li>
+                                                <li>DB</li>
+                                                <li>퇴근시간 후(19:00 ~ 22:00)</li>
+                                                <li>전반적인 월급관리</li>
+                                                <li>경기도 안산시 상록구 이동 상록수역/11월26일(금)오후 5시30분</li>
+                                                <li>2021-12-22 / 10:20:09</li>
+                                        </ul>
+
+                                        <ul>
+                                            <li class="sub_first_txt">
+                                                <label for="checkbox"></label>
+                                                <input type="checkbox">
+                                            </li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                        </ul>
+
+                                        <ul>
+                                            <li class="sub_first_txt">
+                                                <label for="checkbox"></label>
+                                                <input type="checkbox">
+                                            </li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                        </ul>
+
+                                        <ul>
+                                            <li class="sub_first_txt">
+                                                <label for="checkbox"></label>
+                                                <input type="checkbox">
+                                            </li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                        </ul>
+
+                                        <ul>
+                                            <li class="sub_first_txt">
+                                                <label for="checkbox"></label>
+                                                <input type="checkbox">
+                                            </li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                        </ul>
+
+                                        <ul>
+                                            <li class="sub_first_txt">
+                                                <label for="checkbox"></label>
+                                                <input type="checkbox">
+                                            </li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                        </ul>
+
+                                        <ul>
+                                            <li class="sub_first_txt">
+                                                <label for="checkbox"></label>
+                                                <input type="checkbox">
+                                            </li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                        </ul>
+
+                                        <ul>
+                                            <li class="sub_first_txt">
+                                                <label for="checkbox"></label>
+                                                <input type="checkbox">
+                                            </li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                        </ul>
+
+                                        <ul>
+                                            <li class="sub_first_txt">
+                                                <label for="checkbox"></label>
+                                                <input type="checkbox">
+                                            </li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                        </ul>
+
+                                        
+
+                                    </div>
+
+                                    
+                                </div>
+
+                                <!-- next btn -->
+                                <div id="next_btn_wrap">
+
+                                    <div class="prev_btn pn_btn"><span>이전</span></div>
+
+                                    <ul>
+                                        <li class="on">1</li>
+                                        <li>2</li>
+                                        <li>3</li>
+                                        <li>4</li>
+                                        <li>5</li>
+                                        <li>6</li>
+                                        <li>7</li>
+                                        <li>8</li>
+                                        <li>9</li>
+                                        <li>10</li>
+                                    </ul>
+
+                                    <div class="next_btn pn_btn"><span>다음</span></div>
+                                    <div class="double_next_btn pn_btn"><span>따블</span></div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </section>
+        </main>
+
+    </div>
+    
+</body>
+</html>

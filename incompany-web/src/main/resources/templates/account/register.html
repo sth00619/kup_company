@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <link href="/css/form.css" rel="stylesheet" type="text/css">
+    <script src="/lib/jquery-3.6.0.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Sign Up </title>
+</head>
+<body>
+
+<div class="container-contact100">
+    <div class="wrap-contact100">
+        <form method="post" th:action="@{register}">
+            <div class="contact100-form validate-form">
+                    <span class="contact100-form-title">
+                        register
+                    </span>
+
+                <div class="wrap-input100 validate-input bg1">
+                    <span class="label-input100">사원 번호 : </span>
+                    <input class="input100" name="employeeCode" readonly th:value="${employee.getUsername}"/>
+
+                </div>
+
+                <div class="wrap-input100 validate-input bg1">
+                    <span class="label-input100">이름 : </span>
+                    <input class="input100" readonly th:value="${employee.getName}"/>
+                </div>
+
+                <div class="wrap-input100 validate-input bg1">
+                    <span class="label-input100">비밀번호 : </span>
+                    <input class="input100" id="pwd1" type="password">
+                </div>
+                <div class="wrap-input100 validate-input bg1">
+                    <span class="label-input100">비밀번호 다시입력 : </span>
+                    <input class="input100" id="pwd2" name="password" type="password">
+                </div>
+                <div class="alert alert-success" id="alert-success">비번호가 일치합니다</div>
+                <div class="alert alert-danger" id="alert-danger">비번호가 일치하지 않습니다.</div>
+
+                <input name="_method" type="hidden" value="put">
+                <div class="container-contact100-form-btn">
+                    <button class="contact100-form-btn" id="submit" type="submit">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+history.replaceState({},null,location.pathname);
+        $(document).ready(function () {
+            $(function () {
+                $("#alert-success").hide();
+                $("#alert-danger").hide();
+                $("input").keyup(function () {
+                    var pwd1 = $("#pwd1").val();
+                    var pwd2 = $("#pwd2").val();
+                    if (pwd1 != " || pwd2 != ") {
+                        if (pwd1 == pwd2) {
+                            $("#alert-success").show();
+                            $("#alert-danger").hide();
+
+                        } else {
+                            $("#alert-success").hide();
+                            $("#alert-danger").show();
+                        }
+                    }
+                });
+                $("#submit").click(function () {
+                    var pwd1 = $("#pwd1").val();
+                    var pwd2 = $("#pwd2").val();
+
+                    switch (pwd1 || pwd2) {
+
+                        case "":
+                            alert("비밀번호를 입력해 주세요");
+                            return false;
+                        case null:
+                            alert("비밀번호를 입력해 주세요");
+                            return false;
+                        case undefined:
+                            alert("비밀번호를 입력해 주세요");
+                            return false;
+                        case " ":
+                            alert("비밀번호를 입력해 주세요");
+                            return false;
+                    }
+                    if (pwd1 != pwd2) {
+                        alert("비밀번호가 일치하지 않습니다")
+                        return false;
+                    }
+                })
+            });
+        })
+
+</script>
+</body>
+
+</html>

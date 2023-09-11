@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <link href="/toastUi/css/toastUi.css" rel="stylesheet">
+    <link href="/toastUi/css/toastUi-editor-plugin-table-merged-cell.css" rel="stylesheet">
+    <link href="/toastUi/css/tui-color-picker.css" rel="stylesheet">
+    <link href="/toastUi/css/toastUi-editor-plugin-color-syntax.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/worksheet/worksheet.css(date=${todayFormat})}" type="text/css">
+</th:block>
+
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideBoard :: sideBoardFragment"></div>
+</th:block>
+
+<th:block layout:fragment="contents">
+
+
+    <form enctype="multipart/form-data" id="form" method="post" th:action="@{updateFaq}">
+
+        <input name="_method" type="hidden" value="put">
+        <input hidden name="faqNo" th:value="${faqContents.faqNo}">
+        <input hidden name="pageType" th:value="${pageType}">
+
+        <input hidden name="pageNum" th:value="${pageNum}">
+
+        <div class="top_center_menu_visual">
+            <div class="main_center_wrap">
+                <div class="top_title">
+                    <h2>FAQ 작성하기</h2>
+                </div>
+                <div class="Khlist">
+                    <dl class="list_view01">
+                        <dt>작성자</dt>
+                        <dd><span th:text="${faqContents.createEmployeeName}"></span></dd>
+                    </dl>
+
+                    <dl class="list_view02">
+                        <dt>등록일</dt>
+                        <dd><span th:text="${faqContents.createDate}"></span></dd>
+                    </dl>
+
+                    <dl class="list_view03">
+                        <dt>제목</dt>
+                        <dd>
+                            <div class="title_input">
+                                <input id="title" maxlength="50" name="title" type="text"
+                                    th:value="${faqContents.title}">
+                            </div>
+                        </dd>
+                    </dl>
+
+                    <dl class="list_view03">
+                        <dt>머리말</dt>
+                        <dd>
+                            <div class="name_box">
+                                <select class="preface_select" name="type">
+                                    <option th:each="ft : ${faqType}" th:text="${ft.getMeaning}"
+                                        th:value="${ft.getType}" th:selected="${ft.type == faqContents.type}"></option>
+                                </select>
+                            </div>
+                        </dd>
+                    </dl>
+
+                    <dl class="list_view04 heightUp">
+                        <dt>내용</dt>
+                        <p hidden id="contents" th:text="${faqContents.contents}"></p>
+                        <div id="editor"></div>
+                    </dl>
+
+                </div>
+
+                <div class="save_btn_wrap">
+                    <div>
+                        <button class="close_btn _cancelBtn" type="button">취소</button>
+                        <button class="close_btn btn_color _submitBtn" id="updateFaqBtn">저장</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </form>
+
+
+
+
+
+
+    <!-- 
+    <br>
+    <form enctype="multipart/form-data" id="form" method="post" th:action="@{updateFaq}">
+        <input name="_method" type="hidden" value="put">
+        <input hidden name="faqNo" th:value="${faqContents.faqNo}">
+        제목 : <input id="title" maxlength="50" name="title" th:value="${faqContents.title}" type="text">
+        날짜 : <span th:text="${faqContents.createTime}"></span>
+        <br><br>
+        <p hidden id="contents" th:text="${faqContents.contents}"></p>
+        <div id="editor"></div>
+        <br>
+
+        <br><br>
+        <button id="updateFaqBtn">저장</button>
+    </form>
+    <br> -->
+</th:block>
+<th:block layout:fragment="pageScript">
+    <!-- Color Picker -->
+    <script src="/toastUi/js/tui-color-picker.js"></script>
+    <!-- Editor -->
+    <script src="/toastUi/js/toastUi.js"></script>
+    <!-- Editor's Plugin -->
+    <script src="/toastUi/js/toastUi-editor-plugin-table-merged-cell.js"></script>
+    <script src="/toastUi/js/toastUi-editor-plugin-color-syntax.js"></script>
+    <script th:src="@{/js/faq/updateFaq.js(date=${todayFormat})}"></script>
+</th:block>
+
+
+</html>

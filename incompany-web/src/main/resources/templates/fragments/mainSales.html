@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<!-- Left CompanyChart Start -->
+<div class="sales_goals" th:fragment="mainsalesFragment" id="sales_goals">
+    <div class="goalswrap" id="goalswrap">
+      <div class="cell_title">
+        <h2 class="texthidden">영업</h2>
+        <h2>목표 금액</h2>
+        <h2>달성률</h2>
+      </div>
+      <div class="put_selftext_box">
+        <div class="last_weekbox">
+          <span>지난주</span>
+          <h2 class="texthidden">영업</h2>
+          <!-- 지난 주 수정불가 -->
+          <textarea rows="1" disabled id="last_week" maxlength="13" th:text="${salesTargetAmountDto != null and salesTargetAmountDto.prev != null} ? ${#numbers.formatInteger(salesTargetAmountDto.prev.amountTarget, 0, 'COMMA')} : ''"></textarea>
+          <p class="att_rate" th:text="${salesTargetAmountDto != null and salesTargetAmountDto.prev != null} ? ${salesTargetAmountDto.prev.percent} + '%' : ''">100%</p>
+        </div>
+        <!-- 이번주와 다음주는 수정가능 클릭시 active 클래스 붙는 것들 css 확인요망 -->
+        <div class="this_weekbox active">
+          <span>이번주</span>
+          <div class="btnbox">
+            <!-- modifybtn이 클릭되면 해당 weekbox에 액티브추가 -->
+            <!-- 디폴트상태 -->
+            <button class="modify_btn _this_modify" id="currentBtn"></button>
+            <button class="submit_btn" id="currentBtnModit"></button>
+          </div>
+          <!-- 최대 길이를 10억 단위로(쉼표 고려하여 13), NullPointerException과 관련하여 Default 값 설정하는 함수 추가 -->
+          <textarea rows="1" id="this_week" maxlength="13" onblur="setDefaultIfEmpty(this)" th:text="${salesTargetAmountDto != null and salesTargetAmountDto.current != null} ? ${#numbers.formatInteger(salesTargetAmountDto.current.amountTarget, 0, 'COMMA')} : '0'"></textarea>
+          <p class="att_rate" th:text="${salesTargetAmountDto != null and salesTargetAmountDto.current != null} ? ${salesTargetAmountDto.current.percent} + '%' : ''">100%</p>
+        </div>
+        <div class="next_weekbox">
+          <span>다음주</span>
+          <div class="btnbox">
+            <!-- modify를 클릭하면 modify에 close클래스 추가 와 함께 submit 버튼 open클래스 추가 -->
+            <button class="modify_btn _this_modify" id="nextBtn"></button>
+            <button class="submit_btn" readonly value="" id="nextBtnModit"></button>
+          </div>
+          <textarea rows="1" id="next_week" maxlength="13" onblur="setDefaultIfEmpty(this)" th:text="${salesTargetAmountDto != null and salesTargetAmountDto.next != null} ? ${#numbers.formatInteger(salesTargetAmountDto.next.amountTarget, 0, 'COMMA')} : '0'"></textarea>
+          <p class="att_rate" th:text="${salesTargetAmountDto != null and salesTargetAmountDto.next != null} ? ${salesTargetAmountDto.next.percent} + '%' : ''">100%</p>
+        </div>
+      </div>
+    </div>
+</div>
+</html>

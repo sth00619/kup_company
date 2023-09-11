@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<!-- Left CompanyChart Start -->
+<div class="slide_down_wrap" th:fragment="sidePotentialFragment">
+    <div class="top_slide guest_slide arrowOn">
+        <h2 >고객 관리</h2>
+    </div>
+    <div class="sub_slide"  th:classappend="${#strings.contains(requestUrl,'candidate')} ? 'on_none'">
+        <ul class="top_slide_sub5">
+            <li onclick="location.href='/potential/counseling'">
+                <a th:classappend="${requestUrl == '/potential/counseling'} ? 'on_color'"
+                   href="#">
+                    고객 리스트
+                </a>
+            </li>
+        </ul>
+        <ul class="top_slide_sub5">
+            <li onclick="location.href='/potential/addPotentialUser'">
+                <a th:classappend="${requestUrl == '/potential/addPotentialUser'} ? 'on_color'"
+                   href="#">
+                    고객추가
+                </a>
+            </li>
+        </ul>
+        <ul class="top_slide_sub5" sec:authorize="hasAnyAuthority('POTENTIAL_DB_LIST')">
+            <li onclick="location.href='/potential/potentialManage'">
+                <a th:classappend="${requestUrl == '/potential/potentialManage'} ? 'on_color'"
+                   href="#">
+                    DB 리스트
+                </a>
+            </li>
+        </ul>
+        <ul class="top_slide_sub5" hidden>
+            <li><a href="#">DB 신청</a></li>
+        </ul>
+        <ul class="top_slide_sub5" sec:authorize="hasAnyAuthority('DISPOSAL_USER_LIST')">
+            <li onclick="location.href='/potential/disposalUser'">
+                <a th:classappend="${requestUrl == '/potential/disposalUser'} ? 'on_color'"
+                   href="#">
+                    회수 고객리스트
+                </a>
+            </li>
+        </ul>
+        <br><br>
+        <div class="top_slide arrowOn" sec:authorize="hasAnyAuthority('FA_COMPANY')">
+            <h2>계약 관리</h2>
+        </div>
+        <ul class="top_slide_sub on_block arrowOn arrowOff" sec:authorize="hasAnyAuthority('FA_COMPANY')">
+            <li class="sub_arrowOn" onclick="location.href='/contractFortune/contractFortune'"
+                th:classappend="${(mainUrl == 'contractFortune' ? 'on_block' : 'arrowoff arrowon')}">
+                <a href="#">목돈</a>
+            </li>
+            <ul class="top_slide_sub2" th:classappend="${mainUrl == 'contractFortune' ? 'on_block' : ''}">
+                <li onclick="location.href='/contractFortune/contractFortune'">
+                    <a th:classappend="${requestUrl == '/contractFortune/contractFortune'} ? 'on_color'"
+                       href="#">· 목돈 계약 리스트</a></li>
+                <li onclick="location.href='/contractFortune/checkContractFortune'">
+                    <a th:classappend="${requestUrl == '/contractFortune/checkContractFortune'} ? 'on_color'"
+                       href="#">· 목돈 계약 확인 리스트</a></li>
+            </ul>
+        </ul>
+
+        <br><br>
+        <div class="top_slide arrowOn" sec:authorize="hasAnyAuthority('FA_COMPANY')">
+            <h2>Q&A</h2>
+        </div>
+        <ul class="top_slide_sub on_block arrowOn arrowOff" sec:authorize="hasAnyAuthority('FA_COMPANY')">
+            <li class="sub_arrowOn" onclick="location.href='/faQuestion/list'"
+                th:classappend="${(mainUrl == 'question' ? 'on_block' : 'arrowoff arrowon')}">
+                <a href="#">Q&A</a>
+            </li>
+            <ul class="top_slide_sub2" th:classappend="${mainUrl == 'faQuestion' ? 'on_block' : ''}">
+                <li onclick="location.href='/faQuestion/list'">
+                    <a th:classappend="${requestUrl == '/faQuestion/list'} ? 'on_color'"
+                       href="#">· 질문 리스트</a></li>
+            </ul>
+        </ul>
+    </div>
+    <br><br>
+
+<!--    <div class="top_slide" sec:authorize="!hasAnyAuthority('FA_COMPANY')">-->
+<!--        <a th:classappend="${requestUrl == '/candidate/list'} ? 'on_color'" href="/candidate/list">후보자 리스트</a>-->
+<!--    </div>-->
+
+</div>
+
+</html>

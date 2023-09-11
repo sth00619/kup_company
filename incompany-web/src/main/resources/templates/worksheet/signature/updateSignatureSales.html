@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+
+</th:block>
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideWorksheet :: sideWorksheetFragment"></div>
+</th:block>
+
+<th:block layout:fragment="contents">
+
+    <form enctype="multipart/form-data" id="updateSignatureSales" method="post">
+
+        <div class="guest_deta_wrap">
+            <div class="guest_deta_box">
+                <h2>매출 추가</h2>
+                <div class="guest_deta">
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>매장구분</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <select name="category">
+                                <option th:each="categoryEnum : ${signatureCategoryList}"
+                                        th:selected="${categoryEnum.category} == ${signatureDto.category}"
+                                        th:text="${categoryEnum.meaning}"
+                                        th:value="${categoryEnum.category}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p class="none">0</p>
+                        </div>
+                        <div class="contract_list_box">
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>작성일</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="date_box"><input id="accountDate" th:value="${signatureDto.accountDate}" name="accountDate" type="date" value="0000-00-00"></div>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>현금 매출</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="name_box money-name">
+                                <input class="_sales" onkeyup="inputNumberFormat(this)" th:value="${signatureDto.cashSales}" name="cashSales" id="cashSales" type="text">
+                                <label for="cashSales"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>카드 매출</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="name_box money-name">
+                                <input class="_sales" onkeyup="inputNumberFormat(this)" th:value="${signatureDto.cardSales}" name="cardSales" id="cardSales" type="text">
+                                <label for="cardSales"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>배달 매출</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="name_box money-name">
+                                <input class="_sales" onkeyup="inputNumberFormat(this)" th:value="${signatureDto.deliverySales}" name="deliverySales" id="deliverySales" type="text">
+                                <label for="deliverySales"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>계좌 이체</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="name_box money-name">
+                                <input class="_sales" onkeyup="inputNumberFormat(this)" th:value="${signatureDto.accountTransferSales}" name="accountTransferSales" id="accountTransferSales" type="text">
+                                <label for="accountTransferSales"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>선불카드 판매</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="name_box money-name">
+                                <input class="_sales" onkeyup="inputNumberFormat(this)" th:value="${signatureDto.prepaidCardSales}" name="prepaidCardSales" id="prepaidCardSales" type="text">
+                                <label for="prepaidCardSales"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>선불카드 사용</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="name_box money-name">
+                                <input class="_sales" onkeyup="inputNumberFormat(this)" th:value="${signatureDto.prepaidCardUse}" name="prepaidCardUse" id="prepaidCardUse" type="text">
+                                <label for="prepaidCardUse"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>선불카드 쿠폰 사용</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="name_box money-name">
+                                <input class="_sales" onkeyup="inputNumberFormat(this)" th:value="${signatureDto.prepaidCardCouponUse}" name="prepaidCardCouponUse" id="prepaidCardCouponUse" type="text">
+                                <label for="prepaidCardCouponUse"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>대관비</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="name_box money-name">
+                                <input class="_sales" onkeyup="inputNumberFormat(this)" th:value="${signatureDto.rentalSales}" name="rentalSales" id="rentalSales" type="text">
+                                <label for="rentalSales"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>악세사리</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="name_box money-name">
+                                <input class="_sales" onkeyup="inputNumberFormat(this)" th:value="${signatureDto.accessorySales}" name="accessorySales" id="accessorySales" type="text">
+                                <label for="accessorySales"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="value_pay vp_Amend"><p>총 매출<em class="_amount" id="totalSales">[[${signatureDto.totalSales}]]</em>원</p></div>
+
+            </div>
+
+            <div class="guest_deta_box">
+
+                <h2>지출 추가</h2>
+
+                <div class="guest_deta">
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>현금 지출</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="name_box money-name">
+                                <input class="_spend" onkeyup="inputNumberFormat(this)" th:value="${signatureDto.cashSpend}" name="cashSpend" id="cashSpend" type="text">
+                                <label for="cashSpend"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>홀 식자재</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="name_box money-name">
+                                <input class="_spend" onkeyup="inputNumberFormat(this)" th:value="${signatureDto.hallFoodSpend}" name="hallFoodSpend" id="hallFoodSpend" type="text">
+                                <label for="hallFoodSpend"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>홀 용품</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="name_box money-name">
+                                <input class="_spend" onkeyup="inputNumberFormat(this)" th:value="${signatureDto.hallItemSpend}" name="hallItemSpend" id="hallItemSpend" type="text">
+                                <label for="hallItemSpend"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>주방 식자재</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="name_box money-name">
+                                <input class="_spend" onkeyup="inputNumberFormat(this)" th:value="${signatureDto.kitchenFoodSpend}" name="kitchenFoodSpend" id="kitchenFoodSpend" type="text">
+                                <label for="kitchenFoodSpend"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>주방 용품</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="name_box money-name">
+                                <input class="_spend" onkeyup="inputNumberFormat(this)" th:value="${signatureDto.kitchenItemSpend}" name="kitchenItemSpend" id="kitchenItemSpend" type="text">
+                                <label for="kitchenItemSpend"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>배달 충전</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="name_box money-name">
+                                <input class="_spend" onkeyup="inputNumberFormat(this)" th:value="${signatureDto.deliveryChargeSpend}" name="deliveryChargeSpend" id="deliveryChargeSpend" type="text">
+                                <label for="deliveryChargeSpend"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>배달 가맹비</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="name_box money-name">
+                                <input class="_spend" onkeyup="inputNumberFormat(this)" th:value="${signatureDto.deliveryMembershipSpend}" name="deliveryMembershipSpend" id="deliveryMembershipSpend" type="text">
+                                <label for="deliveryMembershipSpend"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>배달 광고비</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="name_box money-name">
+                                <input class="_spend" onkeyup="inputNumberFormat(this)" th:value="${signatureDto.deliveryAdvertisingSpend}" name="deliveryAdvertisingSpend" id="deliveryAdvertisingSpend" type="text">
+                                <label for="deliveryAdvertisingSpend"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="value_pay vp_Amend"><p>총 지츨<em id="totalSpend" class="_amount">[[${signatureDto.totalSpend}]]</em>원</p></div>
+
+            </div>
+
+            <div class="guest_deta_box">
+
+                <div class="guest_deta">
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>개인별 영수증 환급</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="name_box money-name">
+                                <input class="_otherSpend" onkeyup="inputNumberFormat(this)" th:value="${signatureDto.receiptRefund}" name="receiptRefund" id="receiptRefund" type="text">
+                                <label for="receiptRefund"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>음식물 처리비용</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="name_box money-name">
+                                <input class="_otherSpend" onkeyup="inputNumberFormat(this)" th:value="${signatureDto.foodProcessingFee}" name="foodProcessingFee" id="foodProcessingFee" type="text">
+                                <label for="foodProcessingFee"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>기 장 료</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="name_box money-name">
+                                <input class="_otherSpend" onkeyup="inputNumberFormat(this)" th:value="${signatureDto.serviceFee}" name="serviceFee" id="serviceFee" type="text">
+                                <label for="serviceFee"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>보 험 료</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="name_box money-name">
+                                <input class="_otherSpend" onkeyup="inputNumberFormat(this)" th:value="${signatureDto.insuranceFee}" name="insuranceFee" id="insuranceFee" type="text">
+                                <label for="insuranceFee"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>리 스 비</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="name_box money-name">
+                                <input class="_otherSpend" onkeyup="inputNumberFormat(this)" th:value="${signatureDto.leaseFee}" name="leaseFee" id="leaseFee" type="text">
+                                <label for="leaseFee"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>캡 스 비</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="name_box money-name">
+                                <input class="_otherSpend" onkeyup="inputNumberFormat(this)" th:value="${signatureDto.capsFee}" name="capsFee" id="capsFee" type="text">
+                                <label for="capsFee"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>포 충 기</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="name_box money-name">
+                                <input class="_otherSpend" onkeyup="inputNumberFormat(this)" th:value="${signatureDto.insecticideFee}" name="insecticideFee" id="insecticideFee" type="text">
+                                <label for="insecticideFee"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>음악 저작권</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="name_box money-name">
+                                <input class="_otherSpend" onkeyup="inputNumberFormat(this)" th:value="${signatureDto.musicFee}" name="musicFee" id="musicFee" type="text">
+                                <label for="musicFee"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="value_pay vp_Amend"><p>총 지출<em id="otherTotalSpend" class="_amount">[[${signatureDto.otherTotalSpend}]]</em>원</p></div>
+
+            </div>
+
+            <div class="guest_deta_box gdb_mgn">
+                <h2>특이사항</h2>
+
+                <div class="guest_deta">
+
+                    <div class="last_txt">
+                        <textarea th:text="${signatureDto.note}" name="note"></textarea>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="Khlist S_file">
+
+                <dl class="list_view07">
+                    <dt class="SA-file">첨부파일</dt>
+                    <dd>
+                        <div id="fileListDiv">
+                            <p id="maxMsg" th:if="${#lists.size(fileList) == 5 }">파일은 최대 5개까지 업로드 가능합니다</p>
+
+                            <div class="fileNameBef" th:if="${#lists.size(fileList) < 5 }">
+                                <input name="file" type="file" class="selectFile">
+                            </div>
+                            <div th:each=" fl: ${fileList}" class="fileName">
+                                <input th:value="${fl}" name='fileNameDb' hidden>
+                                <a id="deleteFileListBtn">x</a> <span th:text="${fl}"></span>
+                            </div>
+                        </div>
+                    </dd>
+                </dl>
+
+            </div>
+
+        </div>
+
+        <div class="save_btn_wrap">
+            <div>
+                <button class="close_btn">취소</button>
+                <button class="close_btn btn_color _submitBtn">저장</button>
+            </div>
+        </div>
+
+    </form>
+</th:block>
+
+
+<th:block layout:fragment="pageScript">
+    <script th:src="@{/js/worksheet/signature/updateSignatureSales.js(date=${todayFormat})}"></script>
+    <script th:src="@{/js/comma.js(date=${todayFormat})}"></script>
+    <!--첨부파일 수정 js-->
+    <script th:src="@{/js/attachFile/attachFileAtUpdate.js(date=${todayFormat})}"></script>
+</th:block>
+
+
+</html>

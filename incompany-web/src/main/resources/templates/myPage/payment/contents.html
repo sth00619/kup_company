@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <!-- css작성, 파일 -->
+    <link href="/toastUi/css/toastUi.css" rel="stylesheet">
+    <link href="/toastUi/css/toastUi-editor-plugin-table-merged-cell.css" rel="stylesheet">
+    <link href="/toastUi/css/tui-color-picker.css" rel="stylesheet">
+    <link href="/toastUi/css/toastUi-editor-plugin-color-syntax.css" rel="stylesheet">
+    <style>
+        ._delEmployee {
+            cursor: pointer;
+        }
+    </style>
+</th:block>
+
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideMypage :: sideMypageFragment"></div>
+</th:block>
+
+
+<th:block layout:fragment="contents">
+    <input th:value="${p.paymentNo}" id="_no" hidden />
+    <input th:value="${p.title}" id="_paymentTitle" hidden />
+    <input th:value="${p.draftEmployeeCode}" id="_draftEmployeeCode" hidden />
+    <input th:value="${boardType}" id="boardType" hidden/>
+    <input th:value="${cloudUrl}" id="cloudUrl" hidden />
+    <input th:value="${loginEmployeeCode}" id="loginEmployeeCode" hidden />
+
+
+
+    <div class="top_center_menu_visual">
+
+        <div class="main_center_wrap">
+
+            <div class="top_title">
+                <h2>상신</h2>
+            </div>
+            <div class="Khlist">
+
+                <dl class="list_view01">
+                    <dt>기안자</dt>
+                    <dd>
+                        <span>[[${p.draftEmployeeName}]]</span>
+                    </dd>
+                </dl>
+
+                <dl class="list_view02 file_view">
+                    <dt>기안일자</dt>
+                    <dd><span>[[${p.draftCreateDate}]]</span></dd>
+                </dl>
+
+                <dl class="list_view03">
+                    <dt>결재자 </dt>
+                    <dd>
+                        <div>
+                            <div th:each=" my: ${p.myPaymentList}" th:if="${my.type} == 0" class="_paymentDiv">
+                                <span th:text="${my.ordering}" style="margin-right: 5px;">
+                                </span>
+                                <span style="color: #000; font-weight: bold; margin-right: 10px;"
+                                    th:text="${my.employeeName}"></span>
+                                    <span th:text="${my.employeeCode}" style="margin-left:8px;" class="_paymentApprCode"></span>
+                                <span th:text="|결재 날짜 : ${my.paymentDateFormat} |" th:if="${my.paymentStep} == 2"></span>
+                                <span th:text="|반려 날짜 : ${my.paymentDateFormat} |" th:if="${my.paymentStep} == 3"></span>
+
+
+                            </div>
+
+                        </div>
+
+
+                    </dd>
+                </dl>
+
+
+                <dl class="list_view03">
+                    <dt>참조자</dt>
+                    <dd>
+                        <div>
+                            <div th:each=" my: ${p.myPaymentList}" th:if="${my.type} == 1">
+                                <span style="color: #000; font-weight: bold; margin-right: 10px;"
+                                    th:text="${my.employeeName}"></span>
+                                    <span th:text="${my.employeeCode}" style="margin-left:8px;"></span>
+                            </div>
+
+                        </div>
+
+
+                    </dd>
+                </dl>
+
+
+                <dl class="list_view03">
+                    <dt>양식</dt>
+                    <dd>
+                        <span th:text="${p.paymentFormTitle}"></span>
+                    </dd>
+                </dl>
+
+                <dl class="list_view03">
+                    <dt>제목</dt>
+                    <dd><span>[[${p.title}]]</span></dd>
+                </dl>
+
+                <dl class="list_view04">
+                    <dt>내용</dt>
+                    <p id="contents" th:text="${p.contents}" hidden></p>
+                    <dd>
+                        <div id="viewer"></div>
+                    </dd>
+                </dl>
+
+                <dl class="list_view03 file_view">
+                    <dt>첨부파일</dt>
+                    <dd th:if="${p.isFileExist}">
+                        <span><a class="file_click"><img src="/images/img/file.png"></a></span>
+                        <div class="file_viewbox">
+                            <ul th:each="  fl: ${fileList}">
+                                <li class="_downFile" th:text="${fl}"></li>
+                            </ul>
+                        </div>
+
+                    </dd>
+                </dl>
+
+            </div>
+
+            <!-- 결재자 -->
+            <div class="save_btn_wrap" th:if="${p.isApprover}">
+                <button class="close_btn btn_color" id="goList">전체목록</button>
+
+                    <div  th:if="${p.isApproverNow}">
+                        <button class="close_btn btn_color _paymentBtn" value="1">결재</button>
+                        <button class="close_btn btn_color _paymentBtn" value="3">반려</button>
+
+                    </div>
+
+            </div>
+
+
+            <!-- 참조자 or 본인 -->
+            <div class="save_btn_wrap" th:unless="${p.isApprover}">
+                <a th:href="@{/myPage/payment/submit}">
+                    <button class="close_btn btn_color">전체목록</button>
+                </a>
+
+                    <div th:if="(${p.status} == 0 or ${p.status} == 4) and ${loginEmployeeCode == p.draftEmployeeCode}">
+                        <a th:href="@{/myPage/payment/edit(paymentNo=${p.paymentNo})}">
+                            <button class="close_btn btn_color" >수정</button>
+                        </a>
+                        <button class="close_btn btn_color" id="deleteBtn">삭제</button>
+
+                    </div>
+
+                    <div th:if="${p.status} == 3 and ${loginEmployeeCode == p.draftEmployeeCode}">
+
+                        <a th:href="@{/myPage/payment/edit?isCopy=true(paymentNo=${p.paymentNo})}">
+                            <button class="close_btn btn_color" >상신 복사</button>
+                        </a>
+                    </div>
+
+            </div>
+
+            
+
+
+        </div>
+    </div>
+
+
+    </div>
+    </div>
+
+    <form id="form" th:action="@{/}" method="post" enctype="multipart/form-data">
+
+    </form>
+
+
+
+</th:block>
+
+
+<th:block layout:fragment="pageScript">
+    <!-- js파일 -->
+    <!-- Color Picker -->
+    <script src="/toastUi/js/tui-color-picker.js"></script>
+    <!-- Editor -->
+    <script src="/toastUi/js/toastUi.js"></script>
+    <!-- Editor's Plugin -->
+    <script src="/toastUi/js/toastUi-editor-plugin-table-merged-cell.js"></script>
+    <script src="/toastUi/js/toastUi-editor-plugin-color-syntax.js"></script>
+    <script th:src="@{/js/myPage/payment/contents.js(date=${todayFormat})}"></script>
+</th:block>
+
+
+</html>

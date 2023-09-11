@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+<th:block layout:fragment="pageCss">
+    <link rel="stylesheet" th:href="@{/css/addEmployee.css(date=${todayFormat})}" type="text/css">
+</th:block>
+
+<th:block layout:fragment="pageScriptTop">
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script th:src="@{/js/main_left_company_chart.js(date=${todayFormat})}"></script>
+</th:block>
+
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideCompanyChart :: sideCompanyChartFragment"></div>
+</th:block>
+
+<th:block layout:fragment="contents">
+    <!-- 사원추가 -->
+    <form id="add" method="post">
+        <input id="employeeLoginCode" name="employeeLoginCode" th:value="${employeeLoginCode}" type="hidden">
+        <div class="member_deta_wrap">
+
+            <div class="member_deta_box">
+                <h2>사원 정보 입력</h2>
+                <div class="member_deta">
+
+                    <div class="deta_list">
+                        <div class="list_name star">
+                            <p>법인</p>
+                        </div>
+                        <div class="list_box">
+                            <input id="workplace" name="workplace" type="hidden">
+                            <select class="belong_select _companyCode" name='companyCode'>
+                                <option disabled selected value="">법인</option>
+                                <option th:each="cl : ${companyList}" th:text="${cl.companyName}"
+                                        th:value="${cl.companyCode}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="deta_list">
+                        <div class="list_name star">
+                            <p>소속</p>
+                        </div>
+                        <div class="list_box">
+                            <input id="departmentCode" name="departmentCode" type="hidden">
+
+                            <select class="head_select _D1" hidden name='D1'>
+                                <option th:each="ol : ${oneDepthList}" th:text="${ol.departmentName}"
+                                        th:value="${ol.departmentCode}"></option>
+                            </select>
+
+                            <select class="belong_select _D2" hidden name='D2'>
+                                <option value=""></option>
+                            </select>
+
+                            <select class="team_select _D3" hidden name="D3">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="deta_list">
+                        <div class="list_name star">
+                            <p>직급</p>
+                        </div>
+                        <div class="list_box">
+                            <select class="rank_select _positionCode" name="positionCode">
+                                <option disabled selected value="">선택</option>
+                                <option th:each="cp : ${companyPositionList}" th:text="${cp.positionName}"
+                                        th:value="${cp.positionCode}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="deta_list">
+                        <div class="list_name star">
+                            <p>이름</p>
+                        </div>
+                        <div class="list_box">
+                            <div class="name_box"><input maxlength="15" id="employeeName" name="employeeName" type="text">
+                                <span aria-live="assertive" class="error_next_box name_error">반드시 입력해주세요.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="deta_list">
+                        <div class="list_name star">
+                            <p>사번</p>
+                        </div>
+                        <div class="list_box">
+                            <div class="name_box"><input maxlength="12" id="employeeCode" name="employeeCode"
+                                                         placeholder="ex) 22010133" type="text">
+                                <span class="_textEx">형식 : 연+월+일+숫자2자리 (YYMMDDXX)</span>
+                                <span aria-live="assertive" class="error_next_box code_error">반드시 입력해주세요.</span>
+                                <span aria-live="assertive" class="error_next_box _checkEcode"
+                                      hidden>이미 사용 중인 사번입니다.</span>
+                                <span aria-live="assertive" class="error_next_box _successCheck">사용 가능한 사번입니다.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="deta_list">
+                    <div class="list_name star">
+                        <p>생년월일</p>
+                    </div>
+                    <div class="list_box">
+                        <div class="date_box"><input id="birthday" name="birthday" type="date">
+                            <span aria-live="assertive" class="error_next_box birthday_error">반드시 입력해주세요.</span>
+                        </div>
+
+                        <div class="sexual_check_box">
+                            <div class="sexual_check">
+                                <input id="m" name="gender" type="radio" value="남">
+                                <label for="m">남</label>
+                            </div>
+
+                            <div class="sexual_check">
+                                <input id="f" name="gender" type="radio" value="여">
+                                <label for="f">여</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="deta_list">
+                    <div class="list_name star">
+                        <p>연락처</p>
+                    </div>
+                    <div class="list_box">
+                        <div class="name_box"><input maxlength="18" id="mobile" required name="mobile" type="text">
+                            <span aria-live="assertive" class="error_next_box mobile_error">반드시 입력해주세요.</span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!--Daum 주소 API-->
+                <div class="deta_list">
+                    <div class="list_name star">
+                        <p>거주지</p>
+                    </div>
+                    <th:block th:replace="fragments/daumPostcode :: daumPostcode"></th:block>
+                </div>
+
+
+                <div class="deta_list">
+                    <div class="list_name star">
+                        <p>재직여부</p>
+                    </div>
+
+                    <div class="contract_list_box">
+                        <div class="interest">
+                            <input checked id="month" name="working" type="radio" value="0">
+                            <label for="month">재직중</label>
+                        </div>
+
+                        <div class="interest">
+                            <input id="year" name="working" type="radio" value="1">
+                            <label for="year">퇴사</label>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="member_deta_box">
+                <h2>상세 정보 입력</h2>
+                <div class="member_deta">
+
+                    <div class="deta_list">
+                        <div class="list_name">
+                            <div class="list_name">
+                                <p>입사일자</p>
+                            </div>
+                        </div>
+                        <div class="list_box">
+                            <div class="date_box"><input id="joinDate" required name="joinDate" type="date"></div>
+                        </div>
+                    </div>
+                    <div class="deta_list">
+                        <div class="list_name">
+                            <p>이메일</p>
+                        </div>
+                        <div class="list_box">
+                            <div class="name_box">
+                                <input maxlength="20" id="emailId" name="emailId" type="text">
+                            </div>
+                            <span class="waku">@</span>
+                            <input class="_emailSelf" hidden id="selboxDirect" name="emailSelf" placeholder="" type="text"/>
+                            <select class="email_select _emailSelect" id="emailForm" name="emailForm">
+                                <option value="">선택하세요.</option>
+                                <option value="naver.com">naver.com</option>
+                                <option value="gmail.com">gmail.com</option>
+                                <option value="daum.com">daum.com</option>
+                                <option value="self">직접입력</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="deta_list" th:if="${myProfileDto.employeeCode.contains('K') or myProfileDto.employeeCode == 'qatest00'}">
+                        <div class="list_name">
+                            <p>사내 이메일</p>
+                        </div>
+                        <div class="list_box">
+                            <div class="name_box">
+                                <input maxlength="20" id="companyEmailId" name="companyEmailId" type="text">
+                            </div>
+                            <span class="waku">@</span>
+                            <select class="email_select _emailSelect" id="companyEmailForm" name="companyEmailForm">
+                                <option value="">선택하세요.</option>
+                                <option value="kupstudio.com">kupstudio.com</option>
+                                <!-- <option value="khasset.com">khasset.com</option> -->
+                            </select>
+                            <span aria-live="assertive" class="error_next_box _checkCompanyEmail">이미 다른 사원이 사용중인 이메일입니다.</span>
+                            <span aria-live="assertive" class="error_next_box _successCompanyEmail">사용 가능한 이메일입니다.</span>
+                        </div>
+                    </div>
+
+
+                    <div class="license_charge">
+                        <div class="license_charge_name">
+                            <p>담당업무</p>
+                        </div>
+                        <div class="license_charge_box">
+                            <div class="big_text"><textarea maxlength="180" id="assignedTask" name="assignedTask"
+                                                            placeholder="내용을 입력하세요"></textarea></div>
+                        </div>
+                    </div>
+
+                    <div class="license_charge">
+                        <div class="license_charge_name">
+                            <p>자격증</p>
+                        </div>
+                        <div class="license_charge_box">
+                            <div class="big_text"><textarea maxlength="180" id="certificate" name="certificate"
+                                                            placeholder="내용을 입력하세요"></textarea></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 저장버튼  -->
+            <div class="save_btn_wrap">
+                <div>
+                    <a th:href="@{/companyChart}">
+                        <button class="close_btn _cencelBtn" type="button">취소</button>
+                    </a>
+                    <button class="close_btn btn_color _submitBtn" type="submit">저장</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</th:block>
+
+<th:block layout:fragment="pageScript">
+    <script th:src="@{/js/daumPostcode.js}"></script>
+    <script th:src="@{/js/employee/addEmployee.js(date=${todayFormat})}"></script>
+</th:block>
+
+</html>

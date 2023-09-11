@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <!-- css작성, 파일 -->
+
+</th:block>
+
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideMypage :: sideMypageFragment"></div>
+</th:block>
+
+
+<th:block layout:fragment="contents">
+
+    <div class="top_center_menu_visual">
+
+        <div class="top_center-menu">
+
+            <div class="top_left_menu">
+
+                <div class="btn_box btn_on">
+                    <p>지원요청</p>
+                </div>
+
+                <div class="btn_box">
+                    <p>지원완료</p>
+                </div>
+
+            </div>
+
+            <div class="notice_search">
+                <select class="select_box">
+                    <option value="all">전체</option>
+                    <option value="state">상태</option>
+                    <option value="Contents">내용</option>
+                    <option value="Writer">작성자</option>
+                    <option value="Date Created">작성일</option>
+                    <option value="payment date">결제일</option>
+                </select>
+
+                <div class="salesman_search">
+                    <input type="text" placeholder="검색">
+                    <img src="/images/img/search_icon.png" alt="검색" />
+                </div>
+            </div>
+
+        </div>
+
+        <div class="main_center_wrap">
+
+            <div class="mp_title">
+                <ul>
+                    <li>NO</li>
+                    <li>부서명</li>
+                    <li>요청자</li>
+                    <li>요청양식</li>
+                    <li>제목</li>
+                    <li>요청일</li>
+                    <li>진행 상태</li>
+                </ul>
+            </div>
+
+            <div class="mp_sub_txt">
+
+
+                <ul>
+                    <li>1</li>
+                    <li>디자인&마케팅</li>
+                    <li>홍길동</li>
+                    <li>이미지 제작</li>
+                    <li>
+                        <div class="title_inner">2022년 상반기 KH자산관리법인 영업 프로모션 진행</div>
+                        <div class="new"><img src="/images/img/new.png"></div>
+                        <div class="title_file"><img src="/images/img/file.png"></div>
+                    </li>
+                    <li>2022-03-29</li>
+                    <li>확인중</li>
+                </ul>
+
+                <ul>
+                    <li>1</li>
+                    <li>디자인&마케팅</li>
+                    <li>홍길동</li>
+                    <li>이미지 제작</li>
+                    <li>
+                        <div class="title_inner">2022년 상반기 KH자산관리법인 영업 프로모션 진행</div>
+                        <div class="new"><img src="/images/img/new.png"></div>
+                        <div class="title_file"><img src="/images/img/file.png"></div>
+                    </li>
+                    <li>2022-03-29</li>
+                    <li>확인중</li>
+                </ul>
+
+                <ul>
+                    <li>1</li>
+                    <li>디자인&마케팅</li>
+                    <li>홍길동</li>
+                    <li>이미지 제작</li>
+                    <li>
+                        <div class="title_inner">2022년 상반기 KH자산관리법인 영업 프로모션 진행</div>
+                        <div class="new"><img src="/images/img/new.png"></div>
+                        <div class="title_file"><img src="/images/img/file.png"></div>
+                    </li>
+                    <li>2022-03-29</li>
+                    <li>확인중</li>
+                </ul>
+
+                <ul>
+                    <li>1</li>
+                    <li>디자인&마케팅</li>
+                    <li>홍길동</li>
+                    <li>이미지 제작</li>
+                    <li>
+                        <div class="title_inner">2022년 상반기 KH자산관리법인 영업 프로모션 진행</div>
+                        <div class="new"><img src="/images/img/new.png"></div>
+                        <div class="title_file"><img src="/images/img/file.png"></div>
+                    </li>
+                    <li>2022-03-29</li>
+                    <li>확인중</li>
+                </ul>
+
+                <ul>
+                    <li>1</li>
+                    <li>디자인&마케팅</li>
+                    <li>홍길동</li>
+                    <li>이미지 제작</li>
+                    <li>
+                        <div class="title_inner">2022년 상반기 KH자산관리법인 영업 프로모션 진행</div>
+                        <div class="new"><img src="/images/img/new.png"></div>
+                        <div class="title_file"><img src="/images/img/file.png"></div>
+                    </li>
+                    <li>2022-03-29</li>
+                    <li>확인중</li>
+                </ul>
+
+                <ul>
+                    <li>1</li>
+                    <li>디자인&마케팅</li>
+                    <li>홍길동</li>
+                    <li>이미지 제작</li>
+                    <li>
+                        <div class="title_inner">2022년 상반기 KH자산관리법인 영업 프로모션 진행</div>
+                        <div class="new"><img src="/images/img/new.png"></div>
+                        <div class="title_file"><img src="/images/img/file.png"></div>
+                    </li>
+                    <li>2022-03-29</li>
+                    <li>확인중</li>
+                </ul>
+
+                <ul>
+                    <li>1</li>
+                    <li>디자인&마케팅</li>
+                    <li>홍길동</li>
+                    <li>이미지 제작</li>
+                    <li>
+                        <div class="title_inner">2022년 상반기 KH자산관리법인 영업 프로모션 진행</div>
+                        <div class="new"><img src="/images/img/new.png"></div>
+                        <div class="title_file"><img src="/images/img/file.png"></div>
+                    </li>
+                    <li>2022-03-29</li>
+                    <li>확인중</li>
+                </ul>
+
+                <ul>
+                    <li>1</li>
+                    <li>디자인&마케팅</li>
+                    <li>홍길동</li>
+                    <li>이미지 제작</li>
+                    <li>
+                        <div class="title_inner">2022년 상반기 KH자산관리법인 영업 프로모션 진행</div>
+                        <div class="new"><img src="/images/img/new.png"></div>
+                        <div class="title_file"><img src="/images/img/file.png"></div>
+                    </li>
+                    <li>2022-03-29</li>
+                    <li>확인중</li>
+                </ul>
+
+                <ul>
+                    <li>1</li>
+                    <li>디자인&마케팅</li>
+                    <li>홍길동</li>
+                    <li>이미지 제작</li>
+                    <li>
+                        <div class="title_inner">2022년 상반기 KH자산관리법인 영업 프로모션 진행</div>
+                        <div class="new"><img src="/images/img/new.png"></div>
+                        <div class="title_file"><img src="/images/img/file.png"></div>
+                    </li>
+                    <li>2022-03-29</li>
+                    <li>확인중</li>
+                </ul>
+
+                <ul>
+                    <li>1</li>
+                    <li>디자인&마케팅</li>
+                    <li>홍길동</li>
+                    <li>이미지 제작</li>
+                    <li>
+                        <div class="title_inner">2022년 상반기 KH자산관리법인 영업 프로모션 진행</div>
+                        <div class="new"><img src="/images/img/new.png"></div>
+                        <div class="title_file"><img src="/images/img/file.png"></div>
+                    </li>
+                    <li>2022-03-29</li>
+                    <li>확인중</li>
+                </ul>
+
+            </div>
+
+            <!-- next btn -->
+            <div class="next_btn_wrap">
+                <div class="double_prev_btn pn_btn"><span>이전 맨끝</span></div>
+                <div class="prev_btn pn_btn"><span>이전</span></div>
+
+                <ul>
+                    <li class="on">1</li>
+                    <li>2</li>
+                    <li>3</li>
+                    <li>4</li>
+                    <li>5</li>
+                    <li>6</li>
+                    <li>7</li>
+                    <li>8</li>
+                    <li>9</li>
+                    <li>10</li>
+                </ul>
+
+                <div class="next_btn pn_btn"><span>다음</span></div>
+                <div class="double_next_btn pn_btn"><span>따블</span></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</th:block>
+
+
+<th:block layout:fragment="pageScript">
+    <!-- js파일 -->
+</th:block>
+
+
+</html>

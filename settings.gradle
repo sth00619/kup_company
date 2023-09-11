@@ -1,0 +1,5 @@
+rootProject.name = 'incompany'
+include 'incompany-core'
+include 'incompany-web'
+include 'incompany-batch'
+

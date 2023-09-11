@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+
+<th:block layout:fragment="pageCss">
+    <link rel="stylesheet" th:href="@{/css/list_check_box.css}" type="text/css">
+</th:block>
+
+<th:block layout:fragment="side_contents">
+    <input type="hidden" th:value="${hasPreRequest}" id="_has_pre_request">
+    <div id="_side_operation" hidden>
+        <div sec:authorize="hasAnyAuthority('ROOT_ADMIN')" th:replace="fragments/sideOperation :: sideOperationFragment"></div>
+    </div>
+    <div id="_side_contract" hidden>
+        <div th:replace="fragments/sideContractFortune :: sideContractFortuneFragment" hidden></div>
+    </div>
+</th:block>
+
+<th:block layout:fragment="contents">
+    <div class="top_center_menu_visual">
+        <div class="top_center-menu">
+            <div class="top_left_menu">
+            </div>
+
+            <div class="top_right_menu _right_menu" hidden>
+                <th:block th:replace="fragments/search_fragment :: search_fragment"></th:block>
+            </div>
+        </div>
+
+        <div class="main_center_wrap">
+            <div class="main_top">
+                <div>
+                    <ul class="Event_title">
+                        <li class="_main_first_txt" style="width: 20px;">
+<!--                            <label for="checkbox"></label>-->
+<!--                            <input id="checkbox" type="checkbox">-->
+                        </li>
+                        <li>순위</li>
+                        <li>본부</li>
+                        <li>지점</li>
+                        <li>팀</li>
+                        <li>직급</li>
+                        <li>담당자</li>
+                        <li>목돈</li>
+                        <li>부동산</li>
+                        <li>보험</li>
+                        <li>점수</li>
+                    </ul>
+                </div>
+                <div class="Event_sub_txt">
+                    <ul class="_contract_sub_title _sub_ul" th:each="cs : ${statusList}">
+                        <li class="sub_first_txt _checkbox_li _sub_first_txt" style="width: 20px;">
+<!--                            <label class="_sub_label" for="checkbox"></label>-->
+<!--                            <input class="_sub_check" id="checkbox" type="checkbox">-->
+                        </li>
+                        <li>
+                            <a class="_ranking_all"
+                               th:text="${cs.overallRanking}"></a>
+                        </li>
+                        <li>
+                            <a class="_d1"
+                               th:text="${cs.centralDepartmentName}"></a>
+                        </li>
+                        <li>
+                            <a class="_d2"
+                               th:text="${cs.salesDepartmentName}"></a>
+                        </li>
+                        <li>
+                            <a class="_d3"
+                               th:text="${cs.teamDepartmentName}"></a>
+                        </li>
+                        <li>
+                            <a class="_position"
+                               th:text="${cs.positionName}"></a>
+                        </li>
+                        <li>
+                            <a class="_employee_name"
+                               th:text="${cs.employeeName}"
+                               th:value="${cs.employeeCode}"></a>
+                        </li>
+                        <li>
+                            <a class="_total_amount_contractFortune"
+                               th:text="${cs.contractTotalAmount}"></a>
+                        </li>
+                        <li>
+                            <a class="_total_amount_realEstate"
+                               th:text="${cs.realEstateTotalAmount}"></a>
+                        </li>
+                        <li>
+                            <a class="_total_amount_insurance"
+                               th:text="${cs.insuranceTotalAmount}"></a>
+                        </li>
+                        <li>
+                            <a class="_total_score"
+                               th:text="${cs.getTotalScoreValue}"
+                               th:value="${cs.getTotalScoreValue}"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</th:block>
+
+<th:block layout:fragment="pageScript">
+
+    <!-- event info list-->
+    <script th:src="@{/js/event/eventInfoList.js}" type="text/javascript"></script>
+
+    <!-- check box -->
+    <script th:src="@{/js/list_check_box.js}" type="text/javascript"></script>
+</th:block>
+</html>

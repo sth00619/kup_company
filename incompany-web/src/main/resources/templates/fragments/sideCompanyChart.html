@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- Left CompanyChart Start -->
+<div class="slide_down_wrap" th:fragment="sideCompanyChartFragment">
+
+    <input id="_isAuth" type="hidden" th:classappend="${#authorization.expression('hasAnyAuthority(''COMPANY_EMPLOYEE_UPDATE'')')}? '_authTrue'">
+    <ul hidden id="_companyChartUl">
+        <li class="companyChartLi" th:each="ccl : ${companyChartList}" th:value="${ccl.companyChartCode}">
+            <a class="companyChart" th:text="${ccl.companyChartName}"
+               th:value="${ccl.companyChartCode}">
+            </a>
+        </li>
+    </ul>
+</div>
+</html>

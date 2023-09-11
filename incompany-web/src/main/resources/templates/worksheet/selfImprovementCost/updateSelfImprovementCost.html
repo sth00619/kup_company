@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <style>
+        .Khlist dt {
+            text-align: left !important;
+            padding-left: 22px !important;
+            justify-content: left !important;
+        }
+
+        .list_view03 dt {
+            width: 118px;
+        }
+
+        ._vacation_type {
+            width: 310px !important;
+        }
+
+        ._day_diff {
+            width: 40px !important;
+        }
+    </style>
+</th:block>
+
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideWorksheet :: sideWorksheetFragment"></div>
+</th:block>
+
+<th:block layout:fragment="contents">
+    <form enctype="multipart/form-data" id="updateForm" method="post">
+
+        <!-- 결재자, 참조자 선택 -->
+        <th:block th:replace="fragments/commonPayment/addForm :: addForm"></th:block>
+
+
+        <div class="top_center_menu_visual">
+            <div class="main_center_wrap">
+                <div class="top_title">
+                    <div style="width:140px;">
+                        <h2 style="padding-bottom:10px;">자기 계발비 신청</h2>
+                    </div>
+                </div>
+
+                <div class="Khlist">
+                    <dl class="list_view03">
+                        <dt>작성자</dt>
+                        <dd>
+                            <span class="_writer" th:text="${createEName}"></span>
+                        </dd>
+                    </dl>
+
+                    <dl class="list_view03">
+                        <dt>제목</dt>
+                        <dd>
+                            <div class="title_input">
+                                <input class="_title" maxlength="80" name="title" type="text" th:value="${selfImprovementCostDto.title}">
+                            </div>
+                        </dd>
+                    </dl>
+
+                    <dl class="list_view03">
+                        <dt class="viewdt_flex">첨부파일</dt>
+                        <dd>
+                            <div id="fileListDiv">
+                                <p id="maxMsg" th:if="${#lists.size(fileList) == 5 }">파일은 최대 5개까지 업로드 가능합니다</p>
+
+                                <div class="fileNameBef" th:if="${#lists.size(fileList) < 5 }">
+                                    <input name="file" type="file" class="selectFile">
+                                </div>
+                                <div th:each=" fl: ${fileList}" class="fileName">
+                                    <input th:value="${fl}" name='fileNameDb' hidden>
+                                    <a id="deleteFileListBtn">x</a> <span th:text="${fl}"></span>
+
+                                </div>
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+
+                <div class="save_btn_wrap">
+                    <div>
+                        <button class="close_btn clos _cancelBtn" type="button">취소</button>
+                        <button class="close_btn btn_color _submitBtn">저장</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</th:block>
+
+
+<th:block layout:fragment="pageScript">
+    <script th:src="@{/js/worksheet/selfImprovementCost/updateSelfImprovementCost.js(date=${todayFormat})}"></script>
+    <!--첨부파일 수정 js-->
+    <script th:src="@{/js/attachFile/attachFileAtUpdate.js(date=${todayFormat})}"></script>
+</th:block>
+
+
+
+</html>

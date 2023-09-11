@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <style>
+        ._khlist {
+            border-top: 1px solid #304260;
+            margin-bottom: 50px;
+        }
+
+        .Khlist dt {
+            text-align: left !important;
+            padding-left: 22px !important;
+            justify-content: left !important;
+        }
+
+        .list_view03 dt {
+            width: 118px;
+        }
+
+        ._day_diff {
+            width: 40px !important;
+        }
+    </style>
+</th:block>
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideWorksheet :: sideWorksheetFragment"></div>
+</th:block>
+
+<th:block layout:fragment="contents">
+
+    <input th:value="${vacationRecordDto.vacationCategoryEnum.meaning}" id="_paymentTitle"  />
+    <input th:value="${vacationRecordDto.employeeCode}" id="_draftEmployeeCode"  />
+
+    <!-- 첨부파일 cloud url -->
+    <input type="hidden" id="cloudUrl" th:value="${cloudUrl}"/>
+
+    <!-- 상단 : 결재자, 참조자 리스트 영역 (하단에 infoFormBottom 도 replace 시켜야 함)-->
+    <th:block th:replace="fragments/commonPayment/infoFormTop :: infoFormTop"></th:block>
+
+    <div class="member_deta_wrap">
+        <div class="member_deta_box">
+            <h2>휴가정보</h2>
+            <div class="member_deta">
+                <div class="deta_list">
+                    <div class="list_name star">
+                        <p>제목</p>
+                    </div>
+                    <div class="contract_list_box">
+                        <span th:text="${vacationRecordDto.title}"></span>
+                    </div>
+                </div>
+
+                <div class="deta_list">
+                    <div class="list_name star">
+                        <p>신청자</p>
+                    </div>
+                    <div class="contract_list_box">
+                        <span th:text="${vacationRecordDto.employeeName}"></span>
+                    </div>
+                </div>
+
+                <div class="deta_list">
+                    <div class="list_name star">
+                        <p>신청자 휴가 정보</p>
+                    </div>
+                    <div class="contract_list_box">
+                        <span>[<span th:text="${vacationByEmployee.year}"></span> 연차 : <span th:text="${vacationByEmployee.vacationPay}"></span>]</span>&nbsp;
+                        <span>[사용 연차 : <span th:text="${vacationByEmployee.vacationUsed}"></span>]</span>&nbsp;&nbsp;&nbsp;
+                        <span>[잔여 연차 : <span th:text="${vacationByEmployee.vacationRemaining}"></span>]</span>&nbsp;&nbsp;&nbsp;
+                        <span>[유급 휴가 : <span th:text="${vacationByEmployee.useSalaryY}"></span>]</span>&nbsp;&nbsp;&nbsp;
+                        <span>[무급 휴가 : <span th:text="${vacationByEmployee.useSalaryN}"></span>]</span>
+                    </div>
+                </div>
+
+                <div class="deta_list">
+                    <div class="list_name star">
+                        <p>휴가 종류</p>
+                    </div>
+                    <div class="contract_list_box">
+                        <span th:text="${vacationRecordDto.vacationCategoryEnum.meaning}"></span>
+
+                        <!-- 휴가 상세 정보 -->
+                        <span th:if="${!vacationRecordDto.vacationCategoryEnum.document.empty}">[제출 서류&nbsp;:&nbsp;<span th:text="${vacationRecordDto.vacationCategoryEnum.document}" class="_document"></span>&nbsp;]</span>
+                    </div>
+                </div>
+
+                <div class="deta_list">
+                    <div class="list_name star">
+                        <p>휴가 기간</p>
+                    </div>
+                    <div class="contract_list_box">
+                        <div class="date_box">
+                            <input id="_startDate" required name="startDate" type="date" th:value="${#strings.substring(vacationRecordDto.startDate, 0, 10)}" readonly>
+                            &nbsp;
+                            ~
+                            &nbsp;
+                            <input id="_endDate" required name="endDate" type="date" th:value="${#strings.substring(vacationRecordDto.endDate, 0, 10)}" readonly>
+                        </div>
+                        &nbsp;<input class="_day_diff" type="number" th:value="${vacationRecordDto.vacationDayDiff}" readonly>&nbsp;<span>일간</span>&nbsp;&nbsp;
+                        <span>[연차 차감&nbsp;:&nbsp;<span th:text="${vacationRecordDto.useAnnual}" class="_minusLeave"></span>&nbsp;]</span>&nbsp;&nbsp;
+                        <span>[유급&nbsp;:&nbsp;<span th:text="${vacationRecordDto.useSalaryY}" class="_salaryY"></span>&nbsp;]</span>&nbsp;&nbsp;
+                        <span>[무급&nbsp;:&nbsp;<span th:text="${vacationRecordDto.useSalaryN}" class="_salaryN"></span>&nbsp;]</span>&nbsp;&nbsp;
+                    </div>
+                </div>
+
+                <div class="deta_list">
+                    <div class="list_name star">
+                        <p>휴가사유</p>
+                    </div>
+                    <div class="contract_list_box">
+                        <span id="_vacation_reason"  th:text="${vacationRecordDto.reason}"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="Khlist">
+                <dl class="list_view03 file_view">
+                    <dt>첨부파일</dt>
+                    <dd>
+                        <div th:if="${vacationRecordDto.isFileExist}">
+                            <div th:each="ifu : ${imgFileUrl}">
+                                <img style="float:left; margin-left:10px" th:src="${ifu}" class="_fileImg" width="150" height="150">
+                            </div>
+                            <div class="modal">
+                                <img id="fileUrl" width="100%" height="100%">
+                            </div>
+                            <a class="file_click">
+                                <img src="/images/img/file.png">
+                            </a>
+                            <div class="file_viewbox">
+                                <ul th:each="fl: ${fileList}">
+                                    <li id="downFile" th:text="${fl}"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </dd>
+                </dl>
+            </div>
+
+            <!-- 하단 : 결재 처리 영역 -->
+            <th:block th:replace="fragments/commonPayment/infoFormBottom :: infoFormBottom"></th:block>
+        </div>
+    </div>
+</th:block>
+
+<th:block layout:fragment="pageScript">
+    <!-- 휴가 등록 -->
+    <script type="text/javascript" th:src="@{/js/vacation/vacationInfo.js(date=${todayFormat})}"></script>
+
+    <!-- 날짜 계산 -->
+    <script type="text/javascript" th:src="@{/js/utils/date_util.js(date=${todayFormat})}"></script>
+
+    <!-- 문자열 유틸 -->
+    <script type="text/javascript" th:src="@{/js/utils/string_custom_util.js(date=${todayFormat})}"></script>
+
+    <!-- 첨부파일 js -->
+    <script src="/js/multiFile.js"></script>
+</th:block>
+</html>

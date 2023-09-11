@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<th:block layout:fragment="pageCss">
+    <style>
+        ._contents {
+            white-space: pre-wrap;
+        }
+
+        ._deleteForm {
+            display: none;
+        }
+
+        ._off {
+            display: none;
+        }
+
+        ._on {
+            display: block;
+        }
+    </style>
+</th:block>
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sidePotential :: sidePotentialFragment"></div>
+</th:block>
+<th:block layout:fragment="contents">
+    <!-- 처리 결과 여부 -->
+    <input id="isSuccess" th:value="${isSuccess}" type="hidden" />
+    <input id="message" th:value="${message}" type="hidden" />
+
+    <input id="getEmployeeLoginCode" th:value="${employeeLoginCode}" type="hidden" />
+    <input th:value="${myProfileDto.employeeCode}" type="hidden" />
+    <input th:value="${myProfileDto.departmentCode}" type="hidden" />
+    <input th:value="${employeeCode}" type="hidden" />
+    <input th:value="${departmentCode}" type="hidden" />
+    
+
+    <!-- main start ! -->
+    <div class="top_center_menu_visual" th:if="${#authorization.expression('hasAnyAuthority(''CANDIDATE_EDIT'')')} or (${myProfileDto.employeeCode == employeeCode} and (${myProfileDto.departmentCode == departmentCode} or ${#strings.isEmpty(departmentCode)}))">
+
+        <div class="top_center-menu">
+
+            <div class="top_left_menu">
+
+                <th:block th:replace="fragments/select_department_employee :: select_department_employee"></th:block>
+
+
+                <div class="guest_menu">
+                    <p><a href="/candidate/form">후보자 추가</a></p>
+                </div>
+
+            </div>
+
+            <div class="top_right_menu">
+
+                <select class="select_box">
+                    <option value="mobile">연락처</option>
+                    <option value="name">후보자</option>
+
+                </select>
+
+                <div class="salesman_search">
+                    <input id="keyword" placeholder="검색" th:value="${keyword}" type="text">
+                    <img alt="검색" src="/images/img/search_icon.png" class="_searchBtn" />
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="main_center_wrap">
+
+            <div class="main_top">
+                <div class="candi_title_addition">
+                    <ul class="candi_title">
+                        <li class="sub_first_txt">
+                            <label for="checkbox"></label>
+                            <input type="checkbox" id="checkbox">
+                        </li>
+                        <li>NO</li>
+                        <li>본부</li>
+                        <li>지점</li>
+                        <li>팀</li>
+                        <li>직급</li>
+                        <li>담당자</li>
+                        <li>후보자</li>
+                        <li>연락처</li>
+                        <li>거주지</li>
+                        <li>성별</li>
+                        <li>생년월일</li>
+                        <li>후보자 상담</li>
+                        <li>상세정보</li>
+                    </ul>
+                </div>
+
+                <div class="candi_sub_txt">
+                    <div>
+
+                        <div>
+                            <ul class="candisub_title" th:each="cl : ${candidateList.getList()}">
+
+                                <li class="sub_first_txt">
+                                    <label for="checkbox"></label>
+                                    <input class="checkbox" type="checkbox">
+                                </li>
+                                <li class="deta _candidateEmployeeNo" th:value="${cl.candidateEmployeeNo}"><a
+                                        th:text="${cl.candidateEmployeeNo}"></a></li>
+                                <li class="deta"><a th:text="${cl.employeeInfo.D1Name}"></a></li>
+                                <li class="deta"><a th:text="${cl.employeeInfo.D2Name}"></a></li>
+                                <li class="deta"><a th:text="${cl.employeeInfo.D3Name}"></a></li>
+                                <li class="deta"><a th:text="${cl.employeeInfo.positionName}"></a></li>
+                                <li class="deta"><a th:text="${cl.employeeInfo.employeeName}"></a></li>
+                                <li class="deta"><a th:text="${cl.name}"></a></li>
+                                <li class="deta"><a th:text="${cl.mobile}"></a></li>
+                                <li class="deta"><a>
+                                        <p th:text="${#authorization.expression('hasAnyAuthority(''CANDIDATE_EDIT'')')} or ${cl.employeeCode == myProfileDto.employeeCode} or ${cl.createEmployeeCode == myProfileDto.employeeCode} ? ${cl.address} : '비공개'"></p></a></li>
+                                <li class="deta"><a th:text="${cl.gender}"></a></li>
+                                <li class="deta"><a> <p th:if="${not #strings.isEmpty(cl.birthday)}" th:text="${#strings.substring(cl.birthday,2)}"></p></a></li>
+                                <li th:classappend="${cl.employeeCode == myProfileDto.employeeCode} ? 'advice_click'"><p th:if="${#authorization.expression('hasAnyAuthority(''CANDIDATE_EDIT'')')} or ${cl.employeeCode == myProfileDto.employeeCode} or ${cl.createEmployeeCode == myProfileDto.employeeCode}">+</p></li>
+                                <li><a th:href="@{/candidate/info(candidateEmployeeNo=${cl.candidateEmployeeNo})}">상세</a></li>
+
+                            </ul>
+
+
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- next btn -->
+            <th:block th:replace="fragments/page_nation :: page_nation"></th:block>
+
+
+        </div>
+
+        <div class="advice_save_visual pop2">
+
+            <div class="close_btn_wrap">
+                <div class="close_btn_img"><img src="/images/img/close_btn.png"></div>
+            </div>
+
+            <div class="deta_advice_wrap" id="counselingFormList">
+
+                <div class="advice_menu">
+
+                    <div class="advice_left_menu">
+                       
+                    </div>
+
+                    <ul>
+                        <li class=" _counseling_title" value="0">TA</li>
+                        <li class=" _counseling_title" value="1">후보자 상담</li>
+                        <li class=" _counseling_title" value="2">기타</li>
+                    </ul>
+                </div>
+
+                <div class="advice_txt_wrap"  id="advice">
+                    <input th:value="${candidateEmployeeNo}" class="_candidateEmployeeNoForm" hidden>
+
+                    <div class="advice_txt_inner" th:each=" cl: ${counselingList}">
+                        <div class="advice_txt_box"  th:each=" dl: ${cl.detailList}">
+                            <input th:value="${cl.counselingNo}" class="_counselingNo" hidden>
+                            <input th:value="${dl.detailNo}" class="_detailNo" hidden>
+                            <h3 th:text="${dl.titleMeaning}">TA</h3>
+                            <p th:text="${cl.counselingTime}">2022.02.11</p>
+                            <div class="advice_txt">
+                                <textarea class="advice_box _contentsForm" th:text="${dl.contents}"></textarea>
+                                <div class="close _deleteClose"></div>
+                            </div>
+
+                        </div>
+
+
+
+
+
+                    </div>
+
+                </div>
+
+                <div class="save_btn_wrap">
+                    <div>
+                        <button class="close_btn"  id="counselingClose">취소</button>
+                        <button class="close_btn btn_color" id="counselingSaveBtn">저장</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <!-- end -->
+
+        <!-- 상담정보 -->
+        <div class="advice_save_visual pop1">
+
+            <div class="close_btn_wrap">
+                <div class="close_btn_img"><img src="/images/img/close_btn.png"></div>
+            </div>
+
+            <div class="deta_advice_wrap" id="counselingList">
+
+                <div class="advice_menu">
+
+                    <div class="advice_left_menu">
+                        <div class="advice_left_menu">
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="feed_box_txt">
+
+                    <div class="feed_txt">
+                        <textarea>sdsd</textarea>
+                        <div class="close"></div>
+                    </div>
+
+                </div>
+
+                <div class="advice_txt_wrap">
+
+                    <div class="advice_txt_inner">
+                        <div th:each=" cl: ${counselingList}">
+                            <div class="advice_txt_box" th:each=" dl: ${cl.detailList}">
+
+                                <h3 th:text="${dl.titleMeaning}">TA</h3>
+                                <p th:text="${cl.counselingTime}"></p>
+                                <div class="advice_txt">
+                                    <span class="_contents" th:text="${dl.contents}">
+                                    </span>
+                                </div>
+
+                        </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+                <div class="save_btn_wrap save_none">
+                    <div>
+                        <button class="close_btn cbt">취소</button>
+                        <button class="save_btn">저장</button>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</th:block>
+
+
+<th:block layout:fragment="pageScript">
+
+    <script th:src="@{/js/potential/potentialPage.js(date=${todayFormat})}"></script>
+    <script th:src="@{/js/candidate/list.js(date=${todayFormat})}"></script>
+
+    <script th:src="@{/js/select_department_employee.js(date=${todayFormat})}" type="text/javascript"></script>
+</th:block>
+
+
+</html>

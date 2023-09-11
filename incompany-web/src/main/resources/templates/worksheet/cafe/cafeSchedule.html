@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+       xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <link href="/toastUi/css/toastUi.css" rel="stylesheet">
+    <link href="/toastUi/css/toastUi-editor-plugin-table-merged-cell.css" rel="stylesheet">
+    <link href="/toastUi/css/tui-color-picker.css" rel="stylesheet">
+    <link href="/toastUi/css/toastUi-editor-plugin-color-syntax.css" rel="stylesheet">
+</th:block>
+
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideWorksheet :: sideWorksheetFragment"></div>
+</th:block>
+
+<th:block layout:fragment="contents">
+    <form id="cafeSchedule" method="post" th:action="@{/}">
+        <input name="_method" type="hidden" value="DELETE" />
+
+        <input type="hidden" id="cafeScheduleNo" th:value="${cafeScheduleInfo.cafeScheduleNo}">
+        <div class="top_center_menu_visual">
+            <div class="main_center_wrap">
+                <div>
+                    <button class="close_btn _updateBtn" type="button">수정</button>
+                    <button class="close_btn btn_color _deleteBtn" type="button">삭제</button>
+                    <button style="margin-left:10px" class="close_btn _addCafeScheduleBtn" type="button">글쓰기</button>
+                </div>
+
+                <div class="top_title">
+                    <!-- 이전 버튼 -->
+                    <div class="salesman_search prev-btn">
+                        <div class="prev_btn pn_btn _prePage" id="prePage"
+                             th:if="${cafeScheduleInfo.preCafeScheduleNo} != null">
+                            <a aria-label="Previous" class="page-link previous _a_pre"
+                               href="javascript:void(0)">
+                            <span aria-hidden="true" id="preNo" th:value="${cafeScheduleInfo.preCafeScheduleNo}">&laquo;</span>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- 제목 -->
+                    <h2>[[${cafeScheduleInfo.title}]]</h2>
+                    <!-- 다음 버튼 -->
+                    <div class="salesman_search next-btn">
+                        <div class="next_btn pn_btn _nextPage" id="nextPage"
+                             th:if="${cafeScheduleInfo.nextCafeScheduleNo} != null">
+                            <a aria-label="Next" class="page-link next _a_next"
+                               href="javascript:void(0)">
+                                                        <span aria-hidden="true" id="nextNo"
+                                                              th:value="${cafeScheduleInfo.nextCafeScheduleNo}">&raquo;</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="Khlist">
+                    <dl class="list_view04">
+                        <p hidden id="contents" th:text="${cafeScheduleInfo.contents}"></p>
+                        <dd>
+                            <div id="viewer"></div>
+                        </dd>
+                    </dl>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</th:block>
+
+
+<th:block layout:fragment="pageScript">
+    <!-- Color Picker -->
+    <script src="/toastUi/js/tui-color-picker.js"></script>
+    <!-- Editor -->
+    <script src="/toastUi/js/toastUi.js"></script>
+    <!-- Editor's Plugin -->
+    <script src="/toastUi/js/toastUi-editor-plugin-table-merged-cell.js"></script>
+    <script src="/toastUi/js/toastUi-editor-plugin-color-syntax.js"></script>
+    <script th:src="@{/js/worksheet/cafe/cafeSchedule.js(date=${todayFormat})}" type="text/javascript"></script>
+</th:block>
+
+</html>

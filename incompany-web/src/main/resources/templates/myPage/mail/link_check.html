@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+  <!-- css작성, 파일 -->
+</th:block>
+
+<th:block layout:fragment="side_contents">
+  <div th:replace="fragments/sideMypage :: sideMypageFragment"></div>
+</th:block>
+
+<th:block layout:fragment="contents">
+  <form id="check" method="post" th:action="@{/myPage/mail/link_check}">
+    <div class="guest_deta_wrap _add_form_div">
+      <div class="guest_deta_box">
+        <h2>이메일 정보 입력</h2>
+        <div class="guest_deta">
+          <div class="guest_list">
+            <div class="guest_list_name star">
+              <p>이메일</p>
+            </div>
+            <div class="guest_list_box">
+              <div class="name_box">
+                <input maxlength="20" class="_email" id="_email" name="email" type="text" required>
+                <label for="_email">이메일 주소를 입력해주세요.</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="save_btn_wrap">
+        <div>
+          <button class="close_btn btn_color deta _submitBtn" id="submitBtn" type="button">저장</button>
+          <button class="close_btn _closeBtn" id="closeBtn" type="button">취소</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</th:block>
+
+</body>
+</html>

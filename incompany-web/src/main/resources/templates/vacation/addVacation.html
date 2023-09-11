@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <style>
+        .Khlist dt {
+            text-align: left !important;
+            padding-left: 22px !important;
+            justify-content: left !important;
+        }
+
+        .list_view03 dt {
+            width: 118px;
+        }
+
+        ._vacation_type {
+            width: 310px !important;
+        }
+
+        ._day_diff {
+            width: 40px !important;
+        }
+    </style>
+</th:block>
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideWorksheet :: sideWorksheetFragment"></div>
+</th:block>
+
+<th:block layout:fragment="contents">
+    <form enctype="multipart/form-data" method="POST" th:action="@{/vacation/addVacation}">
+
+        <!-- 휴가 등록 데이터 세팅 -->
+        <input type="hidden" class="_year" name="year" th:value="${vacationByEmployee.year}"/> <!-- 현재 연도 -->
+        <input type="hidden" class="_half_yn"           name="halfYn"           value="N"   /> <!-- 반차 여부 -->
+        <input type="hidden" class="_status"            name="status"           value="0"   /> <!-- 처리 상태 (첫 신청 시 : 결재전) -->
+        <input type="hidden" class="_use_salary_y"      name="useSalaryY"       value="0.0" /> <!-- 유급 휴가 일 수 -->
+        <input type="hidden" class="_use_salary_n"      name="useSalaryN"       value="0.0" /> <!-- 무급 휴가 일 수 -->
+        <input type="hidden" class="_use_annual"        name="useAnnual"        value="0.0" /> <!-- 연차 차감 일 수 -->
+        <input type="hidden" class="_vacation_day_diff" name="vacationDayDiff"  value="0"   /> <!-- 휴가 기간 -->
+
+        <!-- 결재자, 참조자 선택 -->
+        <th:block th:replace="fragments/commonPayment/addForm :: addForm"></th:block>
+
+        <div class="member_deta_wrap">
+            <div class="member_deta_box">
+                <h2>휴가정보</h2>
+                <div class="member_deta">
+                    <div class="deta_list">
+                        <div class="list_name star">
+                            <p>제목</p>
+                        </div>
+                        <div class="list_box">
+                            <div class="name_box">
+                                <input required maxlength="35" style="width:500px !important;" id="_title" name="title" type="text"
+                                       oninvalid="this.setCustomValidity('제목을 입력해 주세요.')" oninput="this.setCustomValidity('')">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="deta_list">
+                        <div class="list_name star">
+                            <p>신청자</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <span th:text="${myProfileDto.employeeName}"></span>
+                        </div>
+                    </div>
+
+                    <div class="deta_list">
+                        <div class="list_name star">
+                            <p>신청자 휴가 정보</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <span>[<span th:text="${vacationByEmployee.year}"></span> 연차 : <span th:text="${vacationByEmployee.vacationPay}"></span>]</span>&nbsp;
+                            <span>[사용 연차 : <span th:text="${vacationByEmployee.vacationUsed}"></span>]</span>&nbsp;&nbsp;&nbsp;
+                            <span>[잔여 연차 : <span th:text="${vacationByEmployee.vacationRemaining}" class="_vacation_remaining"></span>]</span>&nbsp;&nbsp;&nbsp;
+                            <span>[유급 휴가 : <span th:text="${vacationByEmployee.useSalaryY}"></span>]</span>&nbsp;&nbsp;&nbsp;
+                            <span>[무급 휴가 : <span th:text="${vacationByEmployee.useSalaryN}"></span>]</span>
+                        </div>
+                    </div>
+
+                    <div class="deta_list">
+                        <div class="list_name star">
+                            <p>휴가 종류</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <select class="preface_select _vacation_type" id="vacationType" name="vacationTypeNo" required
+                                    oninvalid="this.setCustomValidity('휴가 종류를 선택해 주세요.')" oninput="this.setCustomValidity('')">
+                                <option disabled selected value="">휴가 선택</option>
+
+                                <!-- 휴가 종류 별 상세 정보 -->
+                                <option th:each="enum : ${vacationCategoryEnumList}"
+                                        th:text="${enum.meaning}"
+                                        th:value="${enum.index}"
+                                        th:data-salaryY="${enum.salaryY}"
+                                        th:data-salaryN="${enum.salaryN}"
+                                        th:data-minusLeave="${enum.minusLeave}"
+                                        th:data-maxLeave="${enum.maxLeave}"
+                                        th:data-document="${enum.document}">
+                                </option>
+                            </select>
+
+                            <!-- 휴가 상세 정보 -->
+                            <span>[신청 가능일 수&nbsp;:&nbsp;<span class="_maxLeave"></span>&nbsp;]</span>&nbsp;&nbsp;
+                            <span>[연차 차감&nbsp;:&nbsp;<span class="_minusLeave"></span>&nbsp;]</span>&nbsp;&nbsp;
+                            <span>[유급&nbsp;:&nbsp;<span class="_salaryY"></span>&nbsp;]</span>&nbsp;&nbsp;
+                            <span>[무급&nbsp;:&nbsp;<span class="_salaryN"></span>&nbsp;]</span>&nbsp;&nbsp;
+                            <span>[제출 서류&nbsp;:&nbsp;<span class="_document"></span>&nbsp;]</span>
+                        </div>
+                    </div>
+
+                    <div class="deta_list">
+                        <div class="list_name star">
+                            <p>휴가 기간</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="date_box">
+                                <input id="_startDate" required name="startDate" type="date"
+                                       oninvalid="this.setCustomValidity('휴가 시작일을 선택해 주세요.')" oninput="this.setCustomValidity('')" readonly>
+                                &nbsp;
+                                ~
+                                &nbsp;
+                                <input id="_endDate" required name="endDate" type="date"
+                                       oninvalid="this.setCustomValidity('휴가 종료일을 선택해 주세요.')" oninput="this.setCustomValidity('')" readonly>
+                            </div>
+                            &nbsp;<input class="_day_diff" type="number" value="0" readonly>&nbsp;<span>일간</span>
+                        </div>
+                    </div>
+
+                    <div class="deta_list">
+                        <div class="list_name star">
+                            <p>휴가사유</p>
+                        </div>
+                        <div class="list_box">
+                            <div class="name_box">
+                                <input required maxlength="35" style="width:500px !important;" id="_vacation_reason" name="reason" type="text"
+                                       oninvalid="this.setCustomValidity('휴가사유를 입력해 주세요.')" oninput="this.setCustomValidity('')">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="Khlist">
+                    <dl class="list_view03">
+                        <dt class="viewdt_flex">첨부파일</dt>
+                        <dd>
+                            <div id="fileListDiv">
+                                <div class="fileNameBef">
+                                    <input id="attacheFiles" name="file" type="file" class="selectFile">
+                                </div>
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="save_btn_wrap">
+                    <div>
+                        <button class="close_btn clos _cancelBtn" type="button">취소</button>
+                        <button class="close_btn btn_color _submitBtn" type="submit">저장</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</th:block>
+
+<th:block layout:fragment="pageScript">
+    <!-- 휴가 등록 -->
+    <script type="text/javascript" th:src="@{/js/vacation/addVacation.js(date=${todayFormat})}"></script>
+
+    <!-- 날짜 계산 -->
+    <script type="text/javascript" th:src="@{/js/utils/date_util.js(date=${todayFormat})}"></script>
+
+    <!-- 문자열 유틸 -->
+    <script type="text/javascript" th:src="@{/js/utils/string_custom_util.js(date=${todayFormat})}"></script>
+
+    <!-- 첨부파일 js -->
+    <script src="/js/multiFile.js"></script>
+</th:block>
+</html>

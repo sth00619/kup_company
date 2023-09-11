@@ -1,0 +1,8 @@
+/* 체크박스 디자인 적용 */
+label._check{background:#304260}
+label._unCheck{background:transparent}
+
+._custom_checkbox_li > label._customCheck{background:#304260}
+._custom_checkbox_li > label._customUnCheck{background:transparent}
+
+._custom_checkbox_div input[type=checkbox] {display : none;}

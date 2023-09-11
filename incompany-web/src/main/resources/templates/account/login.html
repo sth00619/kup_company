@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>메인</title>
+
+    <link th:href="@{/css/common.css(date=${todayFormat})}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/inCompany.css(date=${todayFormat})}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+          rel="stylesheet">
+    <script src="/lib/jquery-3.6.0.min.js"></script>
+    <script th:src="@{/js/account/login.js(date=${todayFormat})}"></script>
+
+</head>
+
+<body>
+<input hidden id="error" th:if="${param.error}" value="error">
+
+<div id="wrap">
+    <div class="main_video">
+        <video autoplay loop muted>
+            <source src="/images/img/login.mp4">
+        </video>
+    </div>
+    <!-- 로그인 -->
+    <form id="form" method="post" th:action="@{/account/login}">
+        <div id="main_login_wrap">
+
+            <h1>KHGROUP</h1>
+            <p>WELCOME TO KH GROUPWARE</p>
+
+            <div class="login_box">
+                <div class="id_pw_visual">
+                    <label for="id"></label>
+                    <input id="id" name="employeeCode" type="text">
+                </div>
+
+                <div class="id_pw_visual">
+                    <label for="pw"></label>
+                    <input autoComplete="on" class="password" id="pw" name="password" type="password">
+                    <div class="eye_btn"><img src="/images/img/password_off.png"></div>
+                </div>
+
+            </div>
+
+            <div class="login_sub">
+                <div class="login_sub_left">
+                    <input id="id_save" name="id_save" type="checkbox">
+                    <label for="id_save">아이디 저장</label>
+                </div>
+
+                <div class="login_sub_right">
+                    <ul>
+                        <li class="_find"><a href="#">ID찾기</a></li>
+                        <li class="_find"><a href="#">PW찾기</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="login_btn">
+                <p>로그인</p>
+            </div>
+
+        </div>
+    </form>
+
+</div>
+
+
+</body>
+
+</html>

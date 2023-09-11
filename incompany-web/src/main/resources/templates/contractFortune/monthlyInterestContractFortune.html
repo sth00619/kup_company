@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <link rel="stylesheet" th:href="@{/css/contractFortune/contractFortune.css(date=${todayFormat})}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/list_check_box.css(date=${todayFormat})}" type="text/css">
+
+    <style>
+        ._on_mouse_payment_cycle:hover {
+            background : #e3ecfc;
+        }
+        ._payment_check_true {
+            background : #f0f5ff;
+        }
+
+        ._sub_ul li {
+            line-height : 70px;
+        }
+
+        ._sub_ul li img {
+            display: inline;
+            vertical-align: middle;
+        }
+
+        ._paymentCheck._check_false {
+            color : #E9967A;
+        }
+
+        ._paymentCheck._check_true {
+            color : #6667AB;
+        }
+
+        ._thisPaymentCycle._check_false{
+            background-color : #feede8;
+            color : #E9967A;
+        }
+
+        ._thisPaymentCycle._check_true{
+            background-color : #e5e4f1;
+            color : #6667AB;
+        }
+
+        ._finish {
+            background-color : #f9fbff;
+        }
+    </style>
+</th:block>
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideContractFortune :: sideContractFortuneFragment"></div>
+</th:block>
+<th:block layout:fragment="contents">
+
+    <!-- 검색 관련 세팅 -->
+    <input id="searchValue" th:value="${searchValue}" type="hidden"/>
+    <input id="searchKey" th:value="${searchKey}" type="hidden"/>
+
+    <!-- 처리 결과 여부 및 메세지 -->
+    <input id="isSuccess" th:value="${isSuccess}" type="hidden"/>
+    <input id="message" th:value="${message}" type="hidden">
+
+    <div class="top_center_menu_visual">
+        <div class="top_center-menu">
+            <div class="top_left_menu _top_left_menu">
+                <!-- 부서, 팀, 담당자 선택 select -->
+                <th:block th:replace="fragments/select_department_employee :: select_department_employee"></th:block>
+            </div>
+
+            <div class="top_right_menu">
+                <!-- 기간 조회 -->
+                <th:block th:replace="fragments/date_search_by_period :: date_search_by_period"></th:block>
+            </div>
+        </div>
+
+        <!-- 목돈 계약 리스트 -->
+        <div class="main_center_wrap">
+            <div class="main_top">
+                <div>
+                    <ul class="contract_main_title">
+                        <li style="width:90px;">계약번호</li>
+                        <li style="width:60px;">담당자</li>
+                        <li style="width:60px;">고객</li>
+                        <li style="width:90px;">금액</li>
+                        <li style="width:50px;">이자율</li>
+                        <li style="width:70px;">계약날짜</li>
+                        <li style="width:160px;">계좌번호</li>
+                        <li style="width:70px;">총 이자</li>
+                        <li style="width:70px;">월 이자</li>
+                        <li style="width:80px;">이번 회차</li>
+                        <li style="width:100px;">완료 여부</li>
+                        <li style="width:35px;">1</li>
+                        <li style="width:35px;">2</li>
+                        <li style="width:35px;">3</li>
+                        <li style="width:35px;">4</li>
+                        <li style="width:35px;">5</li>
+                        <li style="width:35px;">6</li>
+                        <li style="width:35px;">7</li>
+                        <li style="width:35px;">8</li>
+                        <li style="width:35px;">9</li>
+                        <li style="width:35px;">10</li>
+                        <li style="width:35px;">11</li>
+                        <li style="width:35px;">12</li>
+                    </ul>
+                </div>
+
+                <div class="contract_sub_txt _hidden" hidden>
+                    <ul class="_contract_sub_title _sub_ul" th:each="cfl : ${contractFortuneList.getList()}"
+                        th:value="${cfl.contractCode}"
+                        th:attr="data-period=${cfl.contractPeriod}">
+                        <li style="width:90px;" th:text="${cfl.contractNumber}" th:value="${cfl.contractCode}"></li>
+                        <li style="width:60px;" th:text="${cfl.employeeName}" th:value="${cfl.employeeCode}"></li>
+                        <li style="width:60px;" th:text="${cfl.potentialUserName}"
+                            th:value="${cfl.potentialUserNo}"></li>
+                        <li style="width:90px;" th:text="${cfl.amountPlusComma}"></li>
+                        <li style="width:50px;" th:text="${cfl.interestRatePercent}"></li>
+                        <li class="_contractDate" style="width:70px;" th:text="${cfl.contractDate}"></li>
+                        <li style="width:160px;" th:text="${cfl.accountBankName} + ' ' + ${cfl.encryptAccountNo}"></li>
+                        <li style="width:70px;" class="_totalInterest"></li>
+                        <li style="width:70px;" class="_interest" th:text="${cfl.interest}"></li>
+                        <li class="_paymentCycle" style="width:80px;"></li>
+                        <li class="_paymentCheck" style="text-align:center; vertical-align:middle; width:100px;"></li>
+                        <li class="_month1 _on_mouse_payment_cycle _alertMonth" style="width:35px;"
+                            th:value="${cfl.contractPaymentCycleDto.month1}"
+                            th:text="${#strings.isEmpty(cfl.contractPaymentCycleDto.month1)} ? 'X' : 'O'"
+                            th:classappend="${#strings.isEmpty(cfl.contractPaymentCycleDto.month1)} ? '' : '_payment_check_true'">
+                        </li>
+                        <li class="_month2 _on_mouse_payment_cycle _alertMonth" style="width:35px;"
+                            th:value="${cfl.contractPaymentCycleDto.month2}"
+                            th:text="${#strings.isEmpty(cfl.contractPaymentCycleDto.month2)} ? 'X' : 'O'"
+                            th:classappend="${#strings.isEmpty(cfl.contractPaymentCycleDto.month2)} ? '' : '_payment_check_true'">
+                        </li>
+                        <li class="_month3 _on_mouse_payment_cycle _alertMonth" style="width:35px;"
+                            th:value="${cfl.contractPaymentCycleDto.month3}"
+                            th:text="${#strings.isEmpty(cfl.contractPaymentCycleDto.month3)} ? 'X' : 'O'"
+                            th:classappend="${#strings.isEmpty(cfl.contractPaymentCycleDto.month3)} ? '' : '_payment_check_true'">
+                        </li>
+                        <li class="_month4 _on_mouse_payment_cycle _alertMonth" style="width:35px;"
+                            th:value="${cfl.contractPaymentCycleDto.month4}"
+                            th:text="${#strings.isEmpty(cfl.contractPaymentCycleDto.month4)} ? 'X' : 'O'"
+                            th:classappend="${#strings.isEmpty(cfl.contractPaymentCycleDto.month4)} ? '' : '_payment_check_true'">
+                        </li>
+                        <li class="_month5 _on_mouse_payment_cycle _alertMonth" style="width:35px;"
+                            th:value="${cfl.contractPaymentCycleDto.month5}"
+                            th:text="${#strings.isEmpty(cfl.contractPaymentCycleDto.month5)} ? 'X' : 'O'"
+                            th:classappend="${#strings.isEmpty(cfl.contractPaymentCycleDto.month5)} ? '' : '_payment_check_true'">
+                        </li>
+                        <li class="_month6 _on_mouse_payment_cycle _alertMonth" style="width:35px;"
+                            th:value="${cfl.contractPaymentCycleDto.month6}"
+                            th:text="${#strings.isEmpty(cfl.contractPaymentCycleDto.month6)} ? 'X' : 'O'"
+                            th:classappend="${#strings.isEmpty(cfl.contractPaymentCycleDto.month6)} ? '' : '_payment_check_true'">
+                        </li>
+                        <li class="_month7 _on_mouse_payment_cycle _alertMonth" style="width:35px;"
+                            th:value="${cfl.contractPaymentCycleDto.month7}"
+                            th:text="${#strings.isEmpty(cfl.contractPaymentCycleDto.month7)} ? 'X' : 'O'"
+                            th:classappend="${#strings.isEmpty(cfl.contractPaymentCycleDto.month7)} ? '' : '_payment_check_true'">
+                        </li>
+                        <li class="_month8 _on_mouse_payment_cycle _alertMonth" style="width:35px;"
+                            th:value="${cfl.contractPaymentCycleDto.month8}"
+                            th:text="${#strings.isEmpty(cfl.contractPaymentCycleDto.month8)} ? 'X' : 'O'"
+                            th:classappend="${#strings.isEmpty(cfl.contractPaymentCycleDto.month8)} ? '' : '_payment_check_true'">
+                        </li>
+                        <li class="_month9 _on_mouse_payment_cycle _alertMonth" style="width:35px;"
+                            th:value="${cfl.contractPaymentCycleDto.month9}"
+                            th:text="${#strings.isEmpty(cfl.contractPaymentCycleDto.month9)} ? 'X' : 'O'"
+                            th:classappend="${#strings.isEmpty(cfl.contractPaymentCycleDto.month9)} ? '' : '_payment_check_true'">
+                        </li>
+                        <li class="_month10 _on_mouse_payment_cycle _alertMonth" style="width:35px;"
+                            th:value="${cfl.contractPaymentCycleDto.month10}"
+                            th:text="${#strings.isEmpty(cfl.contractPaymentCycleDto.month10)} ? 'X' : 'O'"
+                            th:classappend="${#strings.isEmpty(cfl.contractPaymentCycleDto.month10)} ? '' : '_payment_check_true'">
+                        </li>
+                        <li class="_month11 _on_mouse_payment_cycle _alertMonth" style="width:35px;"
+                            th:value="${cfl.contractPaymentCycleDto.month11}"
+                            th:text="${#strings.isEmpty(cfl.contractPaymentCycleDto.month11)} ? 'X' : 'O'"
+                            th:classappend="${#strings.isEmpty(cfl.contractPaymentCycleDto.month11)} ? '' : '_payment_check_true'">
+                        </li>
+                        <li class="_month12 _on_mouse_payment_cycle _alertMonth" style="width:35px;"
+                            th:value="${cfl.contractPaymentCycleDto.month12}"
+                            th:text="${#strings.isEmpty(cfl.contractPaymentCycleDto.month12)} ? 'X' : 'O'"
+                            th:classappend="${#strings.isEmpty(cfl.contractPaymentCycleDto.month12)} ? '' : '_payment_check_true'">
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- pageNation -->
+            <th:block th:replace="fragments/page_nation :: page_nation"></th:block>
+        </div>
+    </div>
+</th:block>
+
+<th:block layout:fragment="pagePop">
+
+</th:block>
+
+<th:block layout:fragment="pageScript">
+
+    <!-- 목돈 월 이자 리스트 js -->
+    <script th:src="@{/js/contractFortune/monthlyInterestContractFortune.js(date=${todayFormat})}" type="text/javascript"></script>
+
+    <!-- checkBox -->
+    <script th:src="@{/js/list_check_box.js(date=${todayFormat})}" type="text/javascript"></script>
+
+    <!-- department select box -->
+    <script th:src="@{/js/select_department_employee.js(date=${todayFormat})}" type="text/javascript"></script>
+
+    <!-- 날짜 계산 -->
+    <script th:src="@{/js/utils/date_util.js(date=${todayFormat})}" type="text/javascript"></script>
+
+</th:block>
+</html>

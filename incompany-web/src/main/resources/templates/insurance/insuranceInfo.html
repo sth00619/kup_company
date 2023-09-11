@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<th:block layout:fragment="pageCss">
+    <link rel="stylesheet" th:href="@{/css/list_check_box.css(date=${todayFormat})}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/insurance/insuranceInfoList.css(date=${todayFormat})}" type="text/css">
+</th:block>
+<th:block layout:fragment="side_contents">
+
+    <div th:unless="${#authorization.expression('hasAnyAuthority(''SI_COMPANY'', ''FA_COMPANY'')')}">
+        <div th:replace="fragments/sideContractFortune :: sideContractFortuneFragment"></div>
+    </div>
+
+    <!--si company 권한 있을 경우 사이드바 -->
+    <div th:if="${#authorization.expression('hasAnyAuthority(''SI_COMPANY'')')}">
+        <div th:replace="fragments/sideSiCompany :: sideSiCompanyFragment"></div>
+    </div>
+
+    <!--fa company 권한 있을 경우 사이드바 -->
+    <div th:if="${#authorization.expression('hasAnyAuthority(''FA_COMPANY'')')}">
+        <div th:replace="fragments/sideFaCompany :: sideFaCompanyFragment"></div>
+    </div>
+
+</th:block>
+<th:block layout:fragment="contents">
+    <input id="insuranceManageNo" type="hidden" th:value="${insuranceDto.insuranceManageNo}">
+
+    <div class="guest_deta_wrap">
+        <div class="guest_deta_box">
+            <h2>보험 계약</h2>
+            <div class="guest_deta">
+                <div class="contract_list">
+                    <div class="contract_list_name">
+                        <p>본부</p>
+                    </div>
+                    <div class="contract_list_box">
+                        <span th:text="${employeeDto.D1}"></span>
+                    </div>
+                </div>
+
+                <div class="contract_list">
+                    <div class="contract_list_name">
+                        <p>지점</p>
+                    </div>
+                    <div class="contract_list_box">
+                        <span th:text="${employeeDto.D2}"></span>
+                    </div>
+                </div>
+
+                <div class="contract_list">
+                    <div class="contract_list_name">
+                        <p>팀</p>
+                    </div>
+                    <div class="contract_list_box">
+                        <span th:text="${employeeDto.D3}"></span>
+                    </div>
+                </div>
+
+                <div class="contract_list">
+                    <div class="contract_list_name">
+                        <p>직급</p>
+                    </div>
+                    <div class="contract_list_box">
+                        <span th:text="${employeeDto.positionName}"></span>
+                    </div>
+                </div>
+
+                <div class="contract_list">
+                    <div class="contract_list_name">
+                        <p>담당자</p>
+                    </div>
+                    <div class="contract_list_box">
+                        <span th:text="${employeeDto.employeeName}"></span>
+                    </div>
+                </div>
+
+                <div class="contract_list">
+                    <div class="contract_list_name">
+                        <p>확인자</p>
+                    </div>
+                    <div class="contract_list_box">
+                        <span th:if="${insuranceDto.checkInsurance == 'Y' && insuranceDto.checkEmployeeName != ''}" th:text="${insuranceDto.checkEmployeeName +'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&nbsp;확인시간&nbsp;:&nbsp;'+ insuranceDto.checkTime+'&nbsp;)'}"></span>
+                    </div>
+                </div>
+
+                <div class="contract_list">
+                    <div class="contract_list_name">
+                        <p>고객</p>
+                    </div>
+                    <div class="contract_list_box">
+                        <span th:text="${insuranceDto.potentialUserName}"></span>
+                    </div>
+                </div>
+
+                <div class="contract_list">
+                    <div class="contract_list_name">
+                        <p>금액</p>
+                    </div>
+                    <div class="contract_list_box">
+                        <span class="_totalAmount"></span>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+
+        <div class="guest_deta_box">
+
+            <div class="guest_deta">
+
+                <div class="main_top">
+                    <div>
+                        <ul class="insur_main_title2">
+                            <li class="_li1">계약날짜</li>
+                            <li class="_li2">구분</li>
+                            <li class="_li3">실적</li>
+                            <li class="_li4">보험구분</li>
+                            <li class="_li5">보험사</li>
+                            <li class="_li6 w_amend">종목</li>
+                            <li class="_li7">증권번호</li>
+                            <li class="_li8">이체일</li>
+                            <li class="_li9">납입/만기기간</li>
+                            <li class="_li10">금액</li>
+                            <li class="_li11">비교확인</li>
+                            <li class="_li12">완전판매</li>
+                            <li class="_li13">고지의무</li>
+                        </ul>
+                    </div>
+
+                    <div class="insur_sub_txt2">
+                        <ul th:each="infoList : ${insuranceInfoList}" class="_insurance_info_box">
+                            <li class="_li1">
+                                <span th:text="${infoList.getInsuranceJoinDate}"></span>
+                            </li>
+                            <li class="_li2">
+                                <span th:text="${infoList.getStateEnum}"></span>
+                            </li>
+                            <li class="_li3">
+                                <span class="_achieveCheck" th:value="${infoList.getAchieveCheck}"></span>
+                            </li>
+                            <li class="_li4">
+                                <span th:text="${infoList.getCategoryEnum}"></span>
+                            </li>
+                            <li class="_li5">
+                                <span th:text="${infoList.getInsuranceCompanyEnum}"></span>
+                            </li>
+                            <li class="_li6">
+                                <span th:text="${infoList.getInsuranceTitle}"></span>
+                            </li>
+                            <li class="_li7">
+                                <span th:text="${infoList.getInsuranceCode}"></span>
+                            </li>
+                            <li class="_li8">
+                                <span th:text="${infoList.InsurancePayDate}"></span>
+                            </li>
+                            <li class="_li9">
+                                <span th:text="${infoList.getInsurancePayTerm}"></span>
+                            </li>
+                            <li class="_li10">
+                                <span th:text="${infoList.getAmountPlusComma}" class="_insuranceAmount"></span>
+                            </li>
+                            <li class="_li11" th:classappend="${infoList.getDocumentCheck1 == 'Y'} ? '_documentCheck'">
+                                <span th:text="${infoList.getDocumentCheck1 == 'Y'} ? 'O' : 'X'"></span>
+                            </li>
+                            <li class="_li12" th:classappend="${infoList.getDocumentCheck2 == 'Y'} ? '_documentCheck'">
+                                <span th:text="${infoList.getDocumentCheck2 == 'Y'} ? 'O' : 'X'"></span>
+                            </li>
+                            <li class="_li13" th:classappend="${infoList.getDocumentCheck3 == 'Y'} ? '_documentCheck'">
+                                <span th:text="${infoList.getDocumentCheck3 == 'Y'} ? 'O' : 'X'"></span>
+                            </li>
+                        </ul>
+
+
+                    </div>
+
+
+                </div>
+
+                <div class="value_pay">
+                    <p>
+                        실적 인정 금액
+                        <em id="_totalPerformance"></em>원
+                        &emsp;&emsp;&emsp;
+                        총 금액
+                        <em id="_totalAmount"></em>원
+                    </p>
+                </div>
+
+            </div>
+
+
+        </div>
+
+        <div class="guest_deta_box">
+            <h2>특이사항</h2>
+
+            <div class="guest_deta">
+                <div class="last_txt">
+                    <span th:text="${insuranceDto.note}"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 댓글 -->
+        <div th:unless="${checkInsurance == 'Y'}">
+            <th:block th:replace="fragments/reply :: reply"></th:block>
+        </div>
+
+        <div class="save_btn_wrap">
+            <div>
+                <a>
+                    <button class="close_btn _close_btn">취소</button>
+                </a>
+                <a th:href="@{/insurance/updateInsurance(insuranceManageNo=${insuranceDto.insuranceManageNo})}">
+                    <button class="close_btn btn_color" sec:authorize="hasAnyAuthority('CONTRACT_MANAGER')">수정</button>
+                </a>
+                <button class="close_btn _deleteBtn" th:if="${insuranceDto.checkInsurance} == 'N'" sec:authorize="hasAnyAuthority('CONTRACT_MANAGER')">삭제</button>
+            </div>
+        </div>
+
+    </div>
+</th:block>
+<th:block layout:fragment="pageScript">
+    <script th:src="@{/js/insurance/insuranceInfo.js(date=${todayFormat})}" type="text/javascript"></script>
+
+    <!-- checkBox -->
+    <script th:src="@{/js/list_check_box.js(date=${todayFormat})}" type="text/javascript"></script>
+
+    <!-- 문자열 유틸 -->
+    <script type="text/javascript" th:src="@{/js/utils/string_custom_util.js(date=${todayFormat})}"></script>
+</th:block>
+</html>

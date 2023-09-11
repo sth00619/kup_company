@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<th:block layout:fragment="pageCss">
+    <style>
+        ._employee_select_trans {
+            width: 128px;
+        }
+    </style>
+</th:block>
+
+<th:block layout:fragment="pageScriptTop">
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</th:block>
+
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sidePotential :: sidePotentialFragment"></div>
+</th:block>
+<th:block layout:fragment="contents">
+
+    <form method="post" id="form">
+        <input type="hidden" name="_method" value="PUT"/>
+        <input type="hidden" th:value="${ce.candidateEmployeeNo}" name ="candidateEmployeeNo">
+        
+        <div class="member_deta_wrap">
+
+            <div class="member_deta_box">
+                <h2>후보자 정보 입력</h2>
+
+                <div class="member_deta">
+
+
+
+                    <div class="deta_list">
+
+                        <div class="list_name">
+                            <p>소속</p>
+                        </div>
+                        <div class="list_box report">
+
+                            <p class="lb-line _D1" th:text="${ce.employeeInfo.D1Name}"></p>
+                            <p class="lb-line _D2" th:text="${ce.employeeInfo.D2Name}"></p>
+                            <p class="lb-line _D3" th:text="${ce.employeeInfo.D3Name}"></p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="deta_list">
+
+                        <div class="list_name">
+                            <p>직급</p>
+                        </div>
+
+                        <div class="list_box report">
+                            <p  class="_position_name" th:text="${ce.employeeInfo.positionName}"></p>
+                        </div>
+                    </div>
+
+                    <div class="deta_list">
+
+                        <div class="list_name star">
+                            <p>담당자</p>
+                        </div>
+                        <input type="hidden" class="_select_employee_Code" name="employeeCode" th:value="${ce.employeeCode}">
+                        <input type="hidden" class="_select_department_Code" name="departmentCode" th:value="${ce.employeeInfo.departmentCode}">
+
+                        <div class="contract_list_box"  th:if="${#authorization.expression('hasAnyAuthority(''CANDIDATE_EDIT'')')}">
+
+                            <input list="employeeList" class="_employee_select_trans" type="text" th:value="${ce.employeeInfo.employeeName}" required>
+                            <datalist id="employeeList">
+                                <option th:label="${ae.D1Name + '&nbsp;&nbsp;' + ae.D2Name + '&nbsp;&nbsp;' + ae.D3Name}"
+                                        th:value="${ae.employeeName+'&nbsp;&nbsp;&nbsp;&nbsp;('+ae.employeeCode+')'}"
+                                        th:each="ae : ${allEmployee}">
+                            </datalist>
+                        </div>
+
+                        <div class="list_box report" th:unless="${#authorization.expression('hasAnyAuthority(''CANDIDATE_EDIT'')')}">
+                            <p class="_position_name" th:text="${ce.employeeInfo.employeeName}"></p>
+                        </div>
+
+
+                    </div>
+
+                    <div class="deta_list">
+
+                        <div class="list_name star">
+                            <p>후보자</p>
+                        </div>
+
+                        <div class="list_box">
+                            <div class="name_box"><input type="text" id="name" name="name" th:value="${ce.name}"></div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="deta_list">
+
+                        <div class="list_name star">
+                            <p>연락처</p>
+                        </div>
+
+                        <div class="list_box">
+                            <div class="name_box"><input type="text" id="mobile" name="mobile" th:value="${ce.mobile}" maxlength="13"></div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="deta_list">
+
+                        <div class="list_name star">
+                            <p>거주지</p>
+                        </div>
+
+                        <th:block th:replace="fragments/daumPostcode :: daumPostcode"></th:block>
+
+
+                    </div>
+
+                    <div class="deta_list">
+
+                        <div class="list_name star">
+                            <p>생년월일</p>
+                        </div>
+
+                        <div class="list_box">
+
+                            <div class="date_box"><input type="date" id="birthday" name="birthday" th:value="${ce.birthday}"></div>
+
+                            <div class="paddingUp">
+                                <div class="interest">
+                                    <input id="men" name="gender" type="radio" value="남" th:checked="${ce.gender} == '남'">
+                                    <label for="men">남</label>
+                                </div>
+
+                                <div class="interest">
+                                    <input id="woman" name="gender" type="radio" value="여" th:checked="${ce.gender} == '여'">
+                                    <label for="woman">여</label>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="guest_deta_box candi-item">
+                <h2>특이사항</h2>
+
+                <div class="guest_deta">
+
+                    <div class="last_txt">
+                        <textarea id="note" name="note"></textarea>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- 저장버튼  -->
+
+            <div class="save_btn_wrap">
+                <div>
+                    <button class="close_btn " type="button" onclick="history.back()">취소</button>
+                    <button class="close_btn btn_color _submitBtn" type="button">저장</button>
+                </div>
+            </div>
+
+        </div>
+
+    </form>
+
+
+
+
+</th:block>
+
+
+<th:block layout:fragment="pageScript">
+    <script th:src="@{/js/daumPostcode.js}"></script>
+
+    <script th:src="@{/js/candidate/edit.js(date=${todayFormat})}"></script>
+
+
+
+
+</th:block>
+
+
+</html>

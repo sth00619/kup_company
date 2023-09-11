@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <link rel="stylesheet" th:href="@{/css/contractFortune/contractFortune.css(date=${todayFormat})}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/chart/chart.css(date=${todayFormat})}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/list_check_box.css(date=${todayFormat})}" type="text/css">
+</th:block>
+
+<th:block layout:fragment="side_contents">
+
+    <div th:unless="${#authorization.expression('hasAnyAuthority(''SI_COMPANY'', ''FA_COMPANY'')')}">
+        <div th:replace="fragments/sideContractFortune :: sideContractFortuneFragment"></div>
+    </div>
+
+    <!--si company 권한 있을 경우 사이드바 -->
+    <div th:if="${#authorization.expression('hasAnyAuthority(''SI_COMPANY'', ''FA_COMPANY'')')}">
+        <div th:replace="fragments/sideSiCompany :: sideSiCompanyFragment"></div>
+    </div>
+</th:block>
+
+<th:block class="date_search_by_period" th:fragment="date_search_by_period">
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/css/date_search_by_period.css(date=${todayFormat})}" type="text/css">
+</th:block>
+
+
+
+<th:block layout:fragment="contents">
+
+<input id="requestDate" th:value="${requestDate}" hidden/>
+    <div class="header_content">
+        <div class="y_m_point">
+            <div class="ym_box">
+                <span class="y_data" th:text="${#temporals.year(requestDate)} +'년 '"></span>
+                <span class="w_data" th:text="${week}+'주차'"></span>
+            </div>
+        </div>
+        <div class="weekalert_box">
+            <span>주차이동</span>
+        </div>
+        <div class="y_m_btnbox">
+            <button class="ym_btn ym_btn_prev"  onclick="calculateWeek(-1)">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M9.74809 11.9618C9.91603 11.7939 10 11.5802 10 11.3206C10 11.0611 9.91603 10.8473 9.74809 10.6794L6.17557 7.10687L9.74809 3.53435C9.91603 3.36641 10 3.15267 10 2.89313C10 2.63359 9.91603 2.41985 9.74809 2.25191C9.58015 2.08397 9.36641 2 9.10687 2C8.84733 2 8.63359 2.08397 8.46565 2.25191L4.25191 6.46565C4.16031 6.55725 4.09527 6.65649 4.05679 6.76336C4.01893 6.87023 4 6.98473 4 7.10687C4 7.22901 4.01893 7.34351 4.05679 7.45038C4.09527 7.55725 4.16031 7.65649 4.25191 7.74809L8.46565 11.9618C8.63359 12.1298 8.84733 12.2137 9.10687 12.2137C9.36641 12.2137 9.58015 12.1298 9.74809 11.9618Z"
+                        fill="#333333" />
+                </svg>
+            </button>
+            <button class="ym_btn ym_btn_next" onclick="calculateWeek(1)">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M4.25191 11.9618C4.08397 11.7939 4 11.5802 4 11.3206C4 11.0611 4.08397 10.8473 4.25191 10.6794L7.82443 7.10687L4.25191 3.53435C4.08397 3.36641 4 3.15267 4 2.89313C4 2.63359 4.08397 2.41985 4.25191 2.25191C4.41985 2.08397 4.63359 2 4.89313 2C5.15267 2 5.36641 2.08397 5.53435 2.25191L9.74809 6.46565C9.83969 6.55725 9.90473 6.65649 9.94321 6.76336C9.98107 6.87023 10 6.98473 10 7.10687C10 7.22901 9.98107 7.34351 9.94321 7.45038C9.90473 7.55725 9.83969 7.65649 9.74809 7.74809L5.53435 11.9618C5.36641 12.1298 5.15267 12.2137 4.89313 12.2137C4.63359 12.2137 4.41985 12.1298 4.25191 11.9618Z"
+                        fill="#333333" />
+                </svg>
+            </button>
+        </div>
+    </div>
+
+
+    <div class="week_settlement table_group_wrap" >
+        <!-- 앞에 팀 이름/클래스 해당지점으로 변경해주세요 -->
+        <!-- 지점 / 팀 셀렉박스 오더 대기 (선택 및 전체보기)-->
+        <!-- texthidden 안에 텍스트 변경하지말아주세요. 레이아웃과 연관되어있습니다. -->
+        <div class="reader_team table_group_box" th:each="sdl : ${statisticsDepartmentList}" >
+            <div class="table_gp_nav">
+                <div class="texthidden">지점 header</div>
+                <div class="team_name table_title" th:text="${sdl.teamName}"></div>
+                <div class="total_text" >총합계 :</div>
+
+
+                <span class="total_money" th:text="${#numbers.formatInteger(sdl.total, 0, 'COMMA')}"></span>
+
+            </div>
+            <div class="reader_goals ta_group">
+                <div class="target_tabletitle">
+                    <ul class="main_title_area">
+                        <li class="target_hd"><span class="main_title_name">이름</span></li>
+                        <li class="target_hd"><span class="main_title_name">목표금액</span></li>
+                        <li class="target_hd"><span class="main_title_name">신규</span></li>
+                        <li class="target_hd"><span class="main_title_name">연장</span></li>
+                        <li class="target_hd"><span class="main_title_name">신규 + 연장</span></li>
+                        <li class="target_hd"><span class="main_title_name">달성률</span></li>
+                    </ul>
+
+                    <ul class="target_tabel" th:each="data : ${sdl.salesEmployeeList}">
+
+                        <li><span class="employee_name emp_cell" th:text="${data.name}">홍길동</span></li>
+                        <li><span class="employee_amonut emp_cell"  th:text="${#numbers.formatInteger(data.targetAmount, 0, 'COMMA')}">1,000,000</span></li>
+                        <li><span class="employee_newcl emp_cell" th:text="${#numbers.formatInteger(data.newContract, 0, 'COMMA')}">1,000,000</span></li>
+                        <li><span class="employee_extenscl emp_cell"  th:text="${#numbers.formatInteger(data.extendContract, 0, 'COMMA')}">500,000</span></li>
+                        <li><span class="employee_new_ex emp_cell"  id="allContract"  th:text="${#numbers.formatInteger(data.allContract, 0, 'COMMA')}">1,500,000</span></li>
+                        <li><span class="employee_att emp_cell" th:text="${data.attainmentRate}" >0%</span></li>
+                    </ul>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</th:block>
+
+
+<th:block layout:fragment="pageScript">
+    <script>
+    // 1주일 전/후 날짜 계산 함수
+    function calculateWeek(offset) {
+        // requestDate 값 추출
+        var requestDate = document.getElementById("requestDate").value;
+        
+        // requestDate 값을 JavaScript Date 객체로 변환
+        var date = new Date(requestDate);
+
+        // 1주일 전/후 날짜 계산
+        date.setDate(date.getDate() + (offset * 7));
+
+        // 계산 결과를 yyyy-mm-dd 형식으로 변환
+        var year = date.getFullYear();
+        var month = ("0" + (date.getMonth() + 1)).slice(-2);
+        var day = ("0" + date.getDate()).slice(-2);
+        var formattedDate = year + "-" + month + "-" + day;
+
+        // 결과를 input 태그에 출력
+        // document.getElementById("requestDate").value = formattedDate;
+
+        console.log(formattedDate);
+        location.href="/statistics/salesManager?requestDate="+formattedDate;
+
+
+
+    }
+
+
+
+
+    </script>
+
+
+
+</th:block>
+</html>
+
+</html>
+

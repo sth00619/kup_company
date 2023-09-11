@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>메인</title>
+
+    <link th:href="@{/css/common.css(date=${todayFormat})}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/inCompany.css(date=${todayFormat})}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/vietnam/css.css(date=${todayFormat})}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+        rel="stylesheet">
+    <script src="/lib/jquery-3.6.0.min.js"></script>
+    <script th:src="@{/lib/moment.js}"></script>
+    <script th:src="@{/js/side_drop_down.js(date=${todayFormat})}" type="text/javascript"></script>
+
+</head>
+
+<body>
+    <input id="cloudUrlAndPath" th:value="${cloudUrlAndPath}" hidden="true">
+
+    <div id="wrap">
+
+        <!-- header -->
+        <header class="header" sec:authorize="hasAnyAuthority('VIETNAM')">
+
+            <div class="main_inner">
+
+                <h1><a th:href="@{/}">HOME</a></h1>
+
+                <div class="mypage">
+
+                    <div class="my_box">
+
+                        <a href="/logout"><img src="/images/img/back.png"></a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+        <header sec:authorize="hasAnyAuthority('VIETNAM_ADMIN')" th:replace="fragments/header :: headerFragment">
+        </header>
+        <!-- main start ! -->
+        <main>
+            <section class="main_section">
+                <div class="main_inner">
+
+                    <div class="main_section-flex">
+                        <!-- side -->
+                        <div class="main_side_wrap">
+
+                            <div class="quick_box">
+
+                                <th:block layout:fragment="side_contents">
+                                    <div th:replace="fragments/sideVietnam :: sideVietnamFragment"></div>
+                                </th:block>
+                            </div>
+
+                        </div>
+                        <!-- center -->
+
+                        <div class="main_center">
+
+
+
+
+                            <form id="form">
+
+                                <input name="no" th:value="${oc.no}" id="no" hidden>
+                                <input th:value="${date}" name="date" hidden>
+
+                                <div class="top_center_menu_visual">
+
+                                    <div class="top_center-menu">
+
+                                    </div>
+
+                                    <div class="main_center_wrap">
+
+                                        <div class="table-topmenu">
+                                            <h2 class="tw_title">OPERATING COST</h2>
+                                        </div>
+
+                                        <table id="table-wrap">
+
+                                            <tbody>
+
+                                                <tr>
+                                                    <th colspan="2" class="title-bgc03">YEAR AND MONTH</th>
+                                                    <th colspan="2" class="title-bgc03" th:text="${date}"></th>
+                                                </tr>
+
+                                            </tbody>
+
+                                            <tbody>
+
+                                                <tr>
+                                                    <th colspan="2" class="title-bgc03">COST CATECORY</th>
+                                                    <th class="title-bgc03">AMOUNT</th>
+                                                    <th class="title-bgc03">CURRENCY</th>
+                                                </tr>
+
+                                                <tr>
+                                                    <th rowspan="9" class="title-bgc02">SALARY<br />(급여)</th>
+                                                    <th rowspan="3" class="title-bgc02">STAFF 1</th>
+                                                    <td>
+                                                        <input id="price" class="typing-txt _staffVnd" type="text"
+                                                            th:value="${#numbers.formatDecimal(oc.staffOneVnd, 1, 'POINT', 2 , 'COMMA')}" name="staffOneVnd" onkeyup="inputNumberFormatWithDot(this)" disabled/>
+                                                    </td>
+                                                    <td>VND</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text" class="typing-txt _staffUsd" th:value="${#numbers.formatDecimal(oc.staffOneUsd, 1, 'COMMA', 2 , 'POINT')}" name="staffOneUsd" onkeyup="inputNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text" class="typing-txt _staffKrw" th:value="${#numbers.formatInteger(oc.staffOneKrw, 0, 'COMMA')}" name="staffOneKrw" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>KRW</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th rowspan="3" class="title-bgc02">STAFF 2</th>
+                                                    <td><input type="text" class="typing-txt _staffVnd" th:value="${#numbers.formatDecimal(oc.staffTwoVnd, 1, 'POINT', 2 , 'COMMA')}" name="staffTwoVnd" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>VND</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text" class="typing-txt _staffUsd" th:value="${#numbers.formatDecimal(oc.staffTwoUsd, 1, 'COMMA', 2 , 'POINT')}" name="staffTwoUsd" onkeyup="inputNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text" class="typing-txt _staffKrw" th:value="${#numbers.formatInteger(oc.staffTwoKrw, 0, 'COMMA')}" name="staffTwoKrw" onkeyup="inputOnlyNumberFormat(this)" maxlength="15"  disabled/></td>
+                                                    <td>KRW</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th rowspan="3" class="title-bgc02">STAFF 3</th>
+                                                    <td><input type="text" class="typing-txt _staffVnd" th:value="${#numbers.formatDecimal(oc.staffThreeVnd, 1, 'POINT', 2 , 'COMMA')}" name="staffThreeVnd" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>VND</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text" class="typing-txt _staffUsd" th:value="${#numbers.formatDecimal(oc.staffThreeUsd, 1, 'COMMA', 2 , 'POINT')}" name="staffThreeUsd" onkeyup="inputNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text"  class="typing-txt _staffKrw" th:value="${#numbers.formatInteger(oc.staffThreeKrw, 0, 'COMMA')}" name="staffThreeKrw" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>KRW</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th colspan="2" rowspan="3" class="title-bgc03">SUBTOTAL</th>
+                                                    <td class="title-bgc03"><p id="staffSubVnd"></p></td>
+                                                    <td class="title-bgc03">VND</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td class="title-bgc03"><p id="staffSubUsd"></p></td>
+                                                    <td class="title-bgc03">USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td class="title-bgc03"><p id="staffSubKrw"></p></td>
+                                                    <td class="title-bgc03">KRW</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th colspan="2" class="title-bgc03">SUBTOTAL</th>
+                                                    <th class="title-bgc03">AMOUNT</th>
+                                                    <th class="title-bgc03">CURRENCY</th>
+                                                </tr>
+    
+    
+                                                <tr>
+                                                    <th colspan="2" rowspan="3" class="title-bgc02">WELFARE
+                                                        EXPENSES<br />(복리후생비)</th>
+                                                    <td><input type="text" class="typing-txt _amountVnd" th:value="${#numbers.formatDecimal(oc.welfareExpensesVnd, 1, 'POINT', 2 , 'COMMA')}" name="welfareExpensesVnd" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>VND</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text" class="typing-txt _amountUsd" th:value="${#numbers.formatDecimal(oc.welfareExpensesUsd, 1, 'COMMA', 2 , 'POINT')}" name="welfareExpensesUsd"  onkeyup="inputNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text" class="typing-txt _amountKrw" th:value="${#numbers.formatInteger(oc.welfareExpensesKrw, 0, 'COMMA')}" name="welfareExpensesKrw" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>KRW</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th colspan="2" rowspan="3" class="title-bgc02">OFFICE RENT<br />(사무실
+                                                        임차료)</th>
+                                                    <td><input type="text" class="typing-txt _amountVnd" th:value="${#numbers.formatDecimal(oc.officeRentVnd, 1, 'POINT', 2 , 'COMMA')}" name="officeRentVnd" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>VND</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text" class="typing-txt _amountUsd" th:value="${#numbers.formatDecimal(oc.officeRentUsd, 1, 'COMMA', 2 , 'POINT')}" name="officeRentUsd" onkeyup="inputNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text" class="typing-txt _amountKrw" th:value="${#numbers.formatInteger(oc.officeRentKrw, 0, 'COMMA')}" name="officeRentKrw" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled /></td>
+                                                    <td>KRW</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th colspan="2" rowspan="3" class="title-bgc02">HOUSE RENT<br />(집 임차료)
+                                                    </th>
+                                                    <td><input type="text" class="typing-txt _amountVnd" th:value="${#numbers.formatDecimal(oc.houseRentVnd, 1, 'POINT', 2 , 'COMMA')}" name="houseRentVnd" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>VND</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text" class="typing-txt _amountUsd" th:value="${#numbers.formatDecimal(oc.houseRentUsd, 1, 'COMMA', 2 , 'POINT')}" name="houseRentUsd" onkeyup="inputNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text" class="typing-txt _amountKrw" th:value="${#numbers.formatInteger(oc.houseRentKrw, 0, 'COMMA')}" name="houseRentKrw" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>KRW</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th colspan="2" rowspan="3" class="title-bgc02">CAR RENT<br />(차량 렌트비)
+                                                    </th>
+                                                    <td><input type="text" class="typing-txt _amountVnd" th:value="${#numbers.formatDecimal(oc.carRentVnd, 1, 'POINT', 2 , 'COMMA')}" name="carRentVnd" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>VND</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text" class="typing-txt _amountUsd" th:value="${#numbers.formatDecimal(oc.carRentUsd, 1, 'COMMA', 2 , 'POINT')}" name="carRentUsd" onkeyup="inputNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text" class="typing-txt _amountKrw" th:value="${#numbers.formatInteger(oc.carRentKrw, 0, 'COMMA')}" name="carRentKrw" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>KRW</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th colspan="2" rowspan="3" class="title-bgc02">TELEPHONE
+                                                        CHARGES<br />(전화요금)</th>
+                                                    <td><input type="text" class="typing-txt _amountVnd" th:value="${#numbers.formatDecimal(oc.telephoneChargesVnd, 1, 'POINT', 2 , 'COMMA')}" name="telephoneChargesVnd" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>VND</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text"  class="typing-txt _amountUsd" th:value="${#numbers.formatDecimal(oc.telephoneChargesUsd, 1, 'COMMA', 2 , 'POINT')}" name="telephoneChargesUsd" onkeyup="inputNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text"  class="typing-txt _amountKrw" th:value="${#numbers.formatInteger(oc.telephoneChargesKrw, 0, 'COMMA')}" name="telephoneChargesKrw" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>KRW</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th colspan="2" rowspan="3" class="title-bgc02">INTERNET
+                                                        CHARGES<br />(인터넷요금)</th>
+                                                    <td><input type="text"  class="typing-txt _amountVnd" th:value="${#numbers.formatDecimal(oc.internetChargesVnd, 1, 'POINT', 2 , 'COMMA')}" name="internetChargesVnd" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>VND</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text"  class="typing-txt _amountUsd" th:value="${#numbers.formatDecimal(oc.internetChargesUsd, 1, 'COMMA', 2 , 'POINT')}" name="internetChargesUsd" onkeyup="inputNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text"  class="typing-txt _amountKrw" th:value="${#numbers.formatInteger(oc.internetChargesKrw, 0, 'COMMA')}" name="internetChargesKrw" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>KRW</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th colspan="2" rowspan="3" class="title-bgc02">TAX<br />(세금과공과)</th>
+                                                    <td><input type="text"  class="typing-txt _amountVnd" th:value="${#numbers.formatDecimal(oc.taxVnd, 1, 'POINT', 2 , 'COMMA')}" name="taxVnd" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>VND</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text"  class="typing-txt _amountUsd" th:value="${#numbers.formatDecimal(oc.taxUsd, 1, 'COMMA', 2 , 'POINT')}" name="taxUsd" onkeyup="inputNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text"  class="typing-txt _amountKrw" th:value="${#numbers.formatInteger(oc.taxKrw, 0, 'COMMA')}" name="taxKrw" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>KRW</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th colspan="2" rowspan="3" class="title-bgc02">TRANSPORTATION
+                                                        FARE<br />(교통비)</th>
+                                                    <td><input type="text"  class="typing-txt _amountVnd" th:value="${#numbers.formatDecimal(oc.transportationFareVnd, 1, 'POINT', 2 , 'COMMA')}" name="transportationFareVnd" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>VND</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text"  class="typing-txt _amountUsd" th:value="${#numbers.formatDecimal(oc.transportationFareUsd, 1, 'COMMA', 2 , 'POINT')}" name="transportationFareUsd" onkeyup="inputNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text"  class="typing-txt _amountKrw" th:value="${#numbers.formatInteger(oc.transportationFareKrw, 0, 'COMMA')}" name="transportationFareKrw" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>KRW</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th colspan="2" rowspan="3" class="title-bgc02">TRAVEL
+                                                        EXPENSE<br />(출장비)</th>
+                                                    <td><input type="text"  class="typing-txt _amountVnd" th:value="${#numbers.formatDecimal(oc.travelExpenseVnd, 1, 'POINT', 2 , 'COMMA')}" name="travelExpenseVnd" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>VND</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text" class="typing-txt _amountUsd" th:value="${#numbers.formatDecimal(oc.travelExpenseUsd, 1, 'COMMA', 2 , 'POINT')}" name="travelExpenseUsd" onkeyup="inputNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text" class="typing-txt _amountKrw" th:value="${#numbers.formatInteger(oc.travelExpenseKrw, 0, 'COMMA')}" name="travelExpenseKrw" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>KRW</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th colspan="2" rowspan="3" class="title-bgc02">OIL COST<br />(유류비)</th>
+                                                    <td><input type="text" class="typing-txt _amountVnd" th:value="${#numbers.formatDecimal(oc.oilCostVnd, 1, 'POINT', 2 , 'COMMA')}" name="oilCostVnd" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>VND</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text" class="typing-txt _amountUsd" th:value="${#numbers.formatDecimal(oc.oilCostUsd, 1, 'COMMA', 2 , 'POINT')}" name="oilCostUsd" onkeyup="inputNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text" class="typing-txt _amountKrw" th:value="${#numbers.formatInteger(oc.oilCostKrw, 0, 'COMMA')}" name="oilCostKrw" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>KRW</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th colspan="2" rowspan="3" class="title-bgc02">FOOD COST<br />(식비)</th>
+                                                    <td><input type="text" class="typing-txt _amountVnd" th:value="${#numbers.formatDecimal(oc.foodCostVnd, 1, 'POINT', 2 , 'COMMA')}" name="foodCostVnd" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>VND</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text" class="typing-txt _amountUsd" th:value="${#numbers.formatDecimal(oc.foodCostUsd, 1, 'COMMA', 2 , 'POINT')}" name="foodCostUsd" onkeyup="inputNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text" class="typing-txt _amountKrw" th:value="${#numbers.formatInteger(oc.foodCostKrw, 0, 'COMMA')}" name="foodCostKrw" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>KRW</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th colspan="2" rowspan="3" class="title-bgc02">OFFICE SUPPLIES
+                                                        COST<br />(사무용품비)</th>
+                                                    <td><input type="text" class="typing-txt _amountVnd" th:value="${#numbers.formatDecimal(oc.officeSuppliesCostVnd, 1, 'POINT', 2 , 'COMMA')}" name="officeSuppliesCostVnd" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>VND</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text" class="typing-txt _amountUsd" th:value="${#numbers.formatDecimal(oc.officeSuppliesCostUsd, 1, 'COMMA', 2 , 'POINT')}" name="officeSuppliesCostUsd" onkeyup="inputNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text" class="typing-txt _amountKrw" th:value="${#numbers.formatInteger(oc.officeSuppliesCostKrw, 0, 'COMMA')}" name="officeSuppliesCostKrw" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>KRW</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th colspan="2" rowspan="3" class="title-bgc02">MAINTENANCE
+                                                        FEE<br />(관리비)</th>
+                                                    <td><input type="text" class="typing-txt _amountVnd" th:value="${#numbers.formatDecimal(oc.maintenanceFeeVnd, 1, 'POINT', 2 , 'COMMA')}" name="maintenanceFeeVnd" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>VND</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text" class="typing-txt _amountUsd" th:value="${#numbers.formatDecimal(oc.maintenanceFeeUsd, 1, 'COMMA', 2 , 'POINT')}" name="maintenanceFeeUsd" onkeyup="inputNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text" class="typing-txt _amountKrw" th:value="${#numbers.formatInteger(oc.maintenanceFeeKrw, 0, 'COMMA')}" name="maintenanceFeeKrw" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>KRW</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th colspan="2" rowspan="3" class="title-bgc02">WATER SUPPLY & ENERGY
+                                                        COSTS<br />(수도광열비)</th>
+                                                    <td><input type="text" class="typing-txt _amountVnd" th:value="${#numbers.formatDecimal(oc.waterSupplyEnergyCostsVnd, 1, 'POINT', 2 , 'COMMA')}" name="waterSupplyEnergyCostsVnd" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>VND</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text" class="typing-txt _amountUsd" th:value="${#numbers.formatDecimal(oc.waterSupplyEnergyCostsUsd, 1, 'COMMA', 2 , 'POINT')}" name="waterSupplyEnergyCostsUsd" onkeyup="inputNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text" class="typing-txt _amountKrw" th:value="${#numbers.formatInteger(oc.waterSupplyEnergyCostsKrw, 0, 'COMMA')}" name="waterSupplyEnergyCostsKrw" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>KRW</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th colspan="2" rowspan="3" class="title-bgc02">ADVERRTISEMENT
+                                                        FEE<br />(광고비)</th>
+                                                    <td><input type="text" class="typing-txt _amountVnd" th:value="${#numbers.formatDecimal(oc.adverrtisementFeeVnd, 1, 'POINT', 2 , 'COMMA')}" name="adverrtisementFeeVnd" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>VND</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text" class="typing-txt _amountUsd" th:value="${#numbers.formatDecimal(oc.adverrtisementFeeUsd, 1, 'COMMA', 2 , 'POINT')}" name="adverrtisementFeeUsd" onkeyup="inputNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text" class="typing-txt _amountKrw" th:value="${#numbers.formatInteger(oc.adverrtisementFeeKrw, 0, 'COMMA')}" name="adverrtisementFeeKrw" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>KRW</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th colspan="2" rowspan="3" class="title-bgc02">CONSUMABLES
+                                                        COST<br />(소모품비)</th>
+                                                    <td><input type="text" class="typing-txt _amountVnd" th:value="${#numbers.formatDecimal(oc.consumablesCostVnd, 1, 'POINT', 2 , 'COMMA')}" name="consumablesCostVnd" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>VND</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text" class="typing-txt _amountUsd" th:value="${#numbers.formatDecimal(oc.consumablesCostUsd, 1, 'COMMA', 2 , 'POINT')}" name="consumablesCostUsd" onkeyup="inputNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text" class="typing-txt _amountKrw" th:value="${#numbers.formatInteger(oc.consumablesCostKrw, 0, 'COMMA')}" name="consumablesCostKrw" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>KRW</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th colspan="2" rowspan="3" class="title-bgc02">ENTERTAINMENT
+                                                        EXPENSE<br />(접대비)</th>
+                                                    <td><input type="text" class="typing-txt _amountVnd" th:value="${#numbers.formatDecimal(oc.entertainmentExpenseVnd, 1, 'POINT', 2 , 'COMMA')}" name="entertainmentExpenseVnd" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>VND</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text" class="typing-txt _amountUsd" th:value="${#numbers.formatDecimal(oc.entertainmentExpenseUsd, 1, 'COMMA', 2 , 'POINT')}" name="entertainmentExpenseUsd" onkeyup="inputNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text" class="typing-txt _amountKrw" th:value="${#numbers.formatInteger(oc.entertainmentExpenseKrw, 0, 'COMMA')}" name="entertainmentExpenseKrw" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>KRW</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th colspan="2" rowspan="3" class="title-bgc02">OTHER & COMMISSION
+                                                        CHARGE<br />(기타 및
+                                                        수수료비용)</th>
+                                                    <td>
+                                                        <input type="text" class="typing-txt _amountVnd" th:value="${#numbers.formatDecimal(oc.otherCommissionChargeVnd, 1, 'POINT', 2 , 'COMMA')}" name="otherCommissionChargeVnd" onkeyup="inputNumberFormatWithDot(this)" maxlength="15" disabled/>
+                                                    </td>
+                                                    <td>VND</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text" class="typing-txt _amountUsd" th:value="${#numbers.formatDecimal(oc.otherCommissionChargeUsd, 1, 'COMMA', 2 , 'POINT')}" name="otherCommissionChargeUsd" onkeyup="inputNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td><input type="text" class="typing-txt _amountKrw" th:value="${#numbers.formatInteger(oc.otherCommissionChargeKrw, 0, 'COMMA')}" name="otherCommissionChargeKrw" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/></td>
+                                                    <td>KRW</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th colspan="2" rowspan="3" class="title-bgc03">SUBTOTAL</th>
+                                                    <td class="title-bgc03"><p id="amountSubVnd"></p></td>
+                                                    <td class="title-bgc03">VND</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td class="title-bgc03"><p id="amountSubUsd"></p></td>
+                                                    <td class="title-bgc03">USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td class="title-bgc03"><p id="amountSubKrw"></p></td>
+                                                    <td class="title-bgc03">KRW</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <th colspan="2" rowspan="3" class="title-bgc03">TOTAL</th>
+                                                    <td class="title-bgc03"><p id="totalVnd"></p></td>
+                                                    <td class="title-bgc03">VND</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td class="title-bgc03"><p id="totalUsd"></p></td>
+                                                    <td class="title-bgc03">USD</td>
+                                                </tr>
+    
+                                                <tr>
+                                                    <td class="title-bgc03"><p id="totalKrw"></p></td>
+                                                    <td class="title-bgc03">KRW</td>
+                                                </tr>
+    
+    
+                                            </tbody>
+    
+                                        </table>
+
+
+                                        <div class="save_btn_wrap">
+                                            <div>
+                                                <a>
+                                                <button class="close_btn _closeBtn" id="closeBtn"
+                                                    type="button">CANCEL</button>
+                                                <button class="close_btn btn_color deta _editBtn"
+                                                    type="button">UPDATE</button>
+                                                </a>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+                            </form>
+
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <footer id="footer">
+
+
+
+
+
+            </footer>
+
+        </main>
+
+    </div>
+    <script th:src="@{/js/vietnam/operatingCalcu.js(date=${todayFormat})}" type="text/javascript"></script>
+    <script th:src="@{/js/vietnam/operatingCostForm.js(date=${todayFormat})}"></script>
+
+
+
+</body>
+
+</html>

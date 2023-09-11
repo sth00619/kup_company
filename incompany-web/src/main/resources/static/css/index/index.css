@@ -1,0 +1,24 @@
+/*캘린더*/
+#calendar {
+    height: 280px !important;
+}
+
+.tui-view-7 {
+    height: 250px !important;
+}
+
+._workLogTitle{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 13px;
+    width: 330px;
+    white-space: nowrap;
+}
+
+._projectTitle{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 16px;
+    width: 170px;
+    white-space: nowrap;
+}

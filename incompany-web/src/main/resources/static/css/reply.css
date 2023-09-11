@@ -1,0 +1,9 @@
+.reply_wrap {
+    padding: 0 0 0 50px;
+    position: relative;
+    display: none !important;
+}
+
+.reply_wrap.view_on {
+    display: block !important;
+}

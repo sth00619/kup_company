@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<th:block layout:fragment="pageCss">
+
+</th:block>
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sidePotential :: sidePotentialFragment"></div>
+</th:block>
+<th:block layout:fragment="contents">
+
+
+    <!-- main start ! -->
+    <div class="member_deta_wrap">
+
+        <div class="member_deta_box">
+            <h2>후보자 정보</h2>
+
+            <div class="member_deta">
+
+                <div class="deta_list">
+
+                    <div class="list_name">
+                        <p>소속</p>
+                    </div>
+                    <div class="list_box report">
+
+                        <p class="lb-line" th:text="${ce.employeeInfo.D1Name}">KH자산관리법인</p>
+                        <p class="lb-line" th:if="${not #strings.isEmpty(ce.employeeInfo.D2Name)}"
+                            th:text="${ce.employeeInfo.D2Name}">KH자산관리법인</p>
+                        <p class="lb-line" th:if="${not #strings.isEmpty(ce.employeeInfo.D3Name)}"
+                            th:text="${ce.employeeInfo.D3Name}">KH자산관리법인</p>
+
+                    </div>
+
+                </div>
+
+                <div class="deta_list">
+
+                    <div class="list_name">
+                        <p>직급</p>
+                    </div>
+
+                    <div class="list_box report">
+                        <p th:text="${ce.employeeInfo.positionName}"></p>
+                    </div>
+                </div>
+
+                <div class="deta_list">
+
+                    <div class="list_name">
+                        <p>담당자</p>
+                    </div>
+
+                    <div class="list_box report">
+                        <p th:text="${ce.employeeInfo.employeeName}">홍길동</p>
+                    </div>
+                </div>
+
+                <div class="deta_list">
+
+                    <div class="list_name">
+                        <p>후보자</p>
+                    </div>
+
+                    <div class="list_box report">
+                        <p th:text="${ce.name}"></p>
+                    </div>
+
+
+                </div>
+
+                <div class="deta_list">
+
+                    <div class="list_name">
+                        <p>연락처</p>
+                    </div>
+
+                    <div class="list_box report">
+                        <p th:text="${ce.mobile}">01000000000</p>
+                    </div>
+
+
+                </div>
+
+                <div class="deta_list">
+
+                    <div class="list_name">
+                        <p>거주지</p>
+                    </div>
+
+                    <div class="list_box report">
+                        <p th:text="${ce.getPostCodeIncludeLocation}"></p>
+                    </div>
+
+                </div>
+
+                <div class="deta_list">
+
+                    <div class="list_name">
+                        <p>생년월일</p>
+                    </div>
+
+                    <div class="list_box report">
+                        <p th:text="${ce.birthday}"></p>
+                        <span>성별</span>
+                        <p th:text="${ce.gender}"></p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="guest_deta_box candi-item">
+            <h2>특이사항</h2>
+
+            <div class="guest_deta">
+
+                <div class="last_txt">
+                    <span th:text="${ce.note}"></span>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 저장버튼  -->
+
+        <div class="save_btn_wrap">
+            <div>
+                <a href="/candidate/list">
+                    <button class="close_btn">취소</button>
+
+                </a>
+
+                <a th:if="${#authorization.expression('hasAnyAuthority(''CANDIDATE_EDIT'')')} or ${ce.employeeCode == myProfileDto.employeeCode} or ${ce.createEmployeeCode == myProfileDto.employeeCode}" th:href="@{/candidate/edit(candidateEmployeeNo=${ce.candidateEmployeeNo})}"> <button class="close_btn btn_color">수정</button></a>
+            </div>
+        </div>
+
+    </div>
+
+</th:block>
+
+
+<th:block layout:fragment="pageScript">
+
+
+
+</th:block>
+
+
+</html>

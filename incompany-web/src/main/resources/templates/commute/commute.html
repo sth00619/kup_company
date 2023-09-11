@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+
+<th:block layout:fragment="pageCss">
+    <link rel="stylesheet" th:href="@{/css/common.css(date=${todayFormat})}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/inCompany.css(date=${todayFormat})}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/sidebar.css(date=${todayFormat})}" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+
+    body {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 10px;
+    }
+
+    .salesman_search > button{
+        width:80px;
+        height:30px;
+        border:2px solid #e4e8f0;
+        outline: none;
+        padding:0 28px 0 8px;
+        border-radius: 2px;
+        background-color: #fff;
+    }
+    .commute_title > ul {
+        border-bottom: 1px solid #304260;
+        height: 54px;
+        box-sizing: border-box;
+    }
+    .commute_title > ul > li {
+        float:left;
+        height:54px;
+        line-height: 54px;
+        text-align: center;
+        font-size:14px;
+        font-weight: bold;
+        color:#304260;
+    }
+    .commute_sub_txt > ul > li{
+        float:left;
+        height: 70px;
+        line-height:70px;
+        text-align: center;
+        font-size:12px;
+        position:relative;
+        color:#9499a3;
+    }
+
+    .commute_title > ul > li:nth-child(1),.commute_sub_txt > ul > li:nth-child(1){width:200px;}
+    .commute_title > ul > li:nth-child(2),.commute_sub_txt > ul > li:nth-child(2){width:310px;}
+    .commute_title > ul > li:nth-child(3),.commute_sub_txt > ul > li:nth-child(3){width:200px;}
+    .commute_title > ul > li:nth-child(4),.commute_sub_txt > ul > li:nth-child(4){width:250px;}
+
+    .main_center {
+        width: 1000px;
+    }
+    .work_off {
+        font-weight: bold;
+        color: #ff4040 !important;
+    }
+}
+    </style>
+</th:block>
+
+<main>
+    <section>
+        <div>
+            <div>
+                <div class="main_center">
+                    <div class="top_center_menu_visual">
+                        <div class="top_center-menu">
+                            <div class="top_left_menu">
+                                <!-- select 유지 데이터 세팅 영역 -->
+                                <input id="getDepartmentCode" th:value="${departmentCode}" type="hidden" />
+                                <input id="getEmployeeCode" th:value="${employeeCode}" type="hidden" />
+                                <input id="getCategoryNo" th:value="${categoryNo}" type="hidden" />
+                                <select class="person_select _employee_select" name="person">
+                                    <option value="personAll">작성자</option>
+                                    <option class="salesEmployeeName"
+                                            th:each="el :${selectDepartmentMap.employeeList}"
+                                            th:text="${el.employeeName}"
+                                            th:value="${el.employeeCode}"
+                                            th:selected="${el.employeeCode} == ${employeeCode}">
+                                    </option>
+                                </select>
+                                <select class="category_select _category_select">
+                                    <option value="categoryAll">카테고리</option>
+                                    <option th:each="ccl : ${commuteCategoryList}"
+                                            th:text="${ccl.meaning}"
+                                            th:value="${ccl.index}"
+                                            th:selected="${ccl.index} == ${categoryNo}">
+                                    </option>
+                                </select>
+                            </div>
+
+
+                            <div class="top_right_menu">
+                                <div class="date_box search_deta">
+                                    <input class="_search_start_date" th:value="${startDate}" type="date">
+                                </div>
+                                <div class="date_box search_deta">
+                                    <input class="_search_end_date" th:value="${endDate}" type="date">
+                                </div>
+                                <div class="salesman_search">
+                                    <button class="_searchTime" type="button">
+                                        검색
+                                        <img alt="검색" class="_searchBtn" th:src="@{/images/img/search_icon.png}"/>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 병특 출퇴근일지 리스트 -->
+                        <div class="main_center_wrap">
+                            <div class="main_top">
+                                <div  class="commute_title">
+                                    <ul>
+                                        <li>작성자</li>
+                                        <li>사유</li>
+                                        <li>카테고리</li>
+                                        <li>날짜</li>
+                                    </ul>
+                                </div>
+
+                                <div class="commute_sub_txt">
+                                    <ul th:each="cl : ${commuteList}">
+                                        <li th:text="${cl.employeeName}"></li>
+                                        <li th:text="${cl.title}"></li>
+                                        <li th:class="${cl.categoryNo == 2 or cl.categoryNo == 4} ? 'work_off'" th:text="${cl.categoryName}"></li>
+                                        <th:block th:if="${cl.categoryNo != 3}">
+                                            <th:block th:if="${cl.categoryNo == 2}">
+                                                <li th:text="${cl.startTimeVacationFormat}">
+                                            </th:block>
+                                            <th:block th:unless="${cl.categoryNo == 2}">
+                                                <li th:if="${cl.endTime} == null" th:text="${cl.startTimeFormat}"></li>
+                                                <li th:unless="${cl.endTime} == null" th:text="|${cl.startTimeFormat} - ${cl.getEndTimeFormat}"></li>
+                                            </th:block>
+                                        </th:block>
+                                        <li th:unless="${cl.categoryNo != 3}"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+
+<th:block layout:fragment="pageScript">
+    <script th:src="@{/lib/jquery-3.6.0.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/commute/commuteList.js(date=${todayFormat})}"></script>
+</th:block>
+</html>

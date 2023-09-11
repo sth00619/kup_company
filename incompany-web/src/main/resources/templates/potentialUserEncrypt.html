@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="side_contents">
+  <div th:replace="fragments/sideOperation :: sideOperationFragment"></div>
+</th:block>
+<th:block layout:fragment="contents">
+
+  <div class="container">
+    <div class="py-5 text-center" id="namefile">
+      <h2> 개인정보 암호화</h2>
+    </div>
+    <div>
+      <form action="/potentialUserEncrypt" method="post">
+        <input type="submit" value="잠재 고객 전화번호 암호화" />
+      </form>
+    </div>
+  </div>
+
+</th:block>
+
+<th:block layout:fragment="pageScript">
+  <script th:src="@{/js/uploadFile.js(date=${todayFormat})}"></script>
+</th:block>
+</html>

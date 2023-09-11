@@ -1,0 +1,11 @@
+/* dataList 화살표시 삭제 */
+._searchEmployeeList::-webkit-calendar-picker-indicator {
+    opacity: 0;
+ }
+
+ /* 자식 요소 있을 때만 다운 버튼 표시 */
+.top_slide > h2:after{background-image: url("")}
+.top_slide > h2.is_next:after{background-image: url(/images/img/down_icon.png)}
+
+.top_slide_sub > li:after{background-image: url("")}
+.top_slide_sub > li.is_next:after{background-image: url(/images/img/down_icon.png)}

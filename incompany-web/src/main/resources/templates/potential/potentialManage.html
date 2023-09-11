@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="@{layout/defaultFragment}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <link rel="stylesheet" th:href="@{/css/list_check_box.css(date=${todayFormat})}" type="text/css">
+</th:block>
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sidePotential :: sidePotentialFragment"></div>
+</th:block>
+<th:block layout:fragment="contents">
+    <!-- 유지 데이터 세팅 영역 -->
+    <input id="assignStatus" name="assignStatus" th:value="${assignStatus}" type="hidden"/>
+    <input id="orderBy" th:value="${orderBy}" type="hidden"/>
+    <input id="getDepartmentCode" sec:authorize="!hasAnyAuthority('POTENTIAL_ALLOCATION')" th:value="${departmentCode}"
+           type="hidden"/>
+
+    <!-- 처리 결과 세팅 -->
+    <input id="isSuccessAllocation" th:value="${isSuccessAllocation}" type="hidden"/>
+    <input id="isSuccess" th:value="${isSuccess}" type="hidden"/>
+    <input id="message" th:value="${message}" type="hidden"/>
+
+    <!-- 검색 관련 세팅 -->
+    <input id="searchValue" th:value="${searchValue}" type="hidden"/>
+    <input id="searchKey" th:value="${searchKey}" type="hidden"/>
+
+    <div class="top_center_menu_visual">
+        <div class="top_center-menu">
+            <div class="top_left_menu">
+                <!-- 부서, 팀, 담당자 선택 select -->
+                <th:block sec:authorize="hasAnyAuthority('POTENTIAL_ALLOCATION')"
+                          th:replace="fragments/select_department_employee :: select_department_employee"></th:block>
+                <div class="btn_box change_box" id="_allocationBtn"
+                     sec:authorize="hasAnyAuthority('POTENTIAL_ALLOCATION')">
+                    <p>할당</p>
+                </div>
+                <div class="btn_box" id="_notAllocationBtn"
+                     sec:authorize="hasAnyAuthority('POTENTIAL_NOT_ALLOCATION')">
+                    <p>회수</p>
+                </div>
+            </div>
+            <div id="top_right_menu">
+                <div class="check_box">
+                    <input id="assign_1" name="check" type="radio" value="notAssigned">
+                    <label for="assign_1"></label>
+                    <span class="_check_assign" value="notAssigned">미할당</span>
+                </div>
+
+                <div class="check_box">
+                    <input id="assign_2" name="check" type="radio" value="assigned">
+                    <label for="assign_2"></label>
+                    <span class="_check_assign" value="assigned">할당</span>
+                </div>
+
+                <div class="check_box">
+                    <input id="assign_3" name="check" type="radio" value="allSearch">
+                    <label for="assign_3"></label>
+                    <span class="_check_assign" value="allSearch">전체보기</span>
+                </div>
+
+                <select class="select_box _searchKey">
+                    <option th:data-isDate="${scl.isDate}"
+                            th:each="scl : ${searchCateList}"
+                            th:selected="${scl.meaning} == ${searchKey}"
+                            th:text="${scl.meaning}"></option>
+                </select>
+
+                <div class="salesman_search">
+                    <input class="_searchValue" placeholder="검색" th:value="${searchValue}" type="text">
+                    <img alt="검색" class="_searchBtn" th:src="@{/images/img/search_icon.png}"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="main_center_wrap">
+            <div class="main_top">
+                <div>
+                    <ul class="guest_main_title">
+                        <li class="main_first_txt _main_first_txt">
+                            <label for="checkbox"></label>
+                            <input id="checkbox" type="checkbox">
+                        </li>
+                        <li>구분</li>
+                        <li id="potentialUserNo">고객번호</li>
+                        <li id="employeeName">담당자</li>
+                        <li>외부출처</li>
+                        <li>이름</li>
+                        <li>연락처</li>
+                        <li>거주지</li>
+                        <li>성별</li>
+                        <li>생년월일</li>
+                        <li>직업</li>
+                        <li>월급여</li>
+                        <li>출처</li>
+                        <li>통화가능시간</li>
+                        <li>관심분야</li>
+                        <li>상담내용</li>
+                        <li>등록일자</li>
+                    </ul>
+                </div>
+                <div class="main_sub_txt">
+                    <ul class="sub_first_txt _sub_ul" th:each="pl : ${potentialList.getList()}">
+                        <li class="sub_first_txt _sub_first_txt">
+                            <label class="_sub_label" for="checkbox"></label>
+                            <input class="_sub_check" id="checkbox" th:checked="${pl.checked == true?: true}"
+                                   type="checkbox">
+                        </li>
+                        <li th:text="${pl.isAssign}"></li>
+                        <li class="potentialUserNo" name="potentialUserNo" th:text="${pl.potentialUserNo}"
+                            th:value="${pl.potentialUserNo}"></li>                                  <!-- 고객번호 -->
+                        <li th:text="${pl.employeeName}" th:value="${pl.employeeCode}"></li>        <!-- 담당직원 -->
+                        <li th:text="${pl.externalFrom}" th:value="${pl.externalCode}"></li>        <!-- 외부출처 -->
+                        <li th:text="${pl.potentialUserName}"></li>                                 <!-- 이름 -->
+                        <li th:text="${pl.mobile}"></li>                                     <!-- 핸드폰번호 -->
+                        <li th:text="${pl.postCodeNoneLocation}"></li>                              <!-- 거주지 -->
+                        <li th:text="${pl.gender}"></li>                                            <!-- 성별 -->
+                        <li th:text="${pl.birthday}"></li>                                          <!-- 생년월일 -->
+                        <li th:text="${pl.job}"></li>                                               <!-- 직업 -->
+                        <li th:text="${pl.averagePay}"></li>                                        <!-- 월급여 -->
+                        <li th:text="${pl.sourceName}"></li>                                        <!-- 출처 -->
+                        <li th:text="${pl.possibleTime}"></li>                                      <!-- 통화가능시간 -->
+                        <li th:text="${pl.note}"></li>                                              <!-- 관심분야 -->
+                        <li th:text="${pl.counseling}"></li>                                        <!-- 상담내용 -->
+                        <li th:text="${pl.createTime}"></li>                                        <!-- 등록일자 -->
+                    </ul>
+                </div>
+            </div>
+
+            <!-- pageNation -->
+            <th:block th:replace="fragments/page_nation :: page_nation"></th:block>
+        </div>
+    </div>
+</th:block>
+
+<th:block layout:fragment="pageScript">
+    <script th:src="@{/js/select_department_employee.js(date=${todayFormat})}" type="text/javascript"></script>
+
+    <script th:src="@{/js/potential/potentialManage.js(date=${todayFormat})}" type="text/javascript"></script>
+
+
+    <!-- checkBox -->
+    <script th:src="@{/js/list_check_box.js(date=${todayFormat})}" type="text/javascript"></script>
+</th:block>
+</html>

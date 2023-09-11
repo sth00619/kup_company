@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideOperation :: sideOperationFragment"></div>
+</th:block>
+
+<th:block layout:fragment="pageCss">
+    <link rel="stylesheet" th:href="@{/css/list_check_box.css}" type="text/css">
+</th:block>
+
+<th:block layout:fragment="contents">
+    <form th:action="@{/event/updateEvent(eventCode=${eventDto.eventCode})}" method="POST">
+        <input id="employeeLoginCode" name="employeeLoginCode" th:value="${employeeLoginCode}" type="hidden">
+        <div class="member_deta_wrap">
+            <div class="member_deta_box">
+                <h2>이벤트 정보 입력</h2>
+                <div class="member_deta">
+                    <div class="deta_list">
+                        <div class="list_name star">
+                            <p>이벤트 범위</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="interest" th:each="type : ${eventHeadTypeEnum}">
+                                <input th:id="${type.id}" name="headType" class="_headType" type="radio" th:value="${type.index}" th:checked="${eventDto.headType == type.index}">
+                                <label th:for="${type.id}" th:text="${type.meaning}"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="deta_list">
+                        <div class="list_name star">
+                            <p>머리말</p>
+                        </div>
+                        <div class="list_box">
+                            <input type="hidden" id="_categoryVal" th:value="${eventDto.category}">
+                            <select required class="belong_select _category" name="category"
+                                    oninvalid="this.setCustomValidity('머리말을 선택해 주세요.')" oninput="this.setCustomValidity('')">
+                                <option disabled selected value="">머리말 선택</option>
+                                <option th:each="cate : ${eventCategoryEnum}"
+                                        th:text="${cate.meaning}" th:value="${cate.index}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="deta_list">
+                        <div class="list_name star">
+                            <p>제목</p>
+                        </div>
+                        <div class="list_box">
+                            <div class="name_box">
+                                <input required maxlength="35" style="width:500px !important;" id="_title" name="title" type="text" th:value="${eventDto.title}"
+                                       oninvalid="this.setCustomValidity('제목을 입력해 주세요.')" oninput="this.setCustomValidity('')">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="deta_list">
+                        <div class="list_name star">
+                            <p>이벤트 기간</p>
+                        </div>
+                        <div class="list_box">
+                            <div class="date_box">
+                                <input id="_startDate" required name="startDate" type="date" th:value="${eventDto.startDate}"
+                                       oninvalid="this.setCustomValidity('이벤트 시작일을 선택해 주세요.')" oninput="this.setCustomValidity('')">
+                                &nbsp;
+                                ~
+                                &nbsp;
+                                <input id="_endDate" required name="endDate" type="date" th:value="${eventDto.endDate}"
+                                       oninvalid="this.setCustomValidity('이벤트 종료일을 선택해 주세요.')" oninput="this.setCustomValidity('')">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="deta_list">
+                        <div class="list_name star">
+                            <p>적용 분야</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="interest _custom_checkbox_div" th:each="field : ${eventFieldEnum}">
+                                <input name="fieldCheck" class="_custom_check _applyField" th:id="${field.id}" th:value="${field.index}" type="checkbox">
+                                <label class="_custom_label" th:for="${field.id}" th:text="${field.meaning}"></label>
+                            </div>
+                            <input type="hidden" id="_applyField" name="applyField" th:value="${eventDto.applyField}">
+                        </div>
+                    </div>
+
+                    <div class="deta_list">
+                        <div class="list_name star">
+                            <p>적용 범위</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="interest" th:each="cover : ${eventCoverageEnum}">
+                                <input th:checked="${cover.index == eventDto.applyCoverage}" th:id="${cover.id}" name="applyCoverage" type="radio" th:value="${cover.index}">
+                                <label th:for="${cover.id}" th:text="${cover.meaning}"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 저장버튼  -->
+            <div class="save_btn_wrap">
+                <div>
+                    <a th:href="@{/event/eventOperation}">
+                        <button class="close_btn _cencelBtn" type="button">취소</button>
+                    </a>
+                    <button class="close_btn btn_color _submitBtn" type="submit">저장</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</th:block>
+
+<th:block layout:fragment="pageScript">
+    <!-- checkBox -->
+    <script th:src="@{/js/list_check_box.js}" type="text/javascript"></script>
+
+    <!-- addEvent -->
+    <script th:src="@{/js/event/addEvent.js}" type="text/javascript"></script>
+</th:block>
+</html>

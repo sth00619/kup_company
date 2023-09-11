@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- Left CompanyChart Start -->
+<div class="location" th:fragment="main_contents_header">
+    <!-- home = index -->
+    <a th:href="@{/}">HOME</a>
+    <a th:href="${mainDefaultUrl}" th:text="${mainUrlName}"></a>
+    <span th:text="${urlName}">2</span>
+</div>
+</html>

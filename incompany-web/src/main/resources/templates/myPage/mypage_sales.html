@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="@{layout/mainDefaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <link href="/toast-calendar/css/tui-time-picker.css" rel="stylesheet" type="text/css">
+    <link href="/toast-calendar/css/tui-date-picker.css" rel="stylesheet" type="text/css">
+    <link href="/toast-calendar/css/tui-calendar-home.css" rel="stylesheet" type="text/css">
+    <link href="/toast-calendar/css/default-home.css" rel="stylesheet" type="text/css">
+    <link href="/toast-calendar/css/icon.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" th:href="@{/css/myPage/myPage_contract_chart.css(date=${todayFormat})}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/myPage/myPage.css(date=${todayFormat})}" type="text/css">
+</th:block>
+
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideMypage :: sideMypageFragment"></div>
+</th:block>
+
+<th:block layout:fragment="contents">
+
+    <input id="getEmployeeCode" th:value="${employeeCode}" type="hidden">
+    <input id="reportEmployeeCode" th:value="${reportEmployeeCode}" type="hidden">
+    <div class="post_visual">
+
+
+        <!-- 리스트-->
+        <div class="my_page_visual">
+
+            <div class="my_page_wrap">
+
+                <div class="first_title">
+                    <h2>마이페이지</h2>
+                </div>
+                <div class="my_page_inner">
+
+                    <div class="my_pagemiddle">
+
+                        <div class="middle_first">
+
+                            <div class="list_title">
+                                <h3>내가 올린 결재</h3>
+                            </div>
+                            <div class="titlewrap">
+                                <div class="title_top">
+                                    <dl class="odd_title">
+                                        <dt>상신 문서</dt>
+                                        <dd><a th:href="@{/myPage/payment/submit?status=1}">[[${countPayment.paymentInProgress}]]건</a></dd>
+                                    </dl>
+
+                                    <dl class="even_title">
+                                        <dt>결재완료 문서</dt>
+                                        <dd><a th:href="@{/myPage/payment/submit?status=2}">[[${countPayment.paymentCompleted}]]건</a></dd>
+                                    </dl>
+                                </div>
+                                <div class="title_bottom">
+                                    <dl class="odd_title">
+                                        <dt>임시 보관</dt>
+                                        <dd><a th:href="@{/myPage/payment/submit?status=4}">[[${countPayment.paymentCompleted}]]건</a></dd>
+                                    </dl>
+
+                                    <dl class="even_title">
+                                        <dt>반려 문서</dt>
+                                        <dd><a th:href="@{/myPage/payment/submit?status=3}">[[${countPayment.returnPayment}]]건</a></dd>
+                                    </dl>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="middle_center">
+                            <div class="list_title">
+                                <h3>내가 받은 결재</h3>
+                            </div>
+                            <div class="titlewrap">
+                                <div class="title_top">
+                                    <dl class="odd_title">
+                                        <dt>상신 문서</dt>
+                                        <dd><a th:href="@{/myPage/payment/received?type=0&step=1}">[[${countMyPayment.myBeforePayment}]]건</a></dd>
+                                    </dl>
+
+                                    <dl class="even_title">
+                                        <dt>결재완료 문서</dt>
+                                        <dd><a th:href="@{/myPage/payment/received?type=0&step=2}">[[${countMyPayment.myPaymentCompleted}]]건</a></dd>
+                                    </dl>
+                                </div>
+                                <div class="title_bottom">
+                                    <dl class="odd_title">
+                                        <dt>참조 문서</dt>
+                                        <dd><a th:href="@{/myPage/payment/received?type=1}">[[${countMyPayment.myPaymentReference}]]건</a></dd>
+                                    </dl>
+
+                                    <dl class="even_title">
+                                        <dt>반려 문서</dt>
+                                        <dd><a th:href="@{/myPage/payment/received?type=0&step=3}">[[${countMyPayment.myReturnPayment}]]건</a></dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="middle_lastright">
+                            <div class="list_title">
+                                <h3>업무 지원</h3>
+                            </div>
+                            <div class="titlewrap">
+                                <div class="title_top">
+                                    <dl>
+                                        <dt>지원요청</dt>
+                                        <dd><a th:href="@{/myPage/myPageRequest}">[[${countOfState.stateIsToTwoFromZero}]]건</a></dd>
+                                    </dl>
+                                </div>
+                                <div class="title_bottom">
+                                    <dl>
+                                        <dt>지원완료</dt>
+                                        <dd><a class="_notReady" th:href="@{/myPage/myPageRequest}">[[${countOfState.stateIsThree}]]건</a></dd>
+                                    </dl>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="my_pagetop">
+                        <div class="list_title">
+                            <h3>알림</h3>
+                        </div>
+                        <ul class="new_list" th:each="nl : ${notificationList.getList()}">
+                            <li>[[${nl.counting}]]</li>
+                            <li>
+                                <div class="praise">[[${nl.categoryName}]]</div>
+                                [[${nl.notificationTitle}]]
+                            </li>
+                            <li>[[${nl.agoTime}]]</li>
+                            <li><a class="going" th:href="@{${nl.url}}">바로가기</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- pageNation -->
+                    <th:block th:replace="fragments/middle_page_nation :: middle_page_nation"></th:block>
+
+                    <div class="my_pagebottom">
+
+                        <div class="bottom_left">
+                            <div class="list_title">
+                                <h3>계약 현황</h3> <span class="view_more2"><a
+                                    th:href="@{/statistics/contractRanking}">더보기</a></span>
+                            </div>
+                            <dl>
+                                <dt>목돈순위</dt>
+                                <dd>[[${myRankingByContractFortune}]]등</dd>
+                            </dl>
+
+                            <dl>
+                                <dt>보험순위</dt>
+                                <dd>[[${myRankingByInsurance}]]등</dd>
+                            </dl>
+                        </div>
+
+                        <div class="bottom_right">
+
+                            <div class="list_title">
+                                <h3>오늘 해야할 일</h3>
+                                <span class="view_more2"><a href="/schedule/schedule">더보기</a></span>
+                            </div>
+                            <ul>
+                                <li th:each=" tsl: ${todayScheduleList}">· [[${tsl.title}]]</li>
+                            </ul>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- side -->
+            <aside class="right_side">
+
+                <div class="side_box">
+
+                    <div class="post_title">
+                        <h2>계약관리</h2>
+                        <span class="view_more2"><a th:href="@{/contractFortune/contractFortune}">더보기</a></span>
+                    </div>
+
+                    <div class="my_chart_wrap">
+                        <div class="my_chart chart_check">
+                            <div class="my_chart_bar bar_color _chart_bar1"></div>
+                        </div>
+
+                        <div class="my_chart chartmargin">
+                            <div class="my_chart_bar _chart_bar2"></div>
+                        </div>
+
+                        <div class="my_chart chartmargin">
+                            <div class="my_chart_bar _chart_bar3"></div>
+                        </div>
+
+                        <div class="my_chart chartmargin">
+                            <div class="my_chart_bar _chart_bar4"></div>
+                        </div>
+
+                        <div class="my_gage_box">
+                            <div class="gage_box">
+                                <span>목돈</span>
+                                <div class="money money1">
+                                    <div class="money_bar1 money_bar"></div>
+                                </div>
+                            </div>
+                            <div class="gage_box">
+                                <span>보험</span>
+                                <div class="money money2">
+                                    <div class="money_bar2 money_bar"></div>
+                                </div>
+                            </div>
+                            <div class="gage_box">
+                                <span>펀드</span>
+                                <div class="money money3">
+                                    <div class="money_bar3 money_bar"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="side_box">
+                    <div class="post_title">
+                        <div id="menu">
+                            <div class="post_title">
+                                <span id="menu-navi">
+                                    <button class="btn btn-default btn-sm move-day" data-action="move-prev"
+                                            type="button">
+                                        <i class="calendar-icon ic-arrow-line-left" data-action="move-prev"></i>
+                                    </button>
+                                    <button class="btn btn-default btn-sm move-day" data-action="move-next"
+                                            type="button">
+                                        <i class="calendar-icon ic-arrow-line-right" data-action="move-next"></i>
+                                    </button>
+                                </span>
+                                <span class="render-range" id="renderRange"></span>
+                                <span class="view_more2"><a href="/schedule/schedule">더보기</a></span>
+                            </div>
+                        </div>
+
+
+                        <div id="calendar"></div>
+                    </div>
+                </div>
+
+
+                <div class="side_box">
+
+                    <div class="post_title">
+                        <h2>업무일지</h2>
+                        <span class="view_more2"><a href="/worksheet/document/documentList">더보기</a></span>
+                    </div>
+                    <ul th:each="wl : ${workLogList}">
+                        <li>
+                            <a th:href="@{/worksheet/document/documentInfo(workLogNo=${wl.workLogNo})}">
+                                <div class="main_today_img">
+                                    <img th:if="${#strings.isEmpty(wl.imageUrl)}" src="/images/img/quick_my.png">
+                                    <img th:unless="${#strings.isEmpty(wl.imageUrl)}" th:src="${wl.imageUrl}">
+                                    <p class="hover_name" th:text="${wl.employeeName}"></p>
+
+
+                                </div>
+                                <div class="main_today_txt">
+                                    <p class="_workLogTitle">[[${wl.title}]]</p>
+                                    <dl class="today_subtxt sub_item">
+                                        <dt>작성일 :</dt>
+                                        <dd>[[${wl.createTime}]]</dd>
+                                    </dl>
+                                    <dl class="today_subtxt">
+                                        <dt>결제일 :</dt>
+                                        <dd>[[${wl.paymentWorkLogTime}]]</dd>
+                                    </dl>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+
+            </aside>
+
+
+        </div>
+
+
+    </div>
+    <!-- end -->
+</th:block>
+
+<th:block layout:fragment="pageScript">
+    <script src="/toast-calendar/js/bootstrap.js"></script>
+    <script src="/toast-calendar/js/tui-code-snippet.min.js"></script>
+    <script src="/toast-calendar/js/tui-time-picker.min.js"></script>
+    <script src="/toast-calendar/js/tui-date-picker.min.js"></script>
+    <script src="/toast-calendar/js/moment.min.js"></script>
+    <script src="/toast-calendar/js/chance.min.js"></script>
+    <script src="/toast-calendar/js/tui-calendar.js"></script>
+    <script src="/toast-calendar/js/tui-calendar-home.js"></script>
+    <script th:src="@{/toast-calendar/js/calendars.js(date=${todayFormat})}"></script>
+    <script th:src="@{/toast-calendar/js/schedules.js(date=${todayFormat})}"></script>
+    <script th:src="@{/toast-calendar/js/app-home.js(date=${todayFormat})}"></script>
+
+    <script th:src="@{/js/myPage/myPage_contract_chart.js(date=${todayFormat})}" type="text/javascript"></script>
+    <script th:src="@{/js/myPage/myPage_sales.js(date=${todayFormat})}" type="text/javascript"></script>
+</th:block>
+
+
+</html>

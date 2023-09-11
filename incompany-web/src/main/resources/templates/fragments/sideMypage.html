@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<!-- Left CompanyChart Start -->
+<div class="slide_down_wrap" th:fragment="sideMypageFragment">
+    <div class="top_slide guest_slide">
+        <h2>마이페이지</h2>
+    </div>
+    <div>
+        <ul class="top_slide_sub5">
+            <li onclick="location.href='/myPage/payment/received'">
+                <a th:classappend="${requestUrl == '/myPage/payment/received'} ? 'on_color'"
+                   href="#">
+                    내가 받은 결재
+                </a>
+            </li>
+        </ul>
+        <ul class="top_slide_sub5">
+            <li onclick="location.href='/myPage/payment/submit'">
+                <a th:classappend="${requestUrl == '/myPage/payment/submit'} ? 'on_color'"
+                   href="#">
+                    내가 올린 결재
+                </a>
+            </li>
+        </ul>
+
+        <ul class="top_slide_sub5">
+            <li onclick="location.href='/myPage/payment/paymentForm'">
+                <a th:classappend="${requestUrl == '/myPage/payment/paymentForm'} ? 'on_color'"
+                   href="#">
+                    결재 양식 
+                </a>
+            </li>
+        </ul>
+
+        <ul class="top_slide_sub5">
+            <li onclick="location.href='/myPage/myPageRequest'">
+                <a th:classappend="${requestUrl == '/myPage/myPageRequest'} ? 'on_color'"
+                   href="#">
+                    업무 지원
+                </a>
+            </li>
+        </ul>
+
+        <ul class="top_slide_sub5">
+            <li onclick="location.href='/myPage/attendance/myAttendance'">
+                <a th:classappend="${requestUrl == '/myPage/attendance/myAttendance'} ? 'on_color'"
+                   href="#">
+                    출석 체크
+                </a>
+            </li>
+        </ul>
+
+    </div>
+</div>
+
+</html>

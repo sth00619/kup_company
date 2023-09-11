@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideBoard :: sideBoardFragment"></div>
+</th:block>
+<th:block layout:fragment="contents">
+
+    <div class="top_center_menu_visual">
+        <div class="top_center-menu">
+            <button class="writing_btn"><a th:href="@{/groupware/addRequest}">글쓰기</a></button>
+        </div>
+
+        <div class="main_center_wrap">
+            <div class="notice_title">
+                <ul>
+                    <li style="width:150px;">NO</li>
+                    <li style="width:700px;">제목</li>
+                    <li style="width:150px;">작성자</li>
+                    <li style="width:150px;">등록일</li>
+                </ul>
+            </div>
+
+            <div class="notice_sub_txt">
+                <ul class="_groupwareRequestList" th:each="grl : ${groupwareRequestList.getList()}" th:value="${grl.groupwareRequestNo}">
+                    <li style="width:150px;"><a th:text="${grl.groupwareRequestNo}"></a></li>
+                    <li style="width:700px;">
+                        <a>
+                            <div class="title_inner">[[${grl.title}]]</div>
+                            <div class="new" th:if="${grl.getNewMark}"><img src="/images/img/new.png"></div>
+                            <div class="title_file" th:if="${grl.isFileExist}"><img src="/images/img/file.png"></div>
+                            <div class="comment" th:if="${grl.replyCount} > 0"><img src="/images/img/comment.png"></div>
+                        </a>
+                    </li>
+                    </li>
+                    <li style="width:150px;"><a th:text="${grl.employeeName}"></a>
+                    </li>
+                    <li style="width:150px;"><a th:text="${grl.createTime}"></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 페이징 -->
+    <th:block th:replace="fragments/page_nation :: page_nation"></th:block>
+
+</th:block>
+
+
+<th:block layout:fragment="pageScript">
+    <script th:src="@{/js/groupware/requestList.js(date=${todayFormat})}"></script>
+</th:block>
+
+
+</html>

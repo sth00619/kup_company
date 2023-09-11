@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <link rel="stylesheet" th:href="@{/css/potential/updatePotentialUser.css(date=${todayFormat})}" type="text/css">
+</th:block>
+
+<th:block layout:fragment="pageScriptTop">
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</th:block>
+
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sidePotential :: sidePotentialFragment"></div>
+</th:block>
+
+<th:block layout:fragment="contents">
+    <input hidden id="employeeLoginCode" th:value="${employeeLoginCode}">
+    <input hidden id="isMyPotentialUser" th:value="${isMyPotentialUser}">
+
+    <form id="update" method="post" th:action="@{/potential/updatePotentialUser}">
+        <input hidden id="employeeCode" name="employeeCode" th:value="${employeeCode}">
+        <input hidden id="loginEmployeeCode" name="loginEmployeeCode" th:value="${loginEmployeeCode}">
+        <input id="potentialUserNo" name="potentialUserNo" th:value="${fragmentInfoDto.potentialUserNo}" type="hidden">
+        <div class="guest_deta_wrap">
+
+            <div class="guest_deta_box">
+                <h2>고객 정보 입력</h2>
+
+                <div class="guest_deta">
+
+                    <div class="guest_list">
+                        <div class="guest_list_name star">
+                            <p>고객분류</p>
+                        </div>
+                        <div class="guest_list_box">
+                            <select class="group_select _source" name="source">
+                                <option disabled selected value="">선택</option>
+                                <option th:each="psl : ${potentialSourceEnumList}"
+                                    th:selected="${fragmentInfoDto.source} == ${psl.index}" th:text="${psl.meaning}"
+                                    th:value="${psl.index}">
+                                </option>
+
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="guest_list">
+                        <div class="guest_list_name">
+                            <p>담당자</p>
+                        </div>
+                        <div class="guest_list_box">
+                            <p id="isEmployeeCode" th:text="${employeeInfo.employeeName}"></p>
+                        </div>
+                    </div>
+
+                    <div class="guest_list">
+                        <div class="guest_list_name star">
+                            <p>이름</p>
+                        </div>
+                        <div class="guest_list_box">
+                            <div class="name_box">
+                                <input maxlength="15" class="name_txt _name" id="name_txt" name="name"
+                                    th:value="${fragmentInfoDto.name}" type="text">
+                                <label for="name_txt"></label>
+                                <span aria-live="assertive" class="error_next_box name_error">반드시 입력해주세요.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="guest_list">
+
+                        <div class="guest_list_name star">
+                            <p>연락처</p>
+                        </div>
+
+                        <div class="guest_list_box">
+                            <div class="name_box">
+                                <input maxlength="18" class="phone _mobile" id="mobile" name="mobile"
+                                    th:value="${fragmentInfoDto.mobile}" type="text">
+                                <label for="mobile"></label>
+                                <span aria-live="assertive" class="error_next_box mobile_error">반드시 입력해주세요.</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="guest_list">
+                        <div class="guest_list_name">
+                            <p>거주지</p>
+                        </div>
+                        <th:block th:replace="fragments/daumPostcode :: daumPostcode"></th:block>
+                    </div>
+
+                    <div class="guest_list">
+                        <div class="guest_list_name">
+                            <p>생년월일</p>
+                        </div>
+                        <div class="guest_list_box">
+                            <div class="date_box"><input name="birthday" th:value="${fragmentInfoDto.birthday}"
+                                    type="date"></div>
+                            <div class="sexual_check_box">
+                                <div class="sexual_check">
+                                    <input id="m" name="gender" th:checked="${fragmentInfoDto.gender} == '남'"
+                                        type="radio" value="남">
+                                    <label for="m">남</label>
+                                </div>
+                                <div class="sexual_check">
+                                    <input id="f" name="gender" th:checked="${fragmentInfoDto.gender} == '여'"
+                                        type="radio" value="여">
+                                    <label for="f">여</label>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="guest_deta_box">
+                <h2>상세 정보 입력</h2>
+                <div class="guest_deta">
+
+                    <div class="guest_list">
+                        <div class="guest_list_name">
+                            <p>직업</p>
+                        </div>
+                        <div class="guest_list_box">
+                            <div class="jop_box box">
+                                <input maxlength="250" id="job" name="job" th:value="${fragmentInfoDto.job}" type="text">
+                                <label for="job"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="guest_list">
+                        <div class="guest_list_name">
+                            <p>월평균 급여</p>
+                        </div>
+                        <div class="guest_list_box">
+                            <div class="pay_box box">
+                                <input maxlength="9" id="pay" name="averagePay" th:value="${fragmentInfoDto.averagePay}" type="text">
+                                <label for="pay"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="guest_deta_box">
+                <h2>상세 정보 입력</h2>
+                <div class="guest_deta">
+
+                    <div class="guest_list">
+                        <div class="guest_list_name">
+                            <p>통화가능 일시</p>
+                        </div>
+                        <div class="guest_list_box">
+                            <div class="calendar_box"><input maxlength="90" class="_possibleTime" id="possibleTime" name="possibleTime"
+                                    th:value="${fragmentInfoDto.possibleTime}"></div>
+                        </div>
+                    </div>
+
+                    <div class="guest_big_list">
+                        <div class="guest_list_bigname">
+                            <p>관심분야</p>
+                        </div>
+                        <div class="guest_list_box">
+                            <div class="big_txt">
+                                <textarea maxlength="190" name="note" placeholder="내용을 입력하세요."
+                                    th:text="${fragmentInfoDto.note}"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="guest_big_list">
+                        <div class="guest_list_bigname">
+                            <p>상담내용</p>
+                        </div>
+                        <div class="guest_list_box">
+                            <div class="big_txt">
+                                <textarea maxlength="490" name="counseling" placeholder="내용을 입력하세요."
+                                    th:text="${fragmentInfoDto.counseling}"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="save_btn_wrap">
+                <div>
+                    <a href="javascript:history.back();">
+                        <button class="close_btn _closeBtn" type="button">취소</button>
+                    </a>
+                    <button class="close_btn btn_color deta _submitBtn" type="submit">저장</button>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</th:block>
+<th:block layout:fragment="pageScript">
+    <script th:src="@{/js/daumPostcode.js}"></script>
+    <script th:src="@{/js/potential/updatePotentialUser.js(date=${todayFormat})}"></script>
+</th:block>
+
+</html>

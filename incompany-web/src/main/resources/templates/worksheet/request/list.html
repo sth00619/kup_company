@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <!-- css작성, 파일 -->
+    <link rel="stylesheet" th:href="@{/css/list_check_box.css(date=${todayFormat})}" type="text/css">
+</th:block>
+
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideWorksheet :: sideWorksheetFragment"></div>
+</th:block>
+
+<th:block layout:fragment="contents">
+    <input id="_currentBoardUrl" name="url" th:value="${mainUrl}" type="hidden" />
+
+    <input hidden id="companyEditCode" th:value="${companyEditCode}">
+    <input hidden id="departmentEditCode" th:value="${departmentEditCode}">
+
+    <input hidden id="employeeLoginCode" th:value="${employeeLoginCode}">
+    <input id="companyCode" th:value="${companyCode}" type="hidden">
+    <input id="departmentCode" th:value="${departmentCode}" type="hidden">
+    <input id="getDepartmentCode" th:value="${departmentCode}" type="hidden" />
+    <input id="getEmployeeCode" th:value="${employeeCode}" type="hidden" />
+    <input id="getTeamCode" type="hidden" />
+    <input id="state" th:value="${state}" type="hidden">
+
+    <!-- 페이징 관련 데이터 세팅 -->
+
+    <input id="nextPage" th:value="${requestList.getNavigateLastPage()}" type="hidden" />
+    <input id="prePage" th:value="${requestList.getNavigateFirstPage()}" type="hidden" />
+    <input id="pages" th:value="${requestList.getPages()}" type="hidden" />
+    <input id="pageNum" th:value="${pageNum}" type="hidden" />
+
+    <div class="top_center_menu_visual">
+
+        <div class="top_center-menu">
+
+            <div class="top_left_menu">
+                <select class="belong_select _belong_select" name="belong"
+                        sec:authorize="hasAnyAuthority('SCHEDULE_SELECT_DEPARTMENT_ONE_DEPTH')">
+                    <option disabled selected>본부</option>
+                    <option th:if="${departmentCode != null and !departmentCode.empty}" value="cancel">선택취소
+                    </option>
+                    <option th:each="d :${getDepartmentOneDepth}" th:text="${d.departmentName}"
+                            th:value="${d.departmentCode}"></option>
+                </select>
+
+                <select class="department_select _department_select" name="department"
+                        sec:authorize="hasAnyAuthority('SCHEDULE_SELECT_DEPARTMENT_ONE_DEPTH', 'SCHEDULE_SELECT_DEPARTMENT_TWO_DEPTH')">
+                    <option disabled selected>지점</option>
+                    <option th:each="dl :${selectDepartmentMap.departmentList}" th:text="${dl.departmentName}"
+                            th:value="${dl.departmentCode}">
+                    </option>
+                    <option
+                            th:if="${selectDepartmentMap.departmentList != null and !selectDepartmentMap.departmentList.empty}"
+                            value="cancel">선택취소
+                    </option>
+                </select>
+
+                <select class="team_select _team_select" name="team"
+                        sec:authorize="hasAnyAuthority('SCHEDULE_SELECT_DEPARTMENT_ONE_DEPTH', 'SCHEDULE_SELECT_DEPARTMENT_TWO_DEPTH', 'SCHEDULE_SELECT_DEPARTMENT_THREE_DEPTH')">
+                    <option disabled selected>팀</option>
+                    <option th:if="${selectDepartmentMap.teamList != null and !selectDepartmentMap.teamList.empty}"
+                            value="cancel">선택취소
+                    </option>
+                    <option th:each="tl :${selectDepartmentMap.teamList}" th:text="${tl.departmentName}"
+                            th:value="${tl.departmentCode}">
+                    </option>
+                </select>
+
+                <select class="person_select _employee_select" name="person"
+                        sec:authorize="hasAnyAuthority('SCHEDULE_SELECT_DEPARTMENT_ONE_DEPTH', 'SCHEDULE_SELECT_DEPARTMENT_TWO_DEPTH', 'SCHEDULE_SELECT_DEPARTMENT_THREE_DEPTH')">
+                    <option disabled selected>담당자</option>
+                    <option
+                            th:if="${selectDepartmentMap.employeeList != null and !selectDepartmentMap.employeeList.empty}"
+                            value="cancel">선택취소
+                    </option>
+                    <option class="salesEmployeeName" th:each="el :${selectDepartmentMap.employeeList}"
+                            th:text="${el.employeeName}" th:value="${el.employeeCode}"></option>
+                </select>
+            </div>
+
+            <div class="btn_box change_box" id="allocationBtn"
+                 sec:authorize="hasAnyAuthority('SCHEDULE_SELECT_DEPARTMENT_ONE_DEPTH', 'SCHEDULE_SELECT_DEPARTMENT_TWO_DEPTH', 'SCHEDULE_SELECT_DEPARTMENT_THREE_DEPTH')">
+                <p>할당</p>
+            </div>
+
+            <button class="writing_btn"><a href="/worksheet/request/form">글쓰기</a></button>
+
+            <div class="notice_search">
+                <div class="interest">
+                    <input id="All" name="state" th:checked="${state} == null" type="radio" value="all">
+                    <label for="All">전체</label>
+                </div>
+
+                <div class="interest">
+                    <input id="progress" name="state" th:checked="${state} == '0'" type="radio" value="0">
+                    <label for="progress">진행예정</label>
+                </div>
+
+                <div class="interest">
+                    <input id="Proceeding" name="state" th:checked="${state} == '1'" type="radio" value="1">
+                    <label for="Proceeding">진행중</label>
+                </div>
+
+                <div class="interest">
+                    <input id="Keep" name="state" th:checked="${state} == '2'" type="radio" value="2">
+                    <label for="Keep">임시보관</label>
+                </div>
+
+                <div class="interest">
+                    <input id="complete" name="state" th:checked="${state} == '3'" type="radio" value="3">
+                    <label for="complete">완료</label>
+                </div>
+
+
+                <select class="select_box">
+                    <option th:selected="${searchType}=='title'" value="title">제목</option>
+                    <option th:selected="${searchType}=='category'" value="category">머리말</option>
+                    <option th:selected="${searchType}=='requestEmployeeCode'" value="requestEmployeeCode">요청자</option>
+                    <option th:selected="${searchType}=='requestDate'" value="requestDate">요청일</option>
+                </select>
+
+                <div class="salesman_search">
+                    <input id="keyword" list="dataSearchList" placeholder="검색" th:value="${keyword}" type="text">
+                    <img alt="검색" class="_searchBtn" src="/images/img/search_icon.png" />
+                </div>
+            </div>
+
+        </div>
+
+        <div class="main_center_wrap">
+            <div class="r_daily_title">
+                <ul>
+                    <li class="sub_first_txt _main_first_txt">
+                        <label for="checkbox"></label>
+                        <input id="checkbox" type="checkbox">
+                    </li>
+                    <li>NO</li>
+                    <li>상태</li>
+                    <li>제목</li>
+                    <li>담당자</li>
+                    <li>요청자</li>
+                    <li>요청일</li>
+                    <li>마감일</li>
+                </ul>
+            </div>
+
+            <div class="r_daily_sub_txt">
+
+
+                <ul class="_sub_ul" th:each=" rl: ${requestList.getList()}">
+                    <li class="sub_first_txt _sub_first_txt _sel">
+                        <label class="_sub_label" for="checkbox"></label>
+                        <input class="_sub_check" id="checkbox" name="checkRequest" type="checkbox">
+                    </li>
+                    <li class="_pRequestNo"><a class="_requestNo"
+                                               th:href="@{/worksheet/request/contents(requestNo=${rl.requestNo},pageNum=${pageNum},searchType=${searchType},keyword=${keyword},state=${state})}">[[${rl.requestNo}]]</a>
+                    </li>
+                    <li class="state_click">
+                        <input class="_state" hidden th:value="${rl.state}">
+                        <input class="_responseEmployee" hidden th:value="${rl.responseEmployeeCode}">
+                        <span class="_stateName" th:text="${rl.stateName}"></span>
+                        <div class="state_viewbox">
+                            <ul>
+                                <input class="_requestNo" style="display: none" th:value="${rl.requestNo}" />
+
+                                <li class="_stateVal" value="0"><span class="expected">진행예정</span></li>
+                                <li class="_stateVal" value="1"><span class="ing">진행중</span></li>
+                                <li class="_stateVal" value="2"><span class="finish">임시보관</span></li>
+                                <li class="_stateVal" value="3"><span class="keep">완료</span></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <a
+                                th:href="@{/worksheet/request/contents(requestNo=${rl.requestNo},pageNum=${pageNum},searchType=${searchType},keyword=${keyword},state=${state})}">
+                            <div class="title_inner">
+                                <div class="praise">[[${rl.categoryName}]]</div>
+                                [[${rl.title}]]
+                            </div>
+                            <div class="new" th:if="${rl.isNew}"><img src="/images/img/new.png"></div>
+                            <div class="title_file" th:if="${rl.isFileExist}"><img src="/images/img/file.png"></div>
+                            <div class="comment" th:if="${rl.replyCount} > 0"><img src="/images/img/comment.png"></div>
+                        </a>
+                    </li>
+                    <li><a
+                            th:href="@{/worksheet/request/contents(requestNo=${rl.requestNo},pageNum=${pageNum},searchType=${searchType},keyword=${keyword},state=${state})}">[[${rl.responseEmployeeName}]]</a>
+                    </li>
+                    <li><a
+                            th:href="@{/worksheet/request/contents(requestNo=${rl.requestNo},pageNum=${pageNum},searchType=${searchType},keyword=${keyword},state=${state})}">[[${rl.requestEmployeeName}]]</a>
+                    </li>
+                    <li><a
+                            th:href="@{/worksheet/request/contents(requestNo=${rl.requestNo},pageNum=${pageNum},searchType=${searchType},keyword=${keyword},state=${state})}">[[${rl.requestDate}]]</a>
+                    </li>
+                    <li><a
+                            th:href="@{/worksheet/request/contents(requestNo=${rl.requestNo},pageNum=${pageNum},searchType=${searchType},keyword=${keyword},state=${state})}">[[${rl.responseDate}]]</a>
+                    </li>
+                </ul>
+
+            </div>
+
+
+            <!-- pageNation -->
+            <th:block th:replace="fragments/page_nation :: page_nation"></th:block>
+
+        </div>
+
+    </div>
+
+
+</th:block>
+
+
+<th:block layout:fragment="pageScript">
+    <!-- js파일 -->
+    <script th:src="@{/js/worksheet/request/select.js(date=${todayFormat})}"></script>
+
+    <script th:src="@{/js/worksheet/request/list.js(date=${todayFormat})}"></script>
+
+</th:block>
+
+
+</html>

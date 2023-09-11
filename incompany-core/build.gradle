@@ -1,0 +1,37 @@
+// this shouldn't be necessary as there are no real duplicates
+tasks {
+    processResources {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    }
+}
+
+// jar build 할때 test 제외
+test {
+    exclude '**/*'
+    useJUnitPlatform()
+    systemProperty 'jasypt.encryptor.password', findProperty("jasypt.encryptor.password")
+}
+
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
+
+// profile property 설정 !!! 아래 profile, sourceSets ==> 최 하단에 위치할 것
+ext.profile = project.hasProperty("profile") ? project.property("profile").toString() : "dev"
+ext.order = project.hasProperty("order") ? project.property("order").toString() : "one"
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ["src/main/java"]
+        }
+        resources {
+            srcDirs = ["src/main/resources", "src/main/resources-${profile}/${order}"]
+        }
+    }
+}

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<th:block layout:fragment="pageCss">
+
+</th:block>
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideContractFortune :: sideContractFortuneFragment"></div>
+</th:block>
+<th:block layout:fragment="contents">
+    <input id="departmentCode" type="hidden"/>
+    <form method="post"
+          th:action="@{/contractFortune/updateContractFortune(contractCode=${contractFortuneDto.contractCode}, preIsPublic=${isPublic})}">
+        <div class="guest_deta_wrap">
+            <div class="guest_deta_box">
+                <h2>목돈 계약 수정</h2>
+                <div class="guest_deta">
+                    <div class="contract_list">
+                        <div class="contract_list_name star">
+                            <p>계약번호</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="name_box">
+                                <input id="number" maxlength='15' name="contractNumber" pattern="^[a-zA-Z0-9]+$"
+                                       required th:value="${contractFortuneDto.contractNumber}"
+                                       title="15글자의 숫자, 영문 대소문자" type="text">
+                                <label for="number"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name star">
+                            <p>계약구분</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <select class="_contract_state" id="dvsion_select" name="contractState">
+                                <option th:each="stateEnum : ${contractStateEnumList}"
+                                        th:selected="${stateEnum.index} == ${contractFortuneDto.contractState}"
+                                        th:text="${stateEnum.meaning}"
+                                        th:value="${stateEnum.index}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>본부</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <span th:text="${contractFortuneDto.departmentSettingDto.centralDepartmentName}"></span>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>지점</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <span th:text="${contractFortuneDto.departmentSettingDto.salesDepartmentName}"></span>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>팀</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <span th:text="${contractFortuneDto.departmentSettingDto.teamDepartmentName}">대표</span>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>직급</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <span th:text="${employeeInfoForContractFortune.positionName}"></span>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>담당자</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <span th:text="${employeeInfoForContractFortune.employeeName}"></span>
+                            <input name="employeeCode" th:value="${employeeInfoForContractFortune.employeeCode}"
+                                   type="hidden">
+                        </div>
+                    </div>
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p class="none">none</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="guest_deta_box">
+                <div class="guest_deta">
+                    <div class="contract_list">
+                        <div class="contract_list_name star">
+                            <p>고객</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <span th:text="${contractFortuneDto.potentialUserName}"></span>
+                            <input name="potentialUserNo" th:value="${contractFortuneDto.potentialUserNo}"
+                                   type="hidden">
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name star">
+                            <p>금액</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="name_box">
+                                <input class="_amount" name="amount" placeholder="숫자만 입력해주세요."
+                                       required th:value="${contractFortuneDto.amountPlusComma}" type="text">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name star">
+                            <p>계약기간</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <input class="_contract_period_val" th:value="${contractFortuneDto.contractPeriod}"
+                                   type="hidden"/>
+                            <select class="_contract_period" id="time_select" name="contractPeriod" required>
+                                <option value="">기간선택</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>이자구분</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="interest">
+                                <input class="_month_interest" id="month"
+                                       name="interestState"
+                                       th:checked="${contractFortuneDto.interestState} == 'M'" type="radio" value="M">
+                                <label for="month">월 이자</label>
+                            </div>
+
+                            <div class="interest">
+                                <input checked class="_year_interest" id="year" name="interestState"
+                                       th:checked="${contractFortuneDto.interestState} == 'Y'" type="radio" value="Y">
+                                <label for="year">연 이자</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="contract_list">
+                        <div class="contract_list_name star">
+                            <p>이자율</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="name_box txt_align">
+                                <input class="_interestRate" id="_interestRate" name="interestRate" placeholder="%"
+                                       required th:value="${contractFortuneDto.interestRatePercent}"
+                                       type="text">
+                                <label for="_interestRate"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>이자</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="name_box">
+                                <input class="_interest" name="interest" readonly
+                                       th:value="${contractFortuneDto.interest}" type="text">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name star">
+                            <p>계좌번호</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <select id="eunh_select" name="accountBankCode" required>
+                                <option disabled selected value="">은행/증권사</option>
+                                <option th:each="bankEnum : ${bankEnumList}"
+                                        th:selected="${bankEnum.bankCode} == ${contractFortuneDto.accountBankCode}"
+                                        th:text="${bankEnum.bankName}"
+                                        th:value="${bankEnum.bankCode}">
+                                </option>
+                            </select>
+
+                            <div class="name_box"><input maxlength="20" name="accountNo" pattern="^[0-9]+$" required
+                                                         th:value="${contractFortuneDto.accountNo}"
+                                                         title="'-'제외한 숫자만 입력 가능" tpye="text"></div>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name star">
+                            <p>계약일</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="date_box"><input class="_contractDate"
+                                                         name="contractDate" required
+                                                         th:value="${contractFortuneDto.contractDate}"
+                                                         title="계약일을 선택해 주세요." type="date"></div>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name star">
+                            <p>입금날짜</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="date_box"><input name="paymentDate" required
+                                                         th:value="${contractFortuneDto.paymentDate}" type="date"></div>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>종료일</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="date_box"><input class="_endDate" name="endDate" readonly
+                                                         required th:value="${contractFortuneDto.endDate}" type="date">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>상환날짜</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="date_box"><input class="_redemptionDate"
+                                                         name="redemptionDate"
+                                                         readonly
+                                                         th:value="${contractFortuneDto.redemptionDate}" type="date">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>공개여부</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="interest">
+                                <input class="_public_contract" id="public" name="isPublic" type="radio"
+                                       value="true" th:checked="${isPublic}">
+                                <label for="public">공개</label>
+                            </div>
+
+                            <div class="interest">
+                                <input class="_private_contract" id="private" name="isPublic" type="radio"
+                                       value="false" th:checked="${!isPublic}">
+                                <label for="private">비공개</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name star">
+                            <p>기본 수수료율</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="name_box txt_align">
+                                <input maxlength="20" class="_charge" id="_charge" name="charge" th:value="${contractFortuneDto.charge}" type="text" min="0" max="99" oninput="validateNumberInput(this)">
+                                <label for="_charge"></label>
+                                <input class="_charge_model" type="hidden" th:value="${contractFortuneDto.charge}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="contract_list">
+                        <div class="contract_list_name star">
+                            <p>프로모션 수수료율</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="name_box txt_align">
+                                <input maxlength="20" class="_promotionCharge" id="_promotionCharge" name="promotionCharge" th:value="${contractFortuneDto.promotionCharge}" type="text" min="0" max="99" oninput="validateNumberInput(this)">
+                                <label for="_promotionCharge"></label>
+                                <input class="_promotionCharge_model" type="hidden" th:value="${contractFortuneDto.promotionCharge}">
+                            </div>
+                        </div>
+                    </div>
+                    <div sec:authorize="hasAnyAuthority('CONTRACT_MANAGER')" class="contract_list">
+                        <div class="contract_list_name star">
+                            <p>팀장 오버라이딩</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="name_box txt_align">
+                                <input maxlength="20" class="_teamOver" id="_teamOver" name="teamOver" th:value="${contractFortuneDto.teamOver}" type="text" min="0" max="99" oninput="validateNumberInput(this)">
+                                <label for="_teamOver"></label>
+                                <input class="_teamOver_model" type="hidden" th:value="${contractFortuneDto.teamOver}">
+                            </div>
+                        </div>
+                    </div>
+                    <div sec:authorize="hasAnyAuthority('CONTRACT_MANAGER')" class="contract_list">
+                        <div class="contract_list_name star">
+                            <p>지점장 오버라이딩</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="name_box txt_align">
+                                <input maxlength="20" class="_branchOver" id="_branchOver" name="branchOver" th:value="${contractFortuneDto.branchOver}" type="text" min="0" max="99" oninput="validateNumberInput(this)">
+                                <label for="_branchOver"></label>
+                                <input class="_branchOver_model" type="hidden" th:value="${contractFortuneDto.branchOver}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contract_list">
+                        <div class="contract_list_name">
+                            <p>지점운영비 여부</p>
+                        </div>
+                        <div class="contract_list_box">
+                            <div class="expenses">
+                                <input class="expensesYes" id="expensesYes" th:checked="${contractFortuneDto.isExpense == 'Y'}" name="isExpense" type="checkbox" value="Y">
+                                <label for="expensesYes">예</label>
+                            </div>
+                            <div class="expenses">
+                                <input class="expensesNo" id="expensesNo" th:checked="${contractFortuneDto.isExpense == 'N'}" name="isExpense" type="checkbox" value="N">
+                                <label for="expensesNo">아니요</label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="guest_deta_box">
+                <h2>특이사항</h2>
+                <div class="guest_deta">
+                    <div class="last_txt">
+                        <textarea name="note" th:text="${contractFortuneDto.note}"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="save_btn_wrap">
+            <div>
+                <a href="javascript:history.back();">
+                    <button class="close_btn">취소</button>
+                </a>
+                <button class="close_btn btn_color deta" type="submit">저장</button>
+            </div>
+        </div>
+    </form>
+</th:block>
+<th:block layout:fragment="pageScript">
+    <script th:src="@{/js/contractFortune/updateContractFortune.js(date=${todayFormat})}" type="text/javascript"></script>
+    <script>
+        function validateNumberInput(input) {
+            // Remove non-numeric characters from the input value
+            let value = input.value.replace(/[^0-9.]/g, '');
+
+            input.value = value;
+        }
+    </script>
+</th:block>
+</html>

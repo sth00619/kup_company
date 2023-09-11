@@ -1,0 +1,41 @@
+
+.pop_wrap {
+    overflow : hidden;
+}
+.header_ul {
+    list-style-type : none;
+    float : left;
+    outline : 1px;
+    margin-left : 20px;
+    margin-top : 5px;
+}
+.sub_ul {
+    list-style-type : none;
+    float : right;
+    outline : 1px;
+    margin-left : 20px;
+    margin-top : 5px;
+}
+.header_li {
+    list-style-type : none;
+    float : left;
+    outline : 1px;
+    margin-left : 20px;
+    margin-top : 5px;
+}
+
+.header_a {
+    text-decoration-line: none;
+    font-size : 30px;
+    color : #fff;
+}
+.header_a:hover {
+    color : #fff;
+    font-weight : bold;
+}
+.logout {
+    float : right;
+    margin: 20px;
+    margin-top : 16px;
+    border-radius : 5px 5px 5px 5px;
+}

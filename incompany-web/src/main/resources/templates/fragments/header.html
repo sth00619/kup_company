@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<header th:fragment="headerFragment">
+    <!-- header -->
+    <header class="header">
+        <div class="main_inner">
+            <h1><a th:href="@{/index}">KH GROUP</a></h1>
+
+            <nav>
+                <ul>
+                    <li><a th:href="@{/companyChart(departmentCode=${myProfileDto.departmentCode})}">조직도</a></li>
+                    <li>
+                        <a th:href="@{/potential/counseling}">고객관리</a>
+                    </li>
+                    <li><a th:href="@{/contractFortune/contractFortune}">계약관리</a></li>
+                    <li><a th:href="@{/worksheet/document/documentList}">업무관리</a></li>
+                    <li><a th:href="@{/notice/list?type=0}">KH소식</a></li>
+                    <li><a th:href="@{/faq/list}">커뮤니티</a></li>
+                    <li sec:authorize="hasAnyAuthority('VIETNAM', 'VIETNAM_ADMIN')"><a th:href="@{/vietnam/maaden/purchaseOrder}">vietnam</a></li>
+                    <li sec:authorize="hasAnyAuthority('ROOT_ADMIN')"><a th:href="@{/operation/operationHome}">운영툴</a></li>
+
+                </ul>
+            </nav>
+            <div class="mypage">
+                <!-- <div class="header_search">
+                    <input placeholder="Search" type="text">
+                    <img alt="검색" th:src="@{/images/img/search_icon.png}" />
+                </div> -->
+                <div class="my_box">
+
+                    <a class="my_account" href="/myPage/myPage">
+                        <img th:src="@{/images/img/my.png}">
+                        <div class=my_box_tell th:unless="${notificationDisplay} == 0">
+                            <img th:src="@{/images/img/red_circle.png}">
+                        </div>
+                    </a>
+                    <a href="/note/receive/list">
+                        <button class="my_note"></button>
+                    </a>
+                    <a href="/myPage/mail/link_check" target="_blank" th:if="${myProfileDto.employeeCode.contains('K')}">
+                    <img th:src="@{/images/img/mail.png}">
+                    </a>
+                    <a href="/logout"><img th:src="@{/images/img/back.png}"></a>
+                </div>
+            </div>
+        </div>
+        <!-- mypage 클릭 -->
+        <div class="account_box my_pop1">
+            <th:block th:replace="popup/myPop :: myPopFragment"></th:block>
+        </div>
+    </header>
+
+<!--    <script th:if="${showAlert}" type="text/javascript">-->
+<!--        if (confirm([[${alertMessage}]])) {-->
+<!--            setTimeout(function () {-->
+<!--                location.href = "/myPage/mail/link_check";-->
+<!--            }, 0);-->
+<!--        }-->
+<!--    </script>-->
+
+
+</header>

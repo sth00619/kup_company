@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>메인</title>
+
+    <link th:href="@{/css/common.css(date=${todayFormat})}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/inCompany.css(date=${todayFormat})}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/vietnam/css.css(date=${todayFormat})}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+        rel="stylesheet">
+    <script src="/lib/jquery-3.6.0.min.js"></script>
+    <script th:src="@{/js/vietnam/form.js(date=${todayFormat})}"></script>
+    <script th:src="@{/lib/moment.js}"></script>
+    <script th:src="@{/js/side_drop_down.js(date=${todayFormat})}" type="text/javascript"></script>
+
+</head>
+
+<body>
+    <input id="cloudUrlAndPath" th:value="${cloudUrlAndPath}" hidden="true">
+
+    <div id="wrap">
+
+        <!-- header -->
+        <header class="header" sec:authorize="hasAnyAuthority('VIETNAM')">
+
+            <div class="main_inner">
+
+                <h1><a th:href="@{/}">HOME</a></h1>
+
+                <div class="mypage">
+
+                    <div class="my_box">
+
+                        <a href="/logout"><img src="/images/img/back.png"></a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+        <header sec:authorize="hasAnyAuthority('VIETNAM_ADMIN')" th:replace="fragments/header :: headerFragment">
+        </header>
+        <!-- main start ! -->
+        <main>
+            <section class="main_section">
+                <div class="main_inner">
+
+                    <div class="main_section-flex">
+                        <!-- side -->
+                        <div class="main_side_wrap">
+
+                            <div class="quick_box">
+
+                                <th:block layout:fragment="side_contents">
+                                    <div th:replace="fragments/sideVietnam :: sideVietnamFragment"></div>
+                                </th:block>
+                            </div>
+
+                        </div>
+                        <!-- center -->
+
+                        <div class="main_center">
+
+
+
+                            <div class="top_center_menu_visual">
+
+                                <div class="top_center-menu">
+
+                                </div>
+
+                                <form id="form">
+                                    <input th:value="${a.poIdxNo}" name="poIdxNo" hidden>
+                                    <div class="main_center_wrap">
+                                        <!-- table -->
+
+                                        <div class="table-topmenu">
+                                            <h2 class="tw_title">ACCOUNTING LIST</h2>
+                                        </div>
+
+                                        <table id="table-wrap">
+
+                                            <tbody>
+
+                                                <tr>
+                                                    <th class="title-bgc03">PO NO.<br />(Purchase order)</th>
+                                                    <td colspan="2" th:text="${a.poNo}"></td>
+                                                    <th class="title-bgc03">BL NO.</th>
+                                                    <td colspan="2" th:text="${a.blNo}"></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <th colspan="3" class="title-bgc02">NOVELIS (CREDIT)</th>
+                                                    <th colspan="3" class="title-bgc02">VIETNAM (PAYMENT)</th>
+                                                </tr>
+
+                                                <tr>
+                                                    <th rowspan="2" class="title-bgc04">AMOUNT</th>
+                                                    <td>
+                                                        <input class="typing-txt _saTotalAmountUsd" name="saAmountUsd" type="text" th:value="${#numbers.formatDecimal(a.saAmountUsd, 1, 'COMMA', 2 , 'POINT')}" onkeyup="inputNumberFormat(this)" maxlength="15" disabled/>
+                                                    </td>
+                                                    <td>USD</td>
+                                                    <th rowspan="2" class="title-bgc04">AMOUNT</th>
+                                                    <td>
+                                                        <input class="typing-txt _vTotalAmountUsd" name="vAmountUsd" type="text" th:value="${#numbers.formatDecimal(a.vAmountUsd, 1, 'COMMA', 2 , 'POINT')}" onkeyup="inputNumberFormat(this)"maxlength="15" disabled/>
+                                                    </td>
+                                                    <td>USD</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>
+                                                        <input class="typing-txt _saTotalAmountKrw" name="saAmountKrw" type="text" th:value="${#numbers.formatInteger(a.saAmountKrw, 0, 'COMMA')}" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/>
+                                                    </td>
+                                                    <td>KRW</td>
+                                                    <td>
+                                                        <input class="typing-txt _vTotalAmountKrw" name="vAmountKrw" type="text" th:value="${#numbers.formatInteger(a.vAmountKrw, 0, 'COMMA')}" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/>
+                                                    </td>
+                                                    <td>KRW</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <th rowspan="2" class="title-bgc04">H/F</th>
+                                                    <td>
+                                                        <input class="typing-txt _saTotalAmountUsd"  name="saHfUsd" type="text" th:value="${#numbers.formatDecimal(a.saHfUsd, 1, 'COMMA', 2 , 'POINT')}" onkeyup="inputNumberFormat(this)" maxlength="15" disabled/>
+                                                    </td>
+                                                    <td>USD</td>
+                                                    <th rowspan="2" class="title-bgc04">H/F</th>
+                                                    <td>
+                                                        <input class="typing-txt _vTotalAmountUsd"  name="vHfUsd" type="text" th:value="${#numbers.formatDecimal(a.vHfUsd, 1, 'COMMA', 2 , 'POINT')}" onkeyup="inputNumberFormat(this)" maxlength="15" disabled/>
+                                                    </td>
+                                                    <td>USD</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>
+                                                        <input class="typing-txt _saTotalAmountKrw" name="saHfKrw" type="text" th:value="${#numbers.formatInteger(a.saHfKrw, 0, 'COMMA')}" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/>
+                                                    </td>
+                                                    <td>KRW</td>
+                                                    <td>
+                                                        <input class="typing-txt _vTotalAmountKrw" name="vHfKrw" type="text" th:value="${#numbers.formatInteger(a.vHfKrw, 0, 'COMMA')}" onkeyup="inputOnlyNumberFormat(this)" maxlength="15" disabled/>
+                                                    </td>
+                                                    <td>KRW</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <th rowspan="2" class="title-bgc04">TOTAL<br />AMOUNT</th>
+                                                    <td>
+                                                        <p id="_saTotalAmountUsd"></p>
+                                                    </td>
+                                                    <td>USD</td>
+                                                    <th rowspan="2" class="title-bgc04">TOTAL<br />AMOUNT</th>
+                                                    <td>
+                                                        <p id="_vTotalAmountUsd"></p>
+                                                    </td>
+                                                    <td>USD</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>
+                                                        <p id="_saTotalAmountKrw" ></p>
+                                                    </td>
+                                                    <td>KRW</td>
+                                                    <td>
+                                                        <p id="_vTotalAmountKrw" ></p>
+                                                    </td>
+                                                    <td>KRW</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <th class="title-bgc02" colspan="6">JW GLOBAL MARGIN</th>
+                                                </tr>
+                                                <tr>
+                                                    <th rowspan="2" class="title-bgc04">AMOUNT<br />MARGIN</th>
+                                                    <td>
+                                                        <p id="amountMarginUsd" ></p>
+                                                    </td>
+                                                    <td>USD</td>
+                                                    <th rowspan="2" class="title-bgc04">PROFIT<br />MARGIN</th>
+                                                    <td rowspan="2">
+                                                        <p id="profitMargin" >0.00</p>
+                                                    </td>
+                                                    <td rowspan="2">%</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>
+                                                        <p  id="amountMarginKrw" ></p>
+
+                                                    </td>
+                                                    <td>KRW</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <th class="title-bgc01" colspan="6">NOTES</th>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="td-text" colspan="6">
+                                                        <textarea name="notes" th:text="${a.notes}" disabled></textarea>
+                                                    </td>
+                                                </tr>
+
+                                            </tbody>
+
+                                        </table>
+
+
+                                        <div class="save_btn_wrap">
+                                            <div>
+                                                <a>
+                                                    <button class="close_btn _closeBtn" id="closeBtn"
+                                                    type="button">CANCEL</button>
+                                                <button class="close_btn btn_color deta _editBtn"
+                                                    type="button" th:if="${a.state == 1}">UPDATE</button>
+                                            </div>
+                                        </div>
+
+
+                                        <!-- table end -->
+                                    </div>
+                                </form>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <footer id="footer">
+
+
+
+
+
+            </footer>
+
+        </main>
+
+    </div>
+    <script th:src="@{/js/vietnam/accountCalcu.js(date=${todayFormat})}" type="text/javascript"></script>
+
+     
+</body>
+
+</html>

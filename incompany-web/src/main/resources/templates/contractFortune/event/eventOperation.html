@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <link rel="stylesheet" th:href="@{/css/event/event_operation.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/list_check_box.css}" type="text/css">
+</th:block>
+
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideOperation :: sideOperationFragment"></div>
+</th:block>
+
+<th:block layout:fragment="contents">
+    <div th:replace="fragments/eventListFragment :: eventListFragment"></div>
+</th:block>
+
+<th:block layout:fragment="pageScript">
+
+</th:block>
+</html>

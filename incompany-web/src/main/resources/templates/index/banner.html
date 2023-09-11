@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<!-- 유튜브 영상, 배너 -->
+<div class="yt_banner_post_wrap product-slick" th:fragment="bannerFragment">
+    <th:block th:each="bim: ${bannerImgMap}">
+        <input type="hidden" th:id="${bim.key}" th:value="${bim.value}">
+    </th:block>
+
+    <div class="yt_movie">
+        <div id="player" style="width: 874px; height: 492px;"></div>
+    </div>
+    <!-- end swiper-slide -->
+    <div class="swiper_cate">
+        <ul class="cate">
+            <th:block th:each="bicl: ${bannerImgCategoryList}">
+                <li class="bt_sign bt_not_content" th:id="|btSign${bicl.categoryNo}|">
+                    <a class="bt_text _bt_text" href="#" th:id="|btText${bicl.categoryNo}|" th:text="${bicl.categoryName}"></a>
+                    <span class="prev_Btn">
+                        <svg width="5" height="9" viewBox="0 0 10 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 1L1 9L9 17" stroke="black" stroke-width="2" stroke-linecap="round"
+                                  stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                </li>
+            </th:block>
+        </ul>
+    </div>
+
+    <section class="kh-slider kh-style kh_banner">
+        <div class="swiper-container _swiper-container">
+            <div class="swiper-wrapper" id="swiperWrapper">
+            </div>
+            <!-- swipper controls -->
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+    </section>
+    <script th:inline="javascript">
+    /*<![CDATA[*/
+        var youtubeList = /*[[${youtubeList}]]*/;
+        var bannerImgMap = /*[[${bannerImgMap}]]*/;
+    /*]]>*/
+    </script>
+</div>
+
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>메인</title>
+
+    <link th:href="@{/css/common.css(date=${todayFormat})}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/inCompany.css(date=${todayFormat})}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/vietnam/css.css(date=${todayFormat})}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+        rel="stylesheet">
+    <script src="/lib/jquery-3.6.0.min.js"></script>
+    <script th:src="@{/lib/moment.js}"></script>
+    <script th:src="@{/js/side_drop_down.js(date=${todayFormat})}" type="text/javascript"></script>
+    <script th:src="@{/js/vietnam/list.js(date=${todayFormat})}" type="text/javascript"></script>
+
+</head>
+
+<body>
+    <input id="cloudUrlAndPath" th:value="${cloudUrlAndPath}" hidden="true">
+
+    <div id="wrap">
+
+        <!-- header -->
+        <header class="header" sec:authorize="hasAnyAuthority('VIETNAM')">
+
+            <div class="main_inner">
+
+                <h1><a th:href="@{/}">HOME</a></h1>
+
+                <div class="mypage">
+
+                    <div class="my_box">
+
+                        <a href="/logout"><img src="/images/img/back.png"></a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+        <header sec:authorize="hasAnyAuthority('VIETNAM_ADMIN')" th:replace="fragments/header :: headerFragment">
+        </header>
+        <!-- main start ! -->
+        <main>
+            <section class="main_section">
+                <div class="main_inner">
+
+                    <div class="main_section-flex">
+                        <!-- side -->
+                        <div class="main_side_wrap">
+
+                            <div class="quick_box">
+
+                                <th:block layout:fragment="side_contents">
+                                    <div th:replace="fragments/sideVietnam :: sideVietnamFragment"></div>
+                                </th:block>
+                            </div>
+
+                        </div>
+                        <!-- center -->
+                        <div class="main_center">
+
+
+
+                            <div class="top_center_menu_visual">
+
+                                <div class="top_center-menu">
+
+                                </div>
+
+                                <div class="main_center_wrap">
+                                    <!-- table -->
+
+                                    <div class="table-topmenu">
+                                        <h2 class="tw_title">PD COST</h2>
+                                    </div>
+
+                                    <table id="table-wrap" class="_reload">
+                                        <thead>
+                                            <tr>
+                                                <th class="title-bgc03">NO.</th>
+                                                <th class="title-bgc03">PO NO.<br />(Purchase order)</th>
+                                                <th class="title-bgc03">BL NO.</th>
+                                                <th class="title-bgc03">ETD</th>
+                                                <th class="title-bgc03">ETA</th>
+                                                <th class="title-bgc03">CONTAINERS</th>
+                                                <th class="title-bgc03">INCOTERMS</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <tr class="_pList" th:each=" pcl: ${pdCostList}" th:classappend="|${pcl.state == 2 ? '_finish' : ''} ${pcl.state == 3 ? '_hold' : ''} |">
+                                                <td  class="_poIdxNo" th:text="${pcl.poIdxNo}">1</td>
+                                                <td class="_poNo" th:value="${pcl.poNo}"><a th:href="@{/vietnam/maaden/pdCost/info(poIdxNo=${pcl.poIdxNo})}" th:text="${pcl.poNo}">PO_1806_6341908390_1</a></td>
+                                                <td th:text="${pcl.blNo}">MEDUV1986375</td>
+                                                <td>
+                                                    <div class="date_box">
+                                                        <input class="date-txt" type="date" th:value="${pcl.etd}" disabled>
+                                                        <button th:if="${pcl.state == 1}" class="Edit-btn" type="button" value="etd">EDIT</button>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="date_box">
+                                                        <input class="date-txt" type="date" th:value="${pcl.eta}" disabled>
+                                                        <button th:if="${pcl.state == 1}" class="Edit-btn" type="button" value="eta">EDIT</button>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input class="typing-txt" type="text" th:value="${pcl.containers}"  maxlength="50" disabled>
+                                                    <button th:if="${pcl.state == 1}" class="Edit-btn" type="button" value="containers">EDIT</button>
+                                                </td>
+                                                <td>
+                                                    <input class="typing-txt" type="text" th:value="${pcl.incoterms}" maxlength="50" disabled>
+                                                    <button th:if="${pcl.state == 1}" class="Edit-btn" type="button" value="incoterms">EDIT</button>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+
+
+
+
+
+                                    <!-- table end -->
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </section>
+
+            <footer id="footer">
+
+
+
+
+
+            </footer>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>

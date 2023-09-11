@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<!-- Left CompanyChart Start -->
+<div th:fragment="sideWorksheetFragment">
+    <div class="slide_down_wrap">
+        <div class="top_slide">
+            <h2>업무관리</h2>
+        </div>
+        <div class="sub_slide">
+
+            <ul class="top_slide_sub5">
+                <li onclick="location.href='/worksheet/document/documentList'">
+                    <a th:classappend="${requestUrl == '/worksheet/document/documentList'} ? 'on_color'" href="#">
+                        업무일지</a></li>
+            </ul>
+
+            <ul class="top_slide_sub5">
+                <li onclick="location.href='/worksheet/request/list'">
+                    <a th:classappend="${urlName == '업무요청'} ? 'on_color'" href="#">
+                        업무요청</a></li>
+            </ul>
+
+            <ul class="top_slide_sub5">
+                <li onclick="location.href='/worksheet/project/list'">
+                    <a th:classappend="${urlName == '프로젝트'} ? 'on_color'" href="#">
+                        프로젝트</a></li>
+            </ul>
+
+            <ul class="top_slide_sub5">
+                <li onclick="location.href='/worksheet/selfImprovementCost/selfImprovementCostList'">
+                    <a th:classappend="${requestUrl == '/worksheet/selfImprovementCost/selfImprovementCostList'} ? 'on_color'" href="#">
+                        자기계발비</a></li>
+            </ul>
+
+            <ul class="top_slide_sub5">
+                <li onclick="location.href='/worksheet/selfImprovementCost/payment/selfImprovementCostList'">
+                    <a th:classappend="${requestUrl == '/worksheet/selfImprovementCost/payment/selfImprovementCostList'} ? 'on_color'" href="#">
+                        자기계발비 결재</a></li>
+            </ul>
+
+            <ul class="top_slide_sub5" sec:authorize="hasAuthority('COMMAND_COMMUNITY')">
+                <li onclick="location.href='/command/list'">
+                    <a th:classappend="${requestUrl == '/command/list'} ? 'on_color'" href="#">
+                        지점장 공지게시판
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+
+    <div class="slide_down_wrap" sec:authorize="hasAnyAuthority('SIGNATURE_SALES')">
+
+        <div class="top_slide">
+            <h2><a th:href="@{/worksheet/signature/signatureSalesList}">
+                ㈜카페시그니처</a></h2>
+        </div>
+
+        <div class="sub_slide">
+            <ul class="top_slide_sub5">
+                <li onclick="location.href='/worksheet/signature/signatureSalesList?category=1'">
+                    <a th:classappend="${category} == '1' ? 'on_color'" href="#">
+                        강남 시그니처</a></li>
+            </ul>
+
+            <ul class="top_slide_sub5" sec:authorize="hasAnyAuthority('CAFE_SCHEDULE')">
+                <li onclick="location.href='/worksheet/cafe/cafeSchedule'">
+                    <a th:classappend="${requestUrl == '/worksheet/cafe/cafeSchedule'} ? 'on_color'" href="#">
+                        카페스케쥴</a></li>
+            </ul>
+
+            <ul class="top_slide_sub5">
+                <li onclick="location.href='/worksheet/signature/signatureSalesList?category=2'">
+                    <a th:classappend="${category} == '2' ? 'on_color'" href="#">
+                        해운대 시그니처</a></li>
+            </ul>
+
+            <ul class="top_slide_sub5" sec:authorize="hasAnyAuthority('CAFE_SCHEDULE')">
+                <li onclick="location.href='/worksheet/cafe/coffeeCoupon'">
+                    <a th:classappend="${requestUrl == '/worksheet/cafe/coffeeCoupon'} ? 'on_color'" href="#">
+                        커피 쿠폰 내역</a></li>
+            </ul>
+
+        </div>
+        
+    </div>
+
+    <div class="slide_down_wrap" hidden>
+        <div class="top_slide">
+            <h2><a th:href="@{/vacation/addVacation}">휴가 관리</a></h2>
+        </div>
+        <div class="sub_slide">
+            <ul class="top_slide_sub5">
+                <li onclick="location.href='/vacation/addVacation'">
+                    <a th:classappend="${requestUrl == '/vacation/addVacation'} ? 'on_color'" href="javascript:void(0);">휴가 신청</a>
+                </li>
+            </ul>
+            <ul class="top_slide_sub5">
+                <li onclick="location.href='/vacation/myVacationList'">
+                    <a th:classappend="${requestUrl == '/vacation/myVacationList'} ? 'on_color'" href="javascript:void(0);">나의 휴가 리스트</a>
+                </li>
+            </ul>
+            <ul class="top_slide_sub5">
+                <li onclick="location.href='/vacation/paymentVacationList'">
+                    <a th:classappend="${requestUrl == '/vacation/paymentVacationList'} ? 'on_color'" href="javascript:void(0);">휴가 결재 리스트</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideWorksheet :: sideWorksheetFragment"></div>
+</th:block>
+
+<th:block layout:fragment="contents">
+    <input id="message" th:value="${message}" type="hidden">
+    <!-- 검색 관련 세팅 -->
+    <input id="searchValue" th:value="${searchValue}" type="hidden" />
+    <input id="searchKey" th:value="${searchKey}" type="hidden" />
+    <input id="createDate" th:value="${createDate}" type="hidden" />
+    <!--select box-->
+    <input id="getDepartmentCode" th:value="${departmentCode}" type="hidden" />
+    <input id="getEmployeeCode" th:value="${employeeCode}" type="hidden" />
+    <input id="getTeamCode" type="hidden" />
+    <input id="isLeader"
+           th:classappend="${#authorization.expression('hasAnyAuthority(''SELECT_SALES_LEADER'')')}? '_true_leader'"
+           type="hidden">
+
+    <strong style="color:#E9967A; line-height: 150%;">
+        ※ -업무일지 페이지의 회의록은 최근 것만 노출 됩니다.  </br>
+            전체 회의록을 보고 싶으시면 회의록 탭을 체크해주세요.  </br>
+    </strong>
+
+    <div class="top_center_menu_visual">
+        <div class="top_center-menu">
+
+            <div class="top_left_menu"
+                 sec:authorize="hasAnyAuthority('SELECT_DEPARTMENT_FROM_TEAM_LEADER_TO_PRESIDENT')">
+                <th:block th:replace="fragments/select_department_employee :: select_department_employee"></th:block>
+            </div>
+
+            <button class="writing_btn"><a th:href="@{/worksheet/document/addDocument}">글쓰기</a></button>
+
+            <div class="notice_search">
+                <div class="check_box _radio_box">
+                    <a th:href="@{/worksheet/document/documentList(employeeCode=${employeeCode},departmentCode=${departmentCode})}">
+                        <input id="assign_1" name="check" type="radio" value="0">
+                        <label for="assign_1" class="onon2"></label>
+                        <span class="_isResign" value="0">
+                            업무일지
+                        </span>
+                    </a>
+                </div>
+                <div class="check_box _radio_box">
+                    <a th:href="@{/worksheet/document/recordList(employeeCode=${employeeCode},departmentCode=${departmentCode})}">
+                        <input id="assign_2" name="check" type="radio" value="1">
+                        <label for="assign_2"></label>
+                        <span class="_isResign" value="1">
+                            회의록
+                        </span>
+                    </a>
+                </div>
+
+                <select class="select_box _searchKey">
+                    <option th:data-isDate="${scl.isDate}"
+                            th:each="scl : ${searchCateList}"
+                            th:selected="${scl.meaning} == ${searchKey}"
+                            th:text="${scl.meaning}"></option>
+                </select>
+
+                <div class="salesman_search">
+                    <input class="_searchValue" placeholder="검색" th:value="${searchValue}" type="text">
+                    <img alt="검색" class="_searchBtn" th:src="@{/images/img/search_icon.png}" />
+                </div>
+            </div>
+        </div>
+
+        <div class="main_center_wrap">
+            <div class="daily_title">
+                <ul>
+                    <li>NO</li>
+                    <li style="width : 500px;">제목</li>
+                    <li>작성자</li>
+                    <li style="width : 200px;">작성일</li>
+                    <li>결제일</li>
+                </ul>
+            </div>
+
+            <!--회의록 리스트-->
+            <div class="daily_sub_txt" th:if="${pageNum} == 1">
+                <ul class="_documentList" th:each="rl : ${recordList.getList()}" th:value="${rl.workLogNo}">
+                    <li th:text="${rl.workLogNo}"></li>
+                    <li style="width : 500px;">
+                        <a>
+                            <div class="title_inner">
+                                <div class="praise" th:text="${rl.getCategoryMeaning}"></div>
+                                <div class="praise" th:if="${rl.paymentCheck == 'T'}">임시저장</div>
+                                [[${rl.title}]]
+                            </div>
+                            <div class="new" th:if="${rl.getNewMark}"><img src="/images/img/new.png"></div>
+                            <div class="title_file" th:if="${rl.isFileExist}"><img src="/images/img/file.png"></div>
+                            <div class="comment" th:if="${rl.replyCount} > 0"><img src="/images/img/comment.png"></div>
+                        </a>
+                    </li>
+                    <li th:text="${rl.employeeName}" th:value="${rl.employeeCode}"></li>
+                    <li style="width : 200px;" id="create" th:text="${rl.getCreateTime}"></li>
+                    <li id="paymentWorkLog" th:text="${rl.paymentWorkLogTime}"></li>
+                </ul>
+            </div>
+
+            <!--업무일지 리스트-->
+            <div class="daily_sub_txt">
+                <ul class="_documentList" th:each="wl : ${workLogList.getList()}" th:value="${wl.workLogNo}">
+                    <li th:text="${wl.workLogNo}"></li>
+                    <li style="width : 500px;">
+                        <a>
+                            <div class="title_inner">
+                                <div class="praise" th:text="${wl.getCategoryMeaning}"></div>
+                                <div class="praise" th:if="${wl.paymentCheck == 'T'}">임시저장</div>
+                                [[${wl.title}]]
+                            </div>
+                            <div class="new" th:if="${wl.getNewMark}"><img src="/images/img/new.png"></div>
+                            <div class="title_file" th:if="${wl.isFileExist}"><img src="/images/img/file.png"></div>
+                            <div class="comment" th:if="${wl.replyCount} > 0"><img src="/images/img/comment.png"></div>
+                        </a>
+                    </li>
+                    <li th:text="${wl.employeeName}" th:value="${wl.employeeCode}"></li>
+                    <li style="width : 200px;" id="createTime" th:text="${wl.getCreateTime}"></li>
+                    <li id="paymentWorkLogTime" th:text="${wl.paymentWorkLogTime}"></li>
+                </ul>
+            </div>
+        </div>
+        <!-- pageNation -->
+        <th:block th:replace="fragments/page_nation :: page_nation"></th:block>
+    </div>
+</th:block>
+
+<th:block layout:fragment="pageScript">
+    <script th:src="@{/js/worksheet/document/documentList.js(date=${todayFormat})}" type="text/javascript"></script>
+
+    <script th:src="@{/js/select_department_employee.js(date=${todayFormat})}" type="text/javascript"></script>
+
+</th:block>
+</html>

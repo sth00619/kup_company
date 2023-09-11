@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideOperation :: sideOperationFragment"></div>
+</th:block>
+
+<th:block layout:fragment="contents">
+    <input id="isSuccess" th:value="${isSuccess}" type="hidden"/>
+
+    <div>
+        <h2 id="successUpload">파일이 업로드 되었습니다.</h2>
+        <h3 th:text="${notAddPotentialUserNameList}"></h3>
+    </div>
+
+</th:block>
+
+<th:block layout:fragment="pageScript">
+</th:block>
+</html>

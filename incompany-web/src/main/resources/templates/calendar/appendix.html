@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <style>
+        input {
+            text-align: center;
+            height: 30px;
+            margin-bottom: 7px;
+            margin-top: 7px;
+            background-color: transparent;
+            color: black;
+            border: 1px solid;
+        }
+
+        ._btn {
+            margin-left: 20px;
+        }
+    </style>
+</th:block>
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideOperation :: sideOperationFragment"></div>
+</th:block>
+<th:block layout:fragment="contents" sec:authorize="hasAnyAuthority('OPERATION_CALENDAR_UPDATE')">
+    <br><br>
+    <br><br>
+    <h2>해당사원에게 부서 캘린더 주입</h2>
+    <br><br>
+    <span>캘린더를 주입할 사원 번호 : </span>
+    <input id="employeeCode" th:value="${employeeCode}" hidden>
+    <input list="employeeList" id="searchEmployeeCode" name="employeeCode" type="text" th:value="${employeeCode}">
+    <datalist id="employeeList">
+        <option th:label="${ae.employeeName}" th:each="ae : ${allEmployee}" th:value="${ae.employeeCode}">
+    </datalist>
+    <button class="_btn" id="searchBtn">검색</button>
+    <br><br><br><br>
+    <div th:if="${not #strings.isEmpty(employeeCode)}" id="inject">
+        <span>캘린더를 주입할 캘린더 번호 : </span>
+        <input class="_selectInput _calendarId" list="addCalendarList" name="calendarId" type="text"
+            id="searchCalendarId">
+        <datalist id="addCalendarList">
+            <option th:label="${ac.companyCode + '&nbsp;&nbsp;' + ac.departmentCode + '&nbsp;&nbsp;' + ac.name}"
+                th:each="ac : ${allCalendar}" th:value="${ac.calendarId}">
+        </datalist>
+        <button class="_btn" id="saveBtn">추가</button>
+        <br><br>
+
+
+        <table>
+            <tbody>
+                <tr>
+                    <td>캘린더 번호</td>
+                    <td>캘린더 이름</td>
+                    <td>회사 번호</td>
+                    <td>부서 번호</td>
+
+                    <td></td>
+                </tr>
+                <tr th:each=" acl: ${appendixCalendarList}">
+                    <td th:text="${acl.calendarId}" class="_calendarId"></td>
+                    <td th:text="${acl.name}"></td>
+                    <td th:text="${acl.companyCode}"></td>
+                    <td th:text="${acl.departmentCode}" ></td>
+                    <td id="deleteBtn">삭제</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+
+    <th:block layout:fragment="pageScript">
+        <script th:src="@{/js/calendar/appendix.js(date=${todayFormat})}" type="text/javascript"></script>
+    </th:block>
+</th:block>
+
+</html>

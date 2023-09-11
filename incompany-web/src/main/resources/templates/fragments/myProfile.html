@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="myProfileFragment">
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/css/myProfile.css(date=${todayFormat})}" type="text/css">
+
+    <!-- HTML -->
+    <input th:value="${myProfileDto.employeeCode}" id="commonLoginEmployeeCode" type="hidden" >
+    <input type="hidden" id="notificationDisplay" th:value="${notificationDisplay}">
+    <div class="today_box">
+        <div class="my_today_img">
+
+
+            <img th:if="${#strings.isEmpty(myProfileDto.imageUrl)}" src="/images/img/quick_my.png">
+            <img th:unless="${#strings.isEmpty(myProfileDto.imageUrl)}" th:src="${myProfileDto.imageUrl}">
+
+            
+            <div class="my_today_tell" th:unless="${notificationDisplay} == 0">
+                <img th:src="@{/images/img/red_circle.png}">
+            </div>
+        </div>
+        <div class="my_today_txt">
+            <h3>TODAY</h3>
+            <input th:value="${isChange}" id="isPasswordChange" hidden/>
+
+            <p id="my_today_date"></p>
+            <div class="quick_belong" th:text="${myProfileDto.getCompanyName()}"></div>
+            <div class="quick_teamname">
+                [[${myProfileDto.getD1()}]]
+                <em>[[${myProfileDto.getD2()}]]</em>
+            </div>
+            <div class="quick_team">
+                [[${myProfileDto.getD3()}]]
+                <em th:classappend="${myProfileDto.getD3() == null} ? '_true_D3'">[[${myProfileDto.getEmployeeName()}]]</em>
+            </div>
+        </div>
+    </div>
+
+    <form id="imgUploadForm">
+        <input id="upload_img" type="file" name="uploadFile"  accept="image/png, image/gif, image/jpeg" hidden/>
+        <input th:value="${myProfileDto.imageUrl}" name="imageUrl" hidden>
+    </form>
+
+    <!-- SCRIPT -->
+    <script th:src="@{/js/myProfile.js(date=${todayFormat})}"></script>
+</th:block>
+</html>

@@ -1,0 +1,60 @@
+._my_vacation_no, ._tap_0 {
+    width : 50px !important;
+}
+
+._vacation_type, ._tap_1 {
+    width : 150px !important;
+}
+
+._employee_code , ._tap_2 {
+    width : 80px !important;
+}
+
+._title , ._tap_3 {
+    width : 500px !important;
+}
+
+._start_date , ._tap_4 {
+    width : 80px !important;
+}
+
+._end_date , ._tap_5 {
+    width : 80px !important;
+}
+
+._vacation_day_diff , ._tap_6 {
+    width : 100px !important;
+}
+
+._status , ._tap_7 {
+    width : 100px !important;
+}
+
+._create_time , ._tap_8 {
+    width : 100px !important;
+}
+
+._top_right_menu {
+    margin-left : 50px;
+}
+
+._vacationPay, ._my_tap_1 {
+    width : 150px !important;
+    margin-left : -50px !important;
+}
+
+._vacationUsed, ._my_tap_2 {
+    width : 150px !important;
+}
+
+._vacationRemaining, ._my_tap_3 {
+    width : 150px !important;
+}
+
+._useSalaryY, ._my_tap_4 {
+    width : 150px !important;
+}
+
+._useSalaryN, ._my_tap_5 {
+    width : 150px !important;
+}

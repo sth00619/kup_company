@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <!-- css작성, 파일 -->
+    <link href="/toastUi/css/toastUi.css" rel="stylesheet">
+    <link href="/toastUi/css/toastUi-editor-plugin-table-merged-cell.css" rel="stylesheet">
+    <link href="/toastUi/css/tui-color-picker.css" rel="stylesheet">
+    <link href="/toastUi/css/toastUi-editor-plugin-color-syntax.css" rel="stylesheet">
+</th:block>
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideNotice :: sideNoticeFragment"></div>
+</th:block>
+
+
+<th:block layout:fragment="contents">
+    
+    <input th:value="${cloudUrl}" id="cloudUrl" hidden />
+    <input id="pageNum" th:value="${pageNum}" type="hidden" />
+
+    <!-- 검색 -->
+    <input id="searchTitle" th:value="${searchTitle}" type="hidden">
+    <input id="type" th:value="${type}" type="hidden">
+    <input hidden id="noticeNo" th:value="${noticeContents.noticeNo}">
+
+
+    <div class="top_center_menu_visual">
+
+        <div class="main_center_wrap">
+
+            <div class="top_title">
+                <h2 th:text="${title}"></h2>
+            </div>
+            <div class="Khlist">
+
+                <dl class="list_view01">
+                    <dt>작성자</dt>
+                    <dd><span th:text="${noticeContents.createEmployeeName}"></span></dd>
+                </dl>
+
+                <dl class="list_view02">
+                    <dt>등록일</dt>
+                    <dd><span th:text="${noticeContents.createDate}"></span></dd>
+                </dl>
+
+                <dl class="list_view03" th:if="${type} == 1 or ${type} == 2">
+                    <dt>머리말</dt>
+                    <dd><span th:text="${noticeContents.categoryName}"></span></dd>
+
+                </dl>
+
+                <dl class="list_view03">
+                    <dt>제목</dt>
+                    <dd>
+                        <span th:text="${noticeContents.title}"></span>
+                    </dd>
+                </dl>
+
+                <dl class="list_view04 heightUp">
+                    <dt>내용</dt>
+                    <p hidden id="contents" th:text="${noticeContents.contents}"></p>
+                    <dd>
+                        <div id="viewer"></div>
+                    </dd>
+                </dl>
+
+                <dl class="list_view03 file_view">
+                    <dt>첨부파일</dt>
+                    <dd>
+                        <div th:if="${noticeContents.isFileExist}">
+                            <a class="file_click"><img src="/images/img/file.png"></a>
+                            <div class="file_viewbox">
+                                <ul th:each="  fl: ${fileList}">
+                                    <li id="downFile" th:text="${fl}"></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </dd>
+                </dl>
+
+            </div>
+            <!-- 댓글 구현 -->
+            <div th:if="${noticeContents.replyAllow} == 'Y'">
+                <th:block th:replace="fragments/reply :: reply"></th:block>
+            </div>
+            <div class="save_btn_wrap">
+                <div>
+                    <a th:href="@{/notice/list(type=${type},searchType=${searchType},keyword=${keyword})}">
+                        <button class="close_btn full_list2">전체목록</button>
+                    </a>
+                    <th:block th:if="${type} != 5">
+                        <button class="close_btn _updateBtn" th:if="${hasRole}">수정</button>
+                        <button class="close_btn btn_color _deleteBtn" th:if="${hasRole}">삭제</button>
+                    </th:block>
+                    <th:block th:unless="${type} != 5">
+                        <button class="close_btn _updateBtn" th:if="${noticeContents.createEmployeeCode} == ${loginEmployeeCode}" type="button">수정</button>
+                        <button class="close_btn btn_color _deleteBtn" th:if="${noticeContents.createEmployeeCode} == ${loginEmployeeCode}">삭제</button>
+                    </th:block>
+                </div>
+            </div>
+
+            <div class="Khlist">
+
+                <dl class="list_view07">
+                    <dt>이전글</dt>
+                    <a th:href="@{/notice/contents(noticeNo=${noticeContents.prevNo},pageNum=1,type=${type},searchType=${searchType},keyword=${keyword})}"
+                       th:if="${not #strings.isEmpty(noticeContents.prevNo) }">
+                        <dd>
+                            <div class="praise" th:if="${not #strings.isEmpty(noticeContents.prevCategoryName) }" th:text="${noticeContents.prevCategoryName}"></div>
+                            <span th:text="${noticeContents.prevTitle}"></span></dd>
+                        <div class="today_itembox"><p class="today_item" th:text="${noticeContents.prevCreateTimeFormat}"></p></div>
+
+                    </a>
+                </dl>
+
+                <dl class="list_view07">
+                    <dt>다음글</dt>
+                    <a th:href="@{/notice/contents(noticeNo=${noticeContents.nextNo},pageNum=1,type=${type},searchType=${searchType},keyword=${keyword})}"
+                       th:if="${not #strings.isEmpty(noticeContents.nextNo) }">
+                        <dd>
+                            <div class="praise" th:if="${not #strings.isEmpty(noticeContents.nextCategoryName) }" th:text="${noticeContents.nextCategoryName}"></div>
+                            <span th:text="${noticeContents.nextTitle}"></span></dd>
+                        <div class="today_itembox"><p class="today_item" th:text="${noticeContents.nextCreateTimeFormat}"></p></div>
+
+                    </a>
+
+                </dl>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <form enctype="multipart/form-data" id="form" method="post" th:action="@{/}">
+        <input name="type" th:value="${type}" type="hidden">
+
+    </form>
+
+</th:block>
+
+
+<th:block layout:fragment="pageScript">
+    <!-- js파일 -->
+    <!-- Color Picker -->
+    <script src="/toastUi/js/tui-color-picker.js"></script>
+    <!-- Editor -->
+    <script src="/toastUi/js/toastUi.js"></script>
+    <!-- Editor's Plugin -->
+    <script src="/toastUi/js/toastUi-editor-plugin-table-merged-cell.js"></script>
+    <script src="/toastUi/js/toastUi-editor-plugin-color-syntax.js"></script>
+    <script th:src="@{/js/notice/contents.js(date=${todayFormat})}"></script>
+</th:block>
+
+
+</html>

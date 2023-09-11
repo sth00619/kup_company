@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideContractFortune :: sideContractFortuneFragment"></div>
+</th:block>
+
+<th:block layout:fragment="contents">
+    <input id="departmentCode" th:value="${departmentCode}" type="hidden">
+    <input id="getDepartmentCode" th:value="${departmentCode}" type="hidden"/>
+    <input id="getEmployeeCode" th:value="${employeeCode}" type="hidden"/>
+    <input id="getTeamCode" type="hidden"/>
+    <input id="orderBy" th:value="${orderBy}" type="hidden"/>
+
+    <strong style="color:#E9967A; line-height: 150%;">
+        ※ - 계약현황 랭킹은 10분마다 갱신됩니다.   </br>
+        ※ - 목돈, 보험 금액과 점수는 팀별 합산입니다.  </br>
+    </strong>
+        <div class="top_right_menu">
+            <!-- 기간 조회 -->
+            <th:block th:replace="fragments/date_search_by_period :: date_search_by_period"></th:block>
+        </div>
+        <div class="main_center_wrap">
+            <div class="main_top">
+                <strong style="color:#000080; line-height: 150%;">
+                    ※ 계약현황 합산에 팀장 제외
+                </strong>
+                <div>
+                    <ul class="st_contract_main_title">
+                        <li><label for="checkbox"></label>
+                            <input type="checkbox" id="checkbox">
+                        </li>
+                        <li>팀 순위</li>
+                        <li>팀명</li>
+                        <li>팀장</li>
+                        <li>목돈</li>
+                        <li>보험</li>
+                        <li>점수</li>
+                    </ul>
+                </div>
+
+                <div class="st_contract_sub_txt">
+                    <ul th:each="el : ${exTeamStatusList}" class="_list_ul">
+                        <li class="sub_first_txt">
+                            <label for="checkbox"></label>
+                            <input type="checkbox" id="checkbox">
+                        </li>
+                        <li>[[${el.teamRanking}]]</li>
+                        <li>[[${el.teamName}]]</li>
+                        <li>[[${el.teamLeader}]]</li>
+                        <li>[[${el.teamContractAmount}]]</li>
+                        <li>[[${el.teamInsuranceAmount}]]</li>
+                        <li>[[${el.teamScoreSum}]]</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="main_center_wrap">
+            <div class="main_top">
+                <strong style="color:#000080; line-height: 150%;">
+                    ※ 계약현황 합산에 팀장 포함
+                </strong>
+                <div>
+                    <ul class="st_contract_main_title">
+                        <li><label for="checkbox"></label>
+                            <input type="checkbox" id="checkbox">
+                        </li>
+                        <li>팀 순위</li>
+                        <li>팀명</li>
+                        <li>팀장</li>
+                        <li>목돈</li>
+                        <li>보험</li>
+                        <li>점수</li>
+                    </ul>
+                </div>
+
+                <div class="st_contract_sub_txt">
+                    <ul th:each="tl : ${teamStatusList}" class="_list_ul">
+                        <li class="sub_first_txt">
+                            <label for="checkbox"></label>
+                            <input type="checkbox" id="checkbox">
+                        </li>
+                        <li>[[${tl.teamRanking}]]</li>
+                        <li>[[${tl.teamName}]]</li>
+                        <li>[[${tl.teamLeader}]]</li>
+                        <li>[[${tl.teamContractAmount}]]</li>
+                        <li>[[${tl.teamInsuranceAmount}]]</li>
+                        <li>[[${tl.teamScoreSum}]]</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+<th:block layout:fragment="pageScript">
+
+    <script th:src="@{/js/contractStatus/statusList.js(date=${todayFormat})}" type="text/javascript"></script>
+    <!-- 부서 select box -->
+    <script th:src="@{/js/contractStatus/selectBox.js(date=${todayFormat})}" type="text/javascript"></script>
+    <!-- 날짜 계산 -->
+    <script th:src="@{/js/utils/date_util.js(date=${todayFormat})}" type="text/javascript"></script>
+    <script th:src="@{/js/select_department_employee.js(date=${todayFormat})}" type="text/javascript"></script>
+
+</th:block>
+</html>

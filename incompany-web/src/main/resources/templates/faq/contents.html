@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="@{layout/defaultFragment}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<th:block layout:fragment="pageCss">
+    <link rel="stylesheet" th:href="@{/bootstrap-5.0.2-dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/faq/contents.css(date=${todayFormat})}" type="text/css">
+    <link href="/toastUi/css/toastUi.css" rel="stylesheet">
+    <link href="/toastUi/css/toastUi-editor-plugin-table-merged-cell.css" rel="stylesheet">
+    <link href="/toastUi/css/tui-color-picker.css" rel="stylesheet">
+    <link href="/toastUi/css/toastUi-editor-plugin-color-syntax.css" rel="stylesheet">
+
+</th:block>
+
+<th:block layout:fragment="contents" >
+    <input th:value="${cloudUrl}" id="cloudUrl" hidden />
+
+<br>
+    <button class="btn btn-info listBtn" id="listBtn" type="button">목록</button>
+    <button class="btn btn-info updateBtn" id="updateBtn" type="button" sec:authorize="hasAnyAuthority('ADMIN')">수정</button>
+    <button class="btn btn-info deleteBtn" id="deleteBtn" type="button" sec:authorize="hasAnyAuthority('ADMIN')">삭제</button>
+
+<br>
+<br>
+
+        <input id="faqNo" th:value="${faqContents.faqNo}" hidden>
+        제목 : <span type="text" id="title" th:text="${faqContents.title}"></span>
+        날짜 : <span th:text="${faqContents.createTime}"></span>
+        <p id="contents" th:text="${faqContents.contents}" hidden></p>
+        <br>
+        <br>
+        <div id="viewer"></div>
+        <br>
+        <div th:each="  fl: ${fileList}" >
+            파일 : <span th:text="${fl}" id='fileName'></span><button id="downFile">다운로드</button> 
+         </div>
+        <form id="form" th:action="@{/}" method="post" enctype="multipart/form-data">
+        </form>
+
+</th:block>
+<th:block layout:fragment="pageScript">
+    <script th:src="@{/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js}"></script>
+    <!-- Color Picker -->
+    <script src="/toastUi/js/tui-color-picker.js"></script>
+    <!-- Editor -->
+    <script src="/toastUi/js/toastUi.js"></script>
+    <!-- Editor's Plugin -->
+    <script src="/toastUi/js/toastUi-editor-plugin-table-merged-cell.js"></script>
+    <script src="/toastUi/js/toastUi-editor-plugin-color-syntax.js"></script>
+    <script th:src="@{/js/faq/contents.js(date=${todayFormat})}"></script>
+</th:block>
+</html>

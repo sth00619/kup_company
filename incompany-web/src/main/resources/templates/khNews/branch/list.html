@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+</th:block>
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideNotice :: sideNoticeFragment"></div>
+</th:block>
+<th:block layout:fragment="contents">
+
+    <input id="message" th:value="${message}" type="hidden">
+    <!-- 페이징 관련 데이터 세팅 -->
+    <input id="nextPage" th:value="${noticeList.getNavigateLastPage()}" type="hidden" />
+    <input id="prePage" th:value="${noticeList.getNavigateFirstPage()}" type="hidden" />
+    <input id="pages" th:value="${noticeList.getPages()}" type="hidden" />
+    <input id="pageNum" th:value="${pageNum}" type="hidden" />
+    <!-- 검색 -->
+    <input id="type" th:value="${type}" type="hidden">
+
+
+    <!-- 월간행사 center -->
+    <div class="top_center_menu_visual">
+        <div class="top_center-menu">
+            <button class="writing_btn" sec:authorize="hasAnyAuthority('KHNEWS_BRANCH')"><a  th:href="@{/notice/addNotice(type=${type})}">글쓰기</a></button>
+            <div class="notice_search">
+                <select class="select_box">
+                    <!-- <option value="all">전체</option> -->
+                    <option value="title">제목</option>
+                    <!-- <option value="contents">내용</option> -->
+                    <!-- <option value="titleContents">제목+내용</option> -->
+                    <!-- <option value="attachFile">첨부파일</option> -->
+                    <option th:selected="${searchType}=='writer'" value="writer">작성자</option>
+                    <option th:selected="${searchType}=='createDate'" value="createDate">등록일</option>
+                </select>
+
+                <div class="salesman_search">
+                    <input id="keyword" placeholder="검색" th:value="${keyword}" type="text">
+
+                    <img alt="검색" class="_searchBtn" src="/images/img/search_icon.png" />
+                </div>
+            </div>
+
+        </div>
+        <div class="top_line"></div>
+
+        <div class="main_center_wrap">
+
+            <a class="event_box" th:each="nl : ${noticeList.getList()}" th:href="@{/notice/contents(noticeNo=${nl.noticeNo},pageNum=${pageNum},searchType=${searchType},keyword=${keyword},type=${type})}">
+                <div class="praise" th:text="${nl.categoryName}"></div>
+                <h2 th:text="${nl.title}"></h2>
+                <p th:text="${nl.replaceTagFromContents}"></p>
+                <span></span>
+                <div class="today_box2">
+                    <dl class="today_subtxt sub_item">
+                        <dt>작성자 :</dt>
+                        <dd th:text="${nl.createEmployeeName}">김홍일 대리</dd>
+                    </dl>
+                    <dl class="today_subtxt">
+                        <dt>등록일 :</dt>
+                        <dd th:text="${nl.createDate}">2022-12-21</dd>
+                    </dl>
+                    <div class="file_item" th:if="${nl.isFileExist}"><img src="/images/img/file.png"></div>
+
+                </div>
+            </a>
+        </div>
+
+    </div>
+
+    <!-- next btn -->
+    <th:block th:replace="fragments/page_nation :: page_nation"></th:block>
+
+</th:block>
+
+
+<th:block layout:fragment="pageScript">
+    <script th:src="@{/js/notice/list.js(date=${todayFormat})}"></script>
+</th:block>
+
+
+</html>

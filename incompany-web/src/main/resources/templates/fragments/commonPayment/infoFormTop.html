@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="infoFormTop">
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/css/commonPayment.css(date=${todayFormat})}" type="text/css">
+
+    <!-- data set -->
+    <input type="hidden" id="no" th:value="${no}"/>
+    <input type="hidden" id="loginEmployeeCode" name="employeeCode" th:value="${loginEmployeeCode}"/>
+    <input type="hidden" id="boardType" th:value="${boardType}"/>
+    <input type="hidden" id="mainDefaultUrl" th:value="${mainDefaultUrl}">
+
+    <div class="member_deta_wrap">
+        <div class="member_deta_box _add_form_payment">
+            <h2>결재권자</h2>
+            <div class="Khlist _khlist">
+                <dl class="list_view03">
+                    <dt>결재자</dt>
+                    <dd>
+                        <div>
+                            <div th:each=" mpl : ${payment.myPaymentList}" th:if="${mpl.type} == 0" class="_paymentDiv">
+                                        <span th:text="${mpl.ordering}" style="margin-right: 5px;">
+                                        </span>
+                                <span style="color: #000; font-weight: bold; margin-right: 10px;"
+                                      th:text="${mpl.employeeName}"></span>
+                                <span th:text="${mpl.employeeCode}" style="margin-left:8px;" class="_paymentApprCode"></span>
+                                <span th:text="|결재 날짜 : ${mpl.paymentDateFormat} |" th:if="${mpl.paymentStep} == 2"></span>
+                                <span th:text="|반려 날짜 : ${mpl.paymentDateFormat} |" th:if="${mpl.paymentStep} == 3"></span>
+                            </div>
+                        </div>
+                    </dd>
+                </dl>
+
+                <dl class="list_view03">
+                    <dt>참조자</dt>
+                    <dd>
+                        <div>
+                            <div th:each=" mpl : ${payment.myPaymentList}" th:if="${mpl.type} == 1">
+                                        <span style="color: #000; font-weight: bold; margin-right: 10px;"
+                                              th:text="${mpl.employeeName}"></span>
+                                <span th:text="${mpl.employeeCode}" style="margin-left:8px;"></span>
+                            </div>
+                        </div>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+
+    <!-- 댓글 JS -->
+    <script th:src="@{/js/commonPayment.js(date=${todayFormat})}" type="text/javascript"></script>
+</th:block>
+</html>

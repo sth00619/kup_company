@@ -1,0 +1,20 @@
+* {
+	padding: 0;
+	margin: 0;
+}
+
+body,input,textarea,select,button{font-family:'나눔고딕',NanumGothic,Dotum,'맑은 고딕', MalgunGothic, '돋움', Dotum, AppleSDGothicNeo, Helvetica,sans-serif;font-size:12px;color:#121212}
+.gid_pop.v3 .pop_wrap #pop_header h1{margin-left:20px}
+.gid_pop.v3 .pop_wrap #pop_header h1 .gid_nm a{color:#fff}
+.pop_wrap{overflow-y:auto;position:relative;width:100%;margin:0 auto;}
+.pop_wrap.pop_ly{overflow:hidden;height:auto;border:1px solid #404552}
+.pop_wrap #pop_header{position:relative;height:51px;z-index:10;background:#404552}
+.pop_wrap #pop_header h1,.pop_wrap #pop_header .bar,.pop_wrap #pop_header h2{display:inline-block;*display:inline;*zoom:1}
+.pop_wrap #pop_header h1{font-size:14px;color:#fff;line-height:51px;margin-left:30px}
+
+.gid_container{position:absolute;top:91px;width:100%;min-height:100%;border-top:1px solid #b7b7b7}
+
+.gid_sub .left_section{float:left; width:auto; min-width:250px;height:100%;}
+.gid_sub .right_section{display:inline-block; margin-left:10px;width:10px;height:100%;color:#fff}
+
+

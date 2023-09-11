@@ -1,0 +1,11 @@
+#contentsDiv {
+    margin : 100px;
+}
+#faqID {
+    margin-left : 100px;
+}
+button#writeBtn {
+    float : right;
+    margin-top : 20px;
+    margin-left : 500px;
+}

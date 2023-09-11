@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <style>
+        input {
+            width: 90%;
+            text-align: center;
+            height: 30px;
+            margin-bottom: 7px;
+            margin-top: 7px;
+            background-color: transparent;
+            color: black;
+        }
+
+        td {
+            overflow: unset;
+        }
+
+        ._selectInput {
+            border: 1px solid;
+
+        }
+
+        .btnTd {
+            width: 100px;
+        }
+
+        .exTable {
+            width: 700px;
+            transform: translateX(40%);
+        }
+
+        .exTd {
+            width: 100px;
+        }
+
+        ._hide{
+            display: none;
+        }
+
+        .bolder {
+            font-weight: bolder;
+        }
+
+
+
+    </style>
+</th:block>
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideOperation :: sideOperationFragment"></div>
+</th:block>
+
+<th:block layout:fragment="contents">
+    <!--  text-overflow: ellipsis;-->
+
+    <br><br>
+    <hr>
+    <br><br>
+    <table class="exTable">
+        <tbody>
+        <tr>
+            <td class="exTd bolder"></td>
+            <td class="bolder">설명</td>
+        </tr>
+        <tr>
+            <td class="bolder">카테고리</td>
+            <td>이미지가 해당 카테고리에서 표시됩니다.</td>
+        </tr>
+        <tr>
+            <td class="bolder">이미지 이름</td>
+            <td>이미지의 이름입니다.</td>
+        </tr>
+        <tr>
+            <td class="bolder">이미지 파일</td>
+            <td>배너로 사용할 이미지 파일입니다.</td>
+        </tr>
+        <tr>
+            <td class="bolder">URL</td>
+            <td>해당 이미지 클릭 시 이동할 주소입니다.</td>
+        </tr>
+        <tr>
+            <td class="bolder">순서</td>
+            <td>이미지가 1 부터 10 의 순서로 표시됩니다.</td>
+        </tr>
+        <tr>
+            <td class="bolder">지점</td>
+            <td>선택 시 해당 지점에 속한 사원에게만 표시됩니다.</td>
+        </tr>
+        </tbody>
+    </table>
+    <br><br>
+    <hr>
+    <br><br>
+    <table>
+        <tbody>
+        <tr class="bolder">
+            <td>카테고리</td>
+            <td>이미지 이름</td>
+            <td>이미지 파일</td>
+            <td>URL</td>
+            <td class="btnTd">순서</td>
+            <td class="btnTd">지점</td>
+            <td class="btnTd"></td>
+        </tr>
+        <tr class="_addImgForm">
+            <td>
+                <select class="_selectInput" id="categoryNo" name="categoryNo">
+                    <option value="0">카테고리</option>
+                    <option th:each="bicl : ${bannerImgCategoryList}"
+                            th:value="${bicl.categoryNo}"
+                            th:text="${bicl.categoryName}"></option>
+                </select>
+            </td>
+            <td><input class="_selectInput" type="text" id="imgName" maxlength="50"></td>
+            <td><input class="_selectInput" type="file" id="imgFile"></td>
+            <td><input class="_selectInput" type="text" id="urlKey" maxlength="100"></td>
+            <td><input class="_selectInput" type="number" id="ordering" min="1" max="20"/></td>
+            <td>
+                <input class="_selectInput" id="departmentCode" list="addDepartmentList" name="departmentCode"
+                       type="text">
+                <datalist id="addDepartmentList">
+                    <option th:label="${td.departmentName}" th:each="td : ${twoDepth}"
+                            th:value="${td.departmentCode}">
+                </datalist>
+            </td>
+            <td>
+                <button class="_addBtn">저장</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <br>
+    <br> <br>
+    <br>
+    <br>
+    <hr>
+
+    <table class="_imgTable">
+        <tbody>
+        <tr class="bolder">
+            <td class="btnTd">카테고리</td>
+            <td>이미지 이름</td>
+            <td>이미지 파일</td>
+            <td>URL</td>
+            <td class="btnTd">순서</td>
+            <td class="btnTd">지점</td>
+            <td class="btnTd"></td>
+            <td class="btnTd"></td>
+        </tr>
+        <tr class="_bilList" th:each=" bil: ${bannerImgList}">
+            <input class="_imgNo btnTd" name="imgNo" type="hidden" th:value="${bil.imgNo}">
+            <td class="_editReadCategoryNo">
+                <input class="_editReadCategoryNo btnTd" name="categoryNo" type="text"
+                       th:value="${bil.categoryName}" disabled="true">
+                <select class="_editCategoryNo _hide" name="categoryNo">
+                    <option th:each="bicl : ${bannerImgCategoryList}" th:value="${bicl.categoryNo}"
+                            th:text="${bicl.categoryName}"
+                            th:selected="${bil.categoryNo} == ${bicl.categoryNo}"
+                    ></option>
+                </select>
+            </td>
+            <td>
+                <input class="_imgName" name="imgName" type="text" th:value="${bil.imgName}" maxlength="50"
+                       disabled="true">
+            </td>
+            <td class="_editBannerImg">
+                <input class="_editRead" name="imgFile" type="text" th:value="${bil.cloudFile}" disabled="true">
+                <input class="_edit _hide" name="imgFile" type="file" disabled="true">
+            </td>
+            <td>
+                <input class="_urlKey" name="urlKey" type="text" th:value="${bil.urlKey}" placeholder="EMPTY"
+                       maxlength="100" disabled="true">
+            </td>
+            <td>
+                <input class="_ordering btnTd" name="ordering" type="number" th:value="${bil.ordering}" min="1" max="20"
+                       disabled="true">
+            </td>
+            <td>
+                <input class="_departmentCode" list="departmentList" name="departmentCode" type="text"
+                       th:value="${bil.departmentCode}" placeholder="EMPTY" disabled="true">
+                <datalist id="departmentList">
+                    <option th:label="${td.departmentName}" th:each="td : ${twoDepth}"
+                            th:value="${td.departmentCode}">
+                </datalist>
+            </td>
+            <td>
+                <button class="_writeBtn" type="button">수정</button>
+                <button class="_exitBtn" type="button" hidden>취소</button>
+            </td>
+
+            <td>
+                <button class="_deleteBtn" type="button">삭제</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var bannerImgList = /*[[${bannerImgList}]]*/;
+        /*]]>*/
+
+
+
+    </script>
+</th:block>
+
+
+<th:block layout:fragment="pageScript">
+    <script th:src="@{/js/banner/bannerImg.js}" type="text/javascript"></script>
+</th:block>
+
+</html>

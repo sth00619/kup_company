@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <!-- css작성, 파일 -->
+    <link rel="stylesheet" th:href="@{/css/vacation/myVacationList.css(date=${todayFormat})}" type="text/css">
+</th:block>
+
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideWorksheet :: sideWorksheetFragment"></div>
+</th:block>
+
+<th:block layout:fragment="contents">
+
+    <!-- 조회 구분 [-1 = 전체], [1 = 상신], [2 = 결재완료], [3 = 반려], [4 = 임시보관] -->
+    <input id="status" type="hidden" th:value="${status}"/>
+
+    <div class="top_center_menu_visual">
+        <div class="top_center-menu">
+            <div class="top_left_menu">
+                <div class="btn_box btn_on">
+                    <a th:href="@{/vacation/addVacation}">
+                        <p>휴가 신청</p>
+                    </a>
+                </div>
+            </div>
+
+            <div class="notice_search">
+                <div class="interest">
+                    <input id="all" name="status" th:checked="${status} == '-1'" type="radio" value="-1">
+                    <label for="all" class="_status">전체</label>
+                </div>
+
+                <div class="interest">
+                    <input id="payment" name="status" th:checked="${status} == '1'" type="radio" value="1">
+                    <label for="payment" class="_status">상신</label>
+                </div>
+
+                <div class="interest">
+                    <input id="complete" name="status" th:checked="${status} == '2'" type="radio" value="2">
+                    <label for="complete" class="_status">승인</label>
+                </div>
+
+                <div class="interest">
+                    <input id="return" name="status" th:checked="${status} == '3'" type="radio" value="3">
+                    <label for="return" class="_status">반려</label>
+                </div>
+
+                <div class="interest">
+                    <input id="Keep" name="status" th:checked="${status} == '4'" type="radio" value="4">
+                    <label for="Keep" class="_status">임시보관</label>
+                </div>
+
+                <div class="top_right_menu _top_right_menu">
+                    <!-- 기간 조회 -->
+                    <th:block th:replace="fragments/date_search_by_period :: date_search_by_period"></th:block>
+                </div>
+            </div>
+        </div>
+
+        <div class="main_center_wrap">
+            <div class="mp_title">
+                <ul>
+                    <li class="_my_tap_1"><span th:text="${#strings.substring(requestDate, 0, 4)}"></span>&nbsp;지급 연차</li>
+                    <li class="_my_tap_2">사용한 연차</li>
+                    <li class="_my_tap_3">신청 가능한 잔여 연차</li>
+                    <li class="_my_tap_4">사용한 유급 휴가</li>
+                    <li class="_my_tap_5">사용한 무급 휴가</li>
+                </ul>
+            </div>
+            <div class="mp_sub_txt">
+                <ul>
+                    <li class="_vacationPay"        th:text="${vacationByEmployee.vacationPay}"></li>
+                    <li class="_vacationUsed"       th:text="${vacationByEmployee.vacationUsed}"></li>
+                    <li class="_vacationRemaining"  th:text="${vacationByEmployee.vacationRemaining}"></li>
+                    <li class="_useSalaryY"         th:text="${vacationByEmployee.useSalaryY}"></li>
+                    <li class="_useSalaryN"         th:text="${vacationByEmployee.useSalaryN}"></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="main_center_wrap">
+            <div class="mp_title">
+                <ul>
+                    <li class="_tap_0">번호</li>
+                    <li class="_tap_1">휴가 구분</li>
+                    <li class="_tap_2">신청자</li>
+                    <li class="_tap_3">제목</li>
+                    <li class="_tap_4">시작일</li>
+                    <li class="_tap_5">종료일</li>
+                    <li class="_tap_6">기간</li>
+                    <li class="_tap_7">진행구분</li>
+                    <li class="_tap_8">신청일</li>
+                </ul>
+            </div>
+
+            <div class="mp_sub_txt">
+                <ul class="_myVacationList" th:each="vrl : ${vacationRecordDtoList.getList()}" th:value="${vrl.vacationRecordNo}">
+                    <!-- 번호 -->
+                    <li class="_my_vacation_no"
+                        th:text="${vrl.vacationRecordNo}">
+                    </li>
+
+                    <!-- 휴가 구분 -->
+                    <li class="_vacation_type"
+                        th:value="${vrl.vacationCategoryEnum.index}"
+                        th:text="${vrl.vacationCategoryEnum.meaning}">
+                    </li>
+
+                    <!-- 신청자 -->
+                    <li class="_employee_code"
+                        th:value="${vrl.employeeCode}"
+                        th:text="${vrl.employeeName}">
+                    </li>
+
+                    <!-- 제목 -->
+                    <li class="_title"
+                        th:text="${vrl.title}">
+                    </li>
+
+                    <!-- 시작일 -->
+                    <li class="_start_date"
+                        th:text="${#strings.substring(vrl.startDate, 0, 10)}">
+                    </li>
+
+                    <!-- 종료일 -->
+                    <li class="_end_date"
+                        th:text="${#strings.substring(vrl.endDate, 0, 10)}">
+                    </li>
+
+                    <!-- 기간 -->
+                    <li class="_vacation_day_diff"
+                        th:text="${vrl.vacationDayDiff} + ' 일간'">
+                    </li>
+
+                    <!-- 진행구분 -->
+                    <li class="_status"
+                        th:value="${vrl.paymentStatusEnum.index}"
+                        th:text="${vrl.paymentStatusEnum.meaning}">
+                    </li>
+
+                    <!-- 신청일 -->
+                    <li class="_create_time"
+                        th:text="${#strings.substring(vrl.createTime, 0, 10)}">
+                    </li>
+                </ul>
+            </div>
+
+            <!-- pageNation -->
+            <th:block th:replace="fragments/page_nation :: page_nation"></th:block>
+        </div>
+    </div>
+</th:block>
+
+<th:block layout:fragment="pageScript">
+    <!-- js파일 -->
+    <script th:src="@{/js/vacation/myVacationList.js(date=${todayFormat})}"></script>
+
+    <!-- 날짜 계산 -->
+    <script th:src="@{/js/utils/date_util.js(date=${todayFormat})}" type="text/javascript"></script>
+</th:block>
+
+</html>

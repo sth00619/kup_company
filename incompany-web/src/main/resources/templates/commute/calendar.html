@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+
+
+
+<th:block layout:fragment="pageCss">
+    <link th:href="@{/fullcalendar/main.css}" rel="stylesheet" />
+    <style>
+    .calendar {
+        margin-top: 0.5em;
+    }
+    .modal {
+        position: fixed;
+        z-index: 100000;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.4);
+        display: none;
+        opacity: 0;
+        visibility: hidden;
+    }
+    .modal-content {
+        background-color: #fff;
+        width: 500px;
+        border-radius: 10px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 30px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+        text-align: left;
+    }
+    .modal-close-btn {
+        background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAAXNSR0IArs4c6QAAAJRJREFUKBXFkNERhCAMREUbuEKohzq0Eq2DDq6Da4B60KezDORkxj+ZwchmX0IYhtdWCGFl9y5g82NtzDnPdzAaudo76ZBS+nrvPxiInMkJcs5tMcZFfqcfxdqIRiELof+BiIJPg+mExmpmvKRn3zKj7OrG9Y79szPL14A1xEP0Hgy4gBZS5R7czHj3ehSgOzkVeyfuGrBw/WLm0hsAAAAASUVORK5CYII=) no-repeat;
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        width: 15px;
+        height: 15px;
+    }
+    .modal-title {
+        margin-bottom: 15px;
+        font-size: 24px;
+        font-weight: bold;
+    }
+    .modal-btn {
+        background-color: #616BEE;
+        color: #fff;
+        border-radius: 5px;
+        font-size: 14px;
+        padding: 7px;
+        display: block;
+        margin-top: 15px;
+        text-align: center;
+    }
+    .modal-wrap {
+        display: flex;
+        justify-content: center;
+        align-items: baseline;
+    }
+    .modal-item {
+        width: 200px;
+        height: 32px;
+        padding: 0 10px;
+        border: 1px solid #d5d5d5;
+        border-radius: 2px;
+        margin: 5px;
+    }
+    .modal-item-category {
+        width: 222px;
+        height: 34px;
+        padding: 0 10px;
+        border: 1px solid #d5d5d5;
+        border-radius: 2px;
+        margin: 5px 5px 5px 10px;
+    }
+    .active {
+        opacity: 1;
+        visibility: visible;
+        display: block;
+    }
+    </style>
+</th:block>
+
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideIndex :: sideIndexFragment"></div>
+</th:block>
+
+<th:block layout:fragment="contents">
+    <input type="hidden" id="employeeName" th:value="${myProfileDto.employeeName}">
+
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <a class="modal-close-btn" id="modal-close-btn" href="#none"></a>
+            <div id="modal-content">
+            </div>
+            <div>
+                <a class="modal-btn" id="btn-modify" href="#none">수정하기</a>
+                <a class="modal-btn" id="btn-delete" href="#none">삭제하기</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="modal-add">
+        <div class="modal-content">
+            <a class="modal-close-btn" id="modal-add-close-btn"  href="#none"></a>
+            <div id="modal-content-add">
+                <div class="modal-wrap">
+                    <input class="modal-item" id="commute-add-title" type="text" placeholder="사유" maxlength="20">
+                    <select class="modal-item-category" id="commute-add-category" name="categoryNo">
+                        <option th:each="ccl : ${commuteCategoryList}"
+                                th:value="${ccl.index}"
+                                th:text="${ccl.meaning}">
+                        </option>
+                    </select><br>
+                </div>
+                <div class="modal-wrap">
+                    <input class="modal-item" id="commute-add-start" type="datetime-local">-
+                    <input class="modal-item" id="commute-add-end" type="datetime-local">
+                </div>
+            </div>
+            <a class="modal-btn"id="btn-add-save" href="#none">작성 완료</a>
+        </div>
+    </div>
+
+    <div class="modal" id="modal-modify">
+        <div class="modal-content">
+            <a class="modal-close-btn" id="modal-modify-close-btn"  href="#none"></a>
+            <div id="modal-content-modify">
+                <input id="commute-modify-id" type="hidden">
+                <div class="modal-wrap">
+                    <input class="modal-item" id="commute-modify-title" type="text" placeholder="사유" maxlength="20">
+                    <select class="modal-item-category" id="commute-modify-category" name="categoryNo">
+                        <option th:each="ccl : ${commuteCategoryList}"
+                                th:value="${ccl.index}"
+                                th:text="${ccl.meaning}">
+                        </option>
+                    </select>
+                </div>
+                <div class="modal-wrap">
+                    <input class="modal-item" id="commute-modify-start" type="datetime-local"> -
+                    <input class="modal-item" id="commute-modify-end" type="datetime-local">
+                </div>
+            </div>
+            <a class="modal-btn"id="btn-modify-save" href="#none">수정 완료</a>
+        </div>
+    </div>
+
+    <!-- 캘린더 -->
+    <div id='calendar' class="calendar"></div>
+</th:block>
+
+<th:block layout:fragment="pageScript">
+    <script type="text/javascript" th:src="@{/fullcalendar/main.js(date=${todayFormat})}"></script>
+    <script type="text/javascript" th:src="@{/fullcalendar/locales/ko.js(date=${todayFormat})}"></script>
+    <script type="text/javascript" th:src="@{/js/commute/commuteCalendar.js(date=${todayFormat})}"></script>
+    <script type="text/javascript" th:src="@{/js/commute/commuteModal.js(date=${todayFormat})}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+</th:block>
+</html>

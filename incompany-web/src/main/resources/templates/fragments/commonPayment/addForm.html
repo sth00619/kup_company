@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="addForm">
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/css/commonPayment.css(date=${todayFormat})}" type="text/css">
+
+    <!-- 결재자 참조자에 본인 추가 못하도록 하기 위함 -->
+    <input type="hidden" id="loginEmployeeCode"     name="employeeCode"     th:value="${myProfileDto.employeeCode}"/>
+
+    <!-- 결재 시 게시판 별 INSERT 를 위함 -->
+    <input type="hidden" id="_currentBoardUrl"      name="currentBoardUrl"  th:value="${mainUrl}"/>
+
+    <div class="member_deta_wrap">
+        <div class="member_deta_box _add_form_payment">
+            <h2>결재권자</h2>
+            <div class="Khlist _khlist">
+                <dl class="list_view03">
+                    <dt>결재자</dt>
+                    <dd>
+                        <div class="name_box saved_click _selectEmployee">
+                            <input id="searchApprEmployee" class="_searchApprEmployee" type="text" placeholder="검색">
+                            <ul class="saved_list _appr">
+                                <li class="_clickApproverEmployee" th:each="ae : ${allEmployee}">
+                                    <div class="saved_icon"><img src="/images/img/quick_my.png"></div>
+                                    <div class="saved_namebox">
+                                        <div class="saved_name" th:text="${ae.employeeName}"></div>
+                                        <div class="saved_number" th:text="${ae.employeeCode}"></div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="_selectApproverList" style="margin : 10px;">
+                            <div class="_selectApprDiv" th:each=" my: ${payment.myPaymentList}" th:if="${my.type} == 0">
+                                <div style="float : left;">
+                                    <img src="/images/img/delete.png" class="_delApprEmployee" style="cursor: pointer">
+                                    <span class="_ordering" th:text="${my.ordering}"></span>
+                                    <span style="margin-top: 10px; margin-bottom: 10px; font-size: 15px; font-weight : bold" th:text="${my.employeeName}"></span>
+                                </div>
+                                <div class="_selectEmployeeTypeList" style="margin-left : 50px; padding-top:10px">
+                                    <input class="_selectApprover" name="approverList" th:value="${my.employeeCode}"
+                                           style="margin-top : 8px;" readonly>
+                                </div><br>
+                            </div>
+                        </div>
+                    </dd>
+                </dl>
+
+                <dl class="list_view03">
+                    <dt>참조자</dt>
+                    <dd>
+                        <div class="name_box saved_click _selectRegEmployee">
+                            <input id="searchRefEmployee" class="_searchRefEmployee" type="text" placeholder="검색">
+                            <ul class="saved_list _ref">
+                                <li class="_clickRefEmployee" th:each="ae : ${allEmployee}">
+                                    <div class="saved_icon"><img src="/images/img/quick_my.png"></div>
+                                    <div class="saved_namebox">
+                                        <div class="saved_name" th:text="${ae.employeeName}"></div>
+                                        <div class="saved_number" th:text="${ae.employeeCode}"></div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="_selectRefEmployeeList" style="margin : 10px;">
+                            <div class="_selectRegDiv" th:each=" my: ${payment.myPaymentList}" th:if="${my.type} == 1">
+                                <div style="float : left ;"> <img src="/images/img/delete.png"
+                                                                  class="_delRefEmployee" style="cursor: pointer"> <span
+                                        style="margin-top: 10px; margin-bottom: 10px; font-size: 15px; font-weight : bold"
+                                        th:text="${my.employeeName}"></span>
+                                </div>
+                                <div class="_selectEmployeeTypeList" style="margin-left : 50px; padding-top:10px">
+                                    <input class="_selectRef" th:value="${my.employeeCode}" name="referrerList"
+                                           style="margin-top : 8px;" readonly></div> <br>
+                            </div>
+                        </div>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+
+    <!-- 댓글 JS -->
+    <script th:src="@{/js/commonPayment.js(date=${todayFormat})}" type="text/javascript"></script>
+</th:block>
+</html>

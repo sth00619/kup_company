@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="@{layout/mainDefaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="contents">
+    <h3> 운영페이지 링크</h3>
+
+    <a th:href="@{/potential/uploadFile/uploadFile}">🔵DB 엑셀 입력</a> <br />
+    <a th:href="@{/account/reset}">🟡비밀번호 초기화 페이지</a> <br />
+    <a th:href="@{writingFormat/addWritingFormat}">🟠템플릿 수정 페이지</a> <br />
+</th:block>
+
+<th:block layout:fragment="pageScript">
+</th:block>
+</html>

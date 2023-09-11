@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="reply">
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/css/reply.css(date=${todayFormat})}" type="text/css">
+
+    <!-- 댓글 영역 start -->
+    <input id="_currentBoardUrl" th:value="${mainUrl}" type="hidden" />
+    <input id="_currentBoardNo" th:value="${currentBoardNo}" type="hidden" />
+    <div class="comment_wrap" id="_replyWrap">
+        <!-- 페이지 개수 삽입 부분 -->
+        <div class="comment_con _reloadWrap">
+            <!-- 댓글 삽입 부분 -->
+        </div>
+        <div class="comment_box">
+            <div class="replyTxt _replyText">
+                <textarea class="_content" maxlength="300" placeholder="댓글 작성하기"></textarea>
+                <div class="confirm_btn">
+                    <button class="con_btn2 down_btn _addReply" type="button">등록</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 댓글 영역 end -->
+
+    <!-- 댓글 페이징 영역 start -->
+    <input id="pageNum" type="hidden" value="0" />
+    <div class="s_next_btn_wrap s_next _reply_page_nation_wrap">
+        <!-- 댓글 페이징 삽입 -->
+    </div>
+    <!-- 댓글 페이징 영역 end -->
+
+    <!-- 댓글 JS -->
+    <script th:src="@{/js/reply/reply.js(date=${todayFormat})}" type="text/javascript"></script>
+    <script th:src="@{/js/reply/reply_function.js(date=${todayFormat})}" type="text/javascript"></script>
+</th:block>
+</html>

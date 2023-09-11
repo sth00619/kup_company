@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <!-- css작성, 파일 -->
+    <link href="/toastUi/css/toastUi.css" rel="stylesheet">
+    <link href="/toastUi/css/toastUi-editor-plugin-table-merged-cell.css" rel="stylesheet">
+    <link href="/toastUi/css/tui-color-picker.css" rel="stylesheet">
+    <link href="/toastUi/css/toastUi-editor-plugin-color-syntax.css" rel="stylesheet">
+    <style>
+        #cancelRadio {
+            float: left;
+            margin-top: 7px;
+        }
+
+        .interest {
+            margin-bottom: 10px;
+        }
+
+        ._explain {
+            text-align: center;
+            font-weight: bold;
+        }
+
+        ._boldText {
+            font-weight: bold;
+        }
+
+        .editor#editor{
+            white-space: normal;
+        }
+    </style>
+</th:block>
+
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideMypage :: sideMypageFragment"></div>
+</th:block>
+
+
+<th:block layout:fragment="contents">
+
+    <input th:value="${myProfileDto.employeeCode}" id="loginEmployeeCode" hidden="true">
+
+
+    <form id="form">
+        <input name="paymentNo" th:value="${p.paymentNo}" id="paymentNo" hidden>
+        <input name="isCopy" th:value="${isCopy}" id="isCopy" hidden>
+
+        <div class="top_center_menu_visual">
+
+            <div class="main_center_wrap">
+
+                <div class="top_title">
+                    <h2 th:if="${isCopy}">상신 저장하기</h2>
+                    <h2 th:unless="${isCopy}">상신 수정하기</h2>
+                </div>
+                <div class="Khlist">
+
+                    <dl class="list_view01">
+                        <dt>기안자</dt>
+                        <dd>
+                            <span th:text="${myProfileDto.employeeName}"></span>
+                        </dd>
+                    </dl>
+
+                    <dl class="list_view03">
+                        <dt>결재자 추가</dt>
+                        <dd>
+                            <div class="name_box saved_click _selectEmployee">
+                                <input id="searchApprEmployee" type="text" placeholder="검색">
+                                <ul class="saved_list _appr">
+                                    <li class="_clickApproverEmployee" th:each="ae : ${allEmployee}">
+                                        <div class="saved_icon"><img src="/images/img/quick_my.png"></div>
+                                        <div class="saved_namebox">
+                                            <div class="saved_name" th:text="${ae.employeeName}"></div>
+                                            <div class="saved_number" th:text="${ae.employeeCode}"></div>
+                                        </div>
+                                    </li>
+
+                                </ul>
+                            </div>
+
+
+                            <div class="_selectApproverList" style="margin : 10px;">
+
+                                <div class="_selectApprDiv" th:each=" my: ${p.myPaymentList}" th:if="${my.type} == 0">
+                                    <div style="float : left ;">
+                                        <img src="/images/img/delete.png" class="_delApprEmployee"
+                                            style="cursor: pointer">
+                                        <span class="_ordering" th:text="${my.ordering}"></span>
+                                        <span
+                                            style="margin-top: 10px; margin-bottom: 10px; font-size: 15px; font-weight : bold"
+                                            th:text="${my.employeeName}"></span>
+                                    </div>
+                                    <div class="_selectEmployeeTypeList" style="margin-left : 50px; padding-top:10px">
+                                        <input class="_selectApprover" th:value="${my.employeeCode}"
+                                            style="margin-top : 8px;" readonly=""></div> <br>
+                                </div>
+
+
+                            </div>
+
+                        </dd>
+                    </dl>
+
+                    <dl class="list_view03">
+                        <dt>참조자 추가</dt>
+                        <dd>
+                            <div class="name_box saved_click _selectRegEmployee">
+                                <input id="searchRefEmployee" type="text" placeholder="검색">
+                                <ul class="saved_list _ref">
+                                    <li class="_clickRefEmployee" th:each="ae : ${allEmployee}">
+                                        <div class="saved_icon"><img src="/images/img/quick_my.png"></div>
+                                        <div class="saved_namebox">
+                                            <div class="saved_name" th:text="${ae.employeeName}"></div>
+                                            <div class="saved_number" th:text="${ae.employeeCode}"></div>
+                                        </div>
+                                    </li>
+
+                                </ul>
+                            </div>
+                            <div class="_selectRefEmployeeList" style="margin : 10px;">
+
+
+
+                                <div class="_selectRegDiv" th:each=" my: ${p.myPaymentList}" th:if="${my.type} == 1">
+                                    <div style="float : left ;"> <img src="/images/img/delete.png"
+                                            class="_delRefEmployee" style="cursor: pointer"> <span
+                                            style="margin-top: 10px; margin-bottom: 10px; font-size: 15px; font-weight : bold"
+                                            th:text="${my.employeeName}"></span>
+                                    </div>
+                                    <div class="_selectEmployeeTypeList" style="margin-left : 50px; padding-top:10px">
+                                        <input class="_selectRef" th:value="${my.employeeCode}"
+                                            style="margin-top : 8px;" readonly=""></div> <br>
+                                </div>
+
+
+
+                            </div>
+
+                        </dd>
+                    </dl>
+                    <dl class="list_view03">
+                        <dt>양식</dt>
+                        <dd>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td style="width: 60px"><button id="cancelRadio"
+                                                style="float: left; margin-top: 7px;" type="button"> 선택 해제</button>
+                                        </td>
+                                        <td>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="_boldText">회사 양식 </td>
+                                        <td>
+                                            <div class="interest" th:each="pfl : ${paymentFormList}"
+                                                th:if="${pfl.companyCode != null && pfl.companyCode != ''}">
+
+
+                                                <input class="_writeForm _paymentFormList" name="writeFormat"
+                                                    th:value="${pfl.paymentFormNo}" type="radio"
+                                                    th:checked="${pfl.paymentFormNo == p.paymentFormNo?: true}">
+                                                <label class="_writeLabel">[[${pfl.title}]]</label>
+
+                                                <input th:value="${pfl.paymentFormNo}" class="_paymentFormNo" hidden>
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="_boldText">부서 양식</td>
+                                        <td>
+                                            <div class="interest" th:each="pfl : ${paymentFormList}"
+                                                th:if="${pfl.departmentCode != null && pfl.departmentCode != ''}">
+
+
+                                                <input class="_writeForm _paymentFormList" name="writeFormat"
+                                                    th:value="${pfl.paymentFormNo}" type="radio"
+                                                    th:checked="${pfl.paymentFormNo == p.paymentFormNo?: true}">
+                                                <label class="_writeLabel">[[${pfl.title}]]</label>
+
+                                                <input th:value="${pfl.paymentFormNo}" class="_paymentFormNo" hidden>
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="_boldText">개인 양식</td>
+                                        <td>
+                                            <div class="interest" th:each="pfl : ${paymentFormList}"
+                                                th:if="${pfl.employeeCode != null && pfl.employeeCode != ''}">
+
+
+                                                <input class="_writeForm _paymentFormList" name="writeFormat"
+                                                    th:value="${pfl.paymentFormNo}" type="radio"
+                                                    th:checked="${pfl.paymentFormNo == p.paymentFormNo?: true}">
+                                                <label class="_writeLabel">[[${pfl.title}]]</label>
+
+                                                <input th:value="${pfl.paymentFormNo}" class="_paymentFormNo" hidden>
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </dd>
+                    </dl>
+
+
+                    <dl class="list_view03">
+                        <dt>제목</dt>
+                        <dd>
+                            <div class="title_input"><input id="title" maxlength="50" name="title" type="text"
+                                    th:value="${p.title}"></div>
+                        </dd>
+                    </dl>
+
+                    <dl class="list_view04">
+                        <dt>내용</dt>
+                        <dd>
+                            <p id="contents" th:text="${p.contents}" hidden></p>
+
+                            <div class="editor" id="editor"></div>
+                        </dd>
+                    </dl>
+
+                    <dl class="list_view03">
+                        <dt class="viewdt_flex">첨부파일</dt>
+                        <dd>
+                            <div id="fileListDiv">
+                                <p id="maxMsg" th:if="${#lists.size(fileList) == 5 }">파일은 최대 5개까지 업로드 가능합니다</p>
+
+                            <div class="fileNameBef" th:if="${#lists.size(fileList) < 5 }">
+                                <input name="file" type="file" class="selectFile">
+                            </div>
+                            <div th:each=" fl: ${fileList}"  class="fileName">
+                                <input th:value="${fl}"name='fileNameDb' hidden>
+                                <a id="dleFileListBtn">x</a> <span th:text="${fl}"></span>
+
+                            </div>
+                        </dd>
+                    </dl>
+
+                </div>
+                <div class="save_btn_wrap">
+                    <div>
+                        <button class="close_btn" id="back" type="button">취소</button>
+                        <button class="close_btn btn_color _addBtn" type="button" value="0">저장</button>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </form>
+
+
+
+
+</th:block>
+
+
+<th:block layout:fragment="pageScript">
+    <!-- js파일 -->
+    <!-- Color Picker -->
+    <script src="/toastUi/js/tui-color-picker.js"></script>
+    <!-- Editor -->
+    <script src="/toastUi/js/toastUi.js"></script>
+    <!-- Editor's Plugin -->
+    <script src="/toastUi/js/toastUi-editor-plugin-table-merged-cell.js"></script>
+    <script src="/toastUi/js/toastUi-editor-plugin-color-syntax.js"></script>
+    <script th:src="@{/js/myPage/payment/edit.js(date=${todayFormat})}"></script>
+    <!-- <script th:src="@{/js/myPage/payment/form.js}"></script> -->
+
+    <script src="/js/multiFile.js"></script>
+
+
+
+
+
+</th:block>
+
+
+</html>

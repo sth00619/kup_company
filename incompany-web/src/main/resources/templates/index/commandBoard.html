@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <!-- 지점장 공지사항 -->
+    <div class="manager_noticearea" th:fragment="commandBoardFragment" th:unless="${#lists.isEmpty(commandList)}">
+        <div class="manager_noticetitle">
+            <span class="mg_notice_title" onclick="location.href='/command/list'">지점장 공지사항</span>
+            <p></p>
+        </div>
+        <div class="manager_notice">
+            <div class="mg_notice_line" th:each="cl : ${commandList}" th:value="${cl.commandNo}">
+                <!-- 기타를 클릭 시 지정게시물 x 지점장 공지사항 탭으로 이동 -->
+                <a th:href="@{/command/commandInfo(commandNo=${cl.commandNo})}" class="notice_category" th:text="${cl.getCategoryMeaning}"></a>
+                <!-- 타이틀 누르면 해당글로 이동 -->
+                <!-- 읽으면 new_notice_icon active 삭제 안 읽으면 active 유지 -->
+                <span class="new_notice_icon " th:classappend="${cl.isNew} ? 'active'"></span>
+                <a th:href="@{/command/commandInfo(commandNo=${cl.commandNo})}" class="notice_title" th:text="${cl.title}"></a>
+            </div>
+        </div>
+    </div>
+
+</html>

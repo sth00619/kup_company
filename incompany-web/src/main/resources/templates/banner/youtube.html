@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <style>
+        input {
+            text-align: center;
+            height: 30px;
+            margin-bottom: 7px;
+            margin-top: 7px;
+            background-color: transparent;
+            color: black;
+        }
+
+        td {
+            overflow: unset;
+        }
+
+        ._selectInput {
+            border: 1px solid;
+
+        }
+
+        .btnTd {
+            width: 100px;
+        }
+
+        .exTable {
+            width: 700px;
+            transform: translateX(40%);
+        }
+
+        .exTd {
+            width: 100px;
+        }
+
+        .videoTitle {
+            width: 300px;
+        }
+
+        .title{
+            width: 80%;
+        }
+
+        .bolder {
+            font-weight: bolder;
+        }
+
+        .inputVideoTitle{
+            width: 95%;
+        }
+    </style>
+</th:block>
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideOperation :: sideOperationFragment"></div>
+</th:block>
+
+<th:block layout:fragment="contents">
+    <br><br>
+    <hr>
+    <br><br>
+    <table class="exTable">
+        <tbody>
+        <tr>
+            <td class="exTd bolder">종료 시간</td>
+            <td class="bolder">설명</td>
+        </tr>
+        <tr>
+            <td>X</td>
+            <td>영상이 0초부터 시작하여 끝까지 재생됩니다.</td>
+        </tr>
+        <tr>
+            <td>O</td>
+            <td>영상이 0초부터 시작하여 종료 시간까지 재생됩니다.</td>
+        </tr>
+        <tr>
+            <td>21:34</td>
+            <td>영상이 0초부터 시작하여 21분 34초간 재생됩니다.</td>
+        </tr>
+        <tr>
+            <td colspan="2">입력한 종료 시간이 영상의 길이보다 길 경우 종료 시간은 작동하지 않습니다.</td>
+        </tr>
+        <tr>
+            <td class="bolder" colspan="2">영상 ID</td>
+        </tr>
+        <tr>
+            <td colspan="2">유튜브 영상 아래에 공유 -> 퍼가기 클릭시 뜨는 코드에서 확인 가능합니다.</td>
+        </tr>
+        <tr>
+            <td colspan="2">src="https://www.youtube.com/embed/HLk4qWqa5ts"</td>
+        </tr>
+        <tr>
+            <td colspan="2">위에 있는 예시의 HLk4qWqa5ts 부분이 영상의 ID 입니다.</td>
+        </tr>
+        </tbody>
+    </table>
+    <br><br>
+    <hr>
+    <br><br>
+    <table>
+        <tbody>
+        <tr class="bolder">
+            <td colspan="3">영상 제목</td>
+            <td>영상 ID</td>
+            <td>종료 시간</td>
+            <td>표시 여부</td>
+            <td></td>
+        </tr>
+        <tr class="_addYoutubeForm">
+            <td colspan="3"><input class="_selectInput title" type="text" id="videoTitle" maxlength="50"></td>
+            <td><input class="_selectInput" type="text" id="videoId" maxlength="11"></td>
+            <td><input class="_selectInput" type="text" id="endTime" placeholder="00:00" maxlength="5"></td>
+            <td><input class="_selectInput" type="checkbox" id="showCheck"></td>
+            <td>
+                <button class="_addBtn">저장</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <br>
+    <br> <br>
+    <br>
+    <br>
+    <hr>
+
+    <table class="_youtubeTable">
+        <tbody>
+        <tr class="bolder">
+            <td>영상 번호</td>
+            <td class="videoTitle">영상 제목</td>
+            <td>영상 ID</td>
+            <td>종료 시간</td>
+            <td>표시 여부</td>
+            <td class="btnTd"></td>
+            <td class="btnTd"></td>
+        </tr>
+        <tr class="_bylList" th:each=" byl: ${bannerYoutubeList}">
+            <td>
+                <p class="_videoNo" name="videoNo" th:text="${byl.videoNo}"></p>
+            </td>
+            <td>
+                <input class="_videoTitle inputVideoTitle" name="videoTitle" type="text" th:value="${byl.videoTitle}" maxlength="50" disabled="true">
+            </td>
+            <td>
+                <input class="_videoId" name="videoId" type="text" th:value="${byl.videoId}" maxlength="11" disabled="true">
+            </td>
+            <td>
+                <input class="_endTime" name="endTime" type="text" th:value="${byl.endTime}" maxlength="5" disabled="true">
+            </td>
+            <td th:switch="${byl.showCheck}">
+                <input th:case="Y" class="_showCheck" name="showCheck" type="checkbox" checked disabled="true">
+                <input th:case="N" class="_showCheck" name="showCheck" type="checkbox" disabled="true">
+            </td>
+            <td>
+                <button class="_writeBtn" type="button">수정</button>
+                <button class="_exitBtn" type="button" hidden>취소</button>
+            </td>
+
+            <td>
+                <button class="_deleteBtn" type="button">삭제</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</th:block>
+
+
+<th:block layout:fragment="pageScript">
+    <script th:src="@{/js/banner/bannerYoutube.js}" type="text/javascript"></script>
+</th:block>
+
+
+</html>

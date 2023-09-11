@@ -1,0 +1,22 @@
+.my_project {
+    margin-bottom: 0px;
+}
+
+.my_project_box {
+    padding: 10px 0 0;
+}
+
+.my_project p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 330px;
+    white-space:nowrap
+}
+
+.my_project span {
+   overflow: hidden;
+   text-overflow: ellipsis;
+   height: 13px;
+   width: 330px;
+   white-space:nowrap 
+}

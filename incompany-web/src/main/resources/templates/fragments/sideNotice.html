@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- Left CompanyChart Start -->
+<div class="slide_down_wrap" th:fragment="sideNoticeFragment">
+
+    <div class="top_slide">
+        <h2><a href="/notice/list?type=0">KH소식</a></h2>
+    </div>
+    <div>
+        <ul class="top_slide_sub5">
+            <li onclick="location.href='/notice/list?type=0'">
+                <a href="#" th:classappend="${type==0} ? 'on_color'">공지사항</a></li>
+        </ul>
+        <ul class="top_slide_sub5">
+            <li onclick="location.href='/notice/list?type=1'">
+                <a href="#" th:classappend="${type==1} ? 'on_color'">지점공지</a></li>
+        </ul>
+        <ul class="top_slide_sub5">
+            <li onclick="location.href='/notice/list?type=2'">
+                <a href="#" th:classappend="${type==2} ? 'on_color'">보도자료</a></li>
+        </ul>
+        <ul class="top_slide_sub5">
+            <li onclick="location.href='/notice/list?type=3'">
+                <a href="#" th:classappend="${type==3} ? 'on_color'">교육자료</a></li>
+        </ul>
+        <ul class="top_slide_sub5">
+            <li onclick="location.href='/notice/list?type=4'">
+                <a href="#" th:classappend="${type==4} ? 'on_color'">SNS자료</a></li>
+        </ul>
+        <ul class="top_slide_sub5">
+            <li onclick="location.href='/notice/list?type=5'">
+                <a href="#" th:classappend="${type==5} ? 'on_color'">양식자료</a></li>
+        </ul>
+    </div>
+
+</div>
+
+</html>

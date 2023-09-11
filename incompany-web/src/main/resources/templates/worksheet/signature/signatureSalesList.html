@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+
+</th:block>
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideWorksheet :: sideWorksheetFragment"></div>
+</th:block>
+
+<th:block layout:fragment="contents">
+
+    <input id="category" th:value="${category}" type="hidden">
+    <input id="categoryMeaning" th:value="${categoryMeaning}" type="hidden">
+
+    <div class="top_center_menu_visual">
+        <div class="top_center-menu">
+            <div class="top_left_menu">
+
+                <select class="department_select _selectBox" name="department">
+                    <option value="">전체</option>
+                    <option th:each="categoryEnum : ${signatureCategoryList}"
+                            th:text="${categoryEnum.meaning}"
+                            th:value="${categoryEnum.category}"></option>
+                </select>
+
+                <div class="add_box2"><a th:href="@{/worksheet/signature/addSignatureSales}">매출추가</a></div>
+                <div class="add_box2 add _chartBtn"><a>매출현황</a></div>
+
+            </div>
+
+        </div>
+
+        <div class="main_center_wrap">
+            <div class="g_daily_title">
+                <ul>
+                    <li>NO</li>
+                    <li>총 매출</li>
+                    <li>현금 매출</li>
+                    <li>카드 매출</li>
+                    <li>총 지출</li>
+                    <li>대 관 비</li>
+                    <li>악세사리</li>
+                    <li>작성자</li>
+                    <li>작성일</li>
+                </ul>
+            </div>
+
+            <div class="g_daily_sub_txt">
+                <ul class="_signatureUl" th:value="${sdl.signatureSalesNo}" th:each="sdl : ${signatureDtoList.getList()}">
+                    <li th:text="${sdl.signatureSalesNo}"><a></a></li>
+                    <li class="_amount" th:text="${sdl.totalSales}"><a></a></li><!--총매출-->
+                    <li class="_amount" th:text="${sdl.cashSales}"><a></a></li><!--현금매출-->
+                    <li class="_amount" th:text="${sdl.cardSales}"><a></a></li> <!--카드지출-->
+                    <li class="_amount" th:text="${sdl.totalSpend}"><a></a></li><!--총지출-->
+                    <li class="_amount" th:text="${sdl.rentalSales}"><a></a></li><!--대관비-->
+                    <li class="_amount" th:text="${sdl.accessorySales}"><a></a></li><!--악세사리-->
+                    <li th:text="${sdl.createEName}"><a></a></li><!--작성자-->
+                    <li th:text="${sdl.accountDate}"><a></a></li><!--작성일-->
+                </ul>
+            </div>
+
+            <!-- pageNation -->
+            <th:block th:replace="fragments/page_nation :: page_nation"></th:block>
+
+        </div>
+    </div>
+</th:block>
+
+<th:block layout:fragment="pagePop">
+    <th:block th:replace="popup/signature_sales_chart :: signature_sales_chart_fragment"></th:block>
+</th:block>
+
+<th:block layout:fragment="pageScript">
+    <script th:src="@{/js/worksheet/signature/signatureSalesList.js(date=${todayFormat})}"></script>
+    <script th:src="@{/js/comma.js(date=${todayFormat})}"></script>
+</th:block>
+</html>

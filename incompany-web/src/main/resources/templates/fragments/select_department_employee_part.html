@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<th:block class="_select_department_employee" th:fragment="select_department_employee_part" th:if="${partialSelectBoxCondition != null} and ${!#strings.isEmpty(partialSelectBoxCondition.partDepartmentCodes)}">
+    <!-- select 유지 데이터 세팅 영역 -->
+    <input id="getDepartmentCode" th:value="${departmentCode}" type="hidden" />
+    <input id="getEmployeeCode" th:value="${employeeCode}" type="hidden" />
+    <input id="getTeamCode" type="hidden" />
+    <input id="isLeader" type="hidden" th:classappend="${#authorization.expression('hasAnyAuthority(''SELECT_SALES_LEADER'')')}? '_true_leader'">
+    
+    <select class="belong_select _belong_select" name="belong" disabled>
+        <option disabled selected>본부</option>
+        <option th:each="sdl :${selectDepartmentMap.salesDepartmentList}" th:text="${sdl.departmentName}"
+                th:value="${sdl.departmentCode}">
+        </option>
+        
+    </select>
+    
+
+    <select class="department_select _department_select" name="department" >
+        <option disabled selected>지점</option>
+
+        <option th:each="psbc : ${partialSelectBoxCondition.getPartDepartmentInfoList}" th:value="${psbc.departmentCode}" th:text="${psbc.departmentName}"></option>
+    </select>
+
+
+    <select class="team_select _team_select" name="team">
+        <option disabled selected>팀</option>
+        <option th:if="${selectDepartmentMap.teamList != null and !selectDepartmentMap.teamList.empty}" value="cancel">선택취소</option>
+        <option th:each="tl :${selectDepartmentMap.teamList}" th:text="${tl.departmentName}"
+                th:value="${tl.departmentCode}">
+        </option>
+    </select>
+
+    <select class="person_select _employee_select" name="person">
+        <option disabled selected>담당자</option>
+        <option th:if="${selectDepartmentMap.employeeList != null and !selectDepartmentMap.employeeList.empty}" value="cancel">선택취소</option>
+        <option class="salesEmployeeName" th:each="el :${selectDepartmentMap.employeeList}"
+                th:text="${el.employeeName}" th:value="${el.employeeCode}"></option>
+    </select>
+
+
+</th:block>
+</html>

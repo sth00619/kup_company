@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideWorksheet :: sideWorksheetFragment"></div>
+</th:block>
+
+<th:block layout:fragment="contents">
+  <!--  <input id="message" th:value="${message}" type="hidden">-->
+
+    <div class="top_center_menu_visual">
+
+        <div class="main_center_wrap">
+            <div class="top_title"><h2 style="padding-bottom:10px;">자기 계발비 신청 내역</h2></div>
+            <div class="daily_title">
+                <ul>
+                    <li style="width: 33%">제목</li>
+                    <li style="width: 33%">결재 현황</li>
+                    <li style="width: 33%">신청일</li>
+                </ul>
+            </div>
+
+            <div class="daily_sub_txt">
+                <ul class="_selfImprovementCostList" th:each="sl : ${selfImprovementCostList.getList()}" th:value="${sl.selfImprovementCostNo}">
+                    <li style="width: 33%">[[${sl.title}]]</li>
+                    <li style="width: 33%; text-align: center;">[[${sl.paymentStatusEnum.meaning}]]</li>
+                    <li style="width: 33%; text-align: center;">[[${sl.createTime}]]</li>
+                </ul>
+            </div>
+        </div>
+        <!-- pageNation -->
+       <th:block th:replace="fragments/page_nation :: page_nation"></th:block>
+    </div>
+</th:block>
+
+<th:block layout:fragment="pageScript">
+    <script th:src="@{/js/worksheet/selfImprovementCost/selfImprovementCostList.js(date=${todayFormat})}" type="text/javascript"></script>
+    <!-- pageNation -->
+    <script th:src="@{/js/page_nation.js(date=${todayFormat})}" type="text/javascript"></script>
+</th:block>
+</html>

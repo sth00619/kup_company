@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <style>
+        td {
+            text-align: left;
+            text-overflow: clip;
+            white-space: unset;
+            line-height: 2;
+        }
+
+        input {
+            border: 1px solid;
+        }
+
+        ._title {
+            font-weight: bold;
+        }
+
+        ._checkbox {
+            width: 20px
+        }
+
+        ._findEmployee {
+            float: left;
+        }
+
+        ._btn {
+            margin-left: 30px;
+            width: 200px;
+            height: 40px;
+            outline: none;
+            background: #304260;
+            color: #fff;
+            border: 0;
+            font-weight: 600;
+            border-radius: 2px;
+        }
+
+        ._existRole {
+            color: #f07085;
+        }
+
+        ._appendixRole {
+            color: #5cd5db;
+        }
+    </style>
+</th:block>
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideOperation :: sideOperationFragment"></div>
+</th:block>
+<th:block layout:fragment="contents" sec:authorize="hasAnyAuthority('ROLL_APPENDIX_UPDATE')">
+    <input id="message" th:value="${message}" type="hidden">
+
+    <form class="_form">
+        <div class="_findEmployee">
+            사원번호 :
+
+            <input list="employeeList" id="employeeCode" name="employeeCode" type="text" th:value="${employeeCode}">
+            <datalist id="employeeList">
+                <option th:label="${ae.employeeName}" th:each="ae : ${allEmployee}" th:value="${ae.employeeCode}">
+
+            </datalist>
+
+            <button class="_btn" type="button" id="findRoleAppendixBtn">사원번호로 추가권한 찾기</button>
+        </div>
+
+        <br><br><br><br><br>
+        <hr>
+        <div th:if="${not #strings.isEmpty(employeeCode) }"><br>
+            사원 직급 : <span th:text="${employeePositionName}"></span><br><br><br>
+            기본 권한 <span class="_existRole">분홍색</span><br><br><br>
+            추가 권한 <span class="_appendixRole">하늘색</span><br><br><br><hr><br><br>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class="_checkbox">&nbsp;</td>
+                        <td class="_title">권한명</td>
+                        <td class="_title">권한 설명</td>
+                    </tr>
+                    <tr th:each=" al: ${allAuthEnumList}" class="_colorAl">
+                        <td><input name="role" th:value="${al.meaning}" type="checkbox"></td>
+                        <td><label th:text="${al.meaning}"></label></td>
+                        <td><span th:text="${al.explain}"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <br>
+            <br>
+
+            <button class="_btn" type="button" id="modifyRole">권한 변경</button>
+        </div>
+
+
+    </form>
+    <script th:src="@{/js/roleAppendix/form.js(date=${todayFormat})}"></script>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var employeeRoleAppendixList = /*[[${employeeRoleAppendixList}]]*/ ;
+        var positionAuthNameList = /*[[${positionAuthNameList}]]*/ ;
+
+        /*]]>*/
+    </script>
+</th:block>
+
+</html>

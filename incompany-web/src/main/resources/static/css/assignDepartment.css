@@ -1,0 +1,19 @@
+.container {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr); /* grid 비율설정 (1:1:1) (1fr 1fr 1fr == repeat(3, 1fr))*/
+	grid-auto-rows: minmax(50px, auto); /* row 높이 설정 (repeat(3, minmax(100px, auto)); = 최소 50px, +auto) */
+	margin-top:20px;
+}
+
+.item {
+    text-align: left;
+}
+
+.employee, .employeeCode {
+    display:inline-block;
+    margin-left:20px;
+}
+
+#saveButton {
+    margin: 0px auto;
+}

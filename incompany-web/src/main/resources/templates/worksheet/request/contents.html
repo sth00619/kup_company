@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <!-- css작성, 파일 -->
+    <link href="/toastUi/css/toastUi.css" rel="stylesheet">
+    <link href="/toastUi/css/toastUi-editor-plugin-table-merged-cell.css" rel="stylesheet">
+    <link href="/toastUi/css/tui-color-picker.css" rel="stylesheet">
+    <link href="/toastUi/css/toastUi-editor-plugin-color-syntax.css" rel="stylesheet">
+</th:block>
+
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideWorksheet :: sideWorksheetFragment"></div>
+</th:block>
+
+
+<th:block layout:fragment="contents">
+    <input th:value="${rc.requestNo}" id="requestNo" hidden />
+
+    <input th:value="${cloudUrl}" id="cloudUrl" hidden />
+
+
+    <div class="top_center_menu_visual">
+
+        <div class="main_center_wrap">
+
+            <div class="top_title">
+                <h2>업무요청</h2>
+            </div>
+            <div class="Khlist">
+
+                <dl class="list_view01">
+                    <dt>요청자</dt>
+                    <dd><span>[[${rc.requestEmployeeName}]]</span></dd>
+                </dl>
+
+                <dl class="list_view02">
+                    <dt>담당자</dt>
+                    <dd><span>[[${rc.responseEmployeeName}]]</span></dd>
+                </dl>
+
+                <dl class="list_view01">
+                    <dt>머리말</dt>
+                    <dd><span>[[${rc.categoryName}]]</span></dd>
+                </dl>
+
+                <dl class="list_view02 file_view">
+                    <dt>마감일</dt>
+                    <dd><span>[[${rc.responseDate}]]</span></dd>
+                </dl>
+
+                <dl class="list_view03">
+                    <dt>제목</dt>
+                    <dd><span>[[${rc.title}]]</span></dd>
+                </dl>
+
+                <dl class="list_view04">
+                    <dt>내용</dt>
+                    <p id="contents" th:text="${rc.contents}" hidden></p>
+                    <dd>
+                        <div id="viewer"></div>
+                    </dd>
+                </dl>
+
+                <dl class="list_view03 file_view">
+                    <dt>첨부파일</dt>
+                    <dd th:if="${rc.isFileExist}">
+                        <span><a class="file_click"><img src="/images/img/file.png"></a></span>
+                        <div class="file_viewbox">
+                            <ul th:each="  fl: ${fileList}">
+                                <li class="_downFile" th:text="${fl}"></li>
+                            </ul>
+                        </div>
+
+                    </dd>
+                </dl>
+
+            </div>
+
+            <!-- 댓글 -->
+            <th:block th:replace="fragments/reply :: reply"></th:block>
+
+
+            <!-- 팀장 이상이고 작성자가 본인이 아닐경우 -->
+            <!-- 시나리오 아직 없음 -->
+            <!-- <div class="save_btn_wrap" th:if="${#authorization.expression('hasAnyAuthority(''SCHEDULE_SELECT_DEPARTMENT_ONE_DEPTH'',''SCHEDULE_SELECT_DEPARTMENT_TWO_DEPTH'',''SCHEDULE_SELECT_DEPARTMENT_THREE_DEPTH'')')} and ${rc.requestEmployeeCode != employeeLoginCode}">
+                <div>
+                    <a th:href="@{/worksheet/request/list(pageNum=${pageNum},searchType=${searchType},keyword=${keyword},state=${state})}">
+                        <button class="close_btn" >취소</button>
+                    </a>
+                    <button class="close_btn btn_color" >결제</button>
+                </div>
+            </div> -->
+
+            <!-- 팀장 이상이 아닐경우 -->
+            <!-- <div class="save_btn_wrap"  th:unless="${#authorization.expression('hasAnyAuthority(''SCHEDULE_SELECT_DEPARTMENT_ONE_DEPTH'',''SCHEDULE_SELECT_DEPARTMENT_TWO_DEPTH'',''SCHEDULE_SELECT_DEPARTMENT_THREE_DEPTH'')')} and ${rc.requestEmployeeCode != employeeLoginCode}"> -->
+
+            <div class="save_btn_wrap">
+                <div>
+                    <a th:href="@{/worksheet/request/list(pageNum=${pageNum},searchType=${searchType},keyword=${keyword},state=${state})}">
+                        <button class="close_btn full_list2" >전체목록</button>
+                    </a>
+                    <!-- 작성자가 본인 -->
+                    <button class="close_btn" id="updateBtn" th:if="${rc.requestEmployeeCode == employeeLoginCode}">수정</button>
+                    <button class="close_btn btn_color" th:if="${rc.requestEmployeeCode == employeeLoginCode}" id="deleteBtn">삭제</button>
+                </div>
+            </div>
+
+            <div class="Khlist">
+
+                <dl class="list_view07">
+                    <dt>이전글</dt>
+                    <a th:if="${not #strings.isEmpty(rc.prevNo) }"
+                    th:href="@{/worksheet/request/contents(requestNo=${rc.prevNo},searchType=${searchType},keyword=${keyword},state=${state})}">
+                    <dd><span th:text="${rc.prevTitle}"></span></dd>
+                    <div class="today_itembox"><p class="today_item" th:text="${rc.prevRequestDateFormat}"></p></div>
+                    </a>
+                </dl>
+
+                <dl class="list_view07">
+                    <dt>다음글</dt>
+                    <a th:if="${not #strings.isEmpty(rc.nextNo) }"
+                    th:href="@{/worksheet/request/contents(requestNo=${rc.nextNo},searchType=${searchType},keyword=${keyword},state=${state})}">
+                    <dd><span th:text="${rc.nextTitle}"></span></dd>
+                    <div class="today_itembox"><p class="today_item" th:text="${rc.nextRequestDateFormat}" ></p></div>
+                    </a>
+                </dl>
+
+            </div>
+        </div>
+    </div>
+
+    <form id="form" th:action="@{/}" method="post" enctype="multipart/form-data">
+
+    </form>
+
+
+
+</th:block>
+
+
+<th:block layout:fragment="pageScript">
+    <!-- js파일 -->
+    <!-- Color Picker -->
+    <script src="/toastUi/js/tui-color-picker.js"></script>
+    <!-- Editor -->
+    <script src="/toastUi/js/toastUi.js"></script>
+    <!-- Editor's Plugin -->
+    <script src="/toastUi/js/toastUi-editor-plugin-table-merged-cell.js"></script>
+    <script src="/toastUi/js/toastUi-editor-plugin-color-syntax.js"></script>
+    <script th:src="@{/js/worksheet/request/contents.js(date=${todayFormat})}"></script>
+
+
+</th:block>
+
+
+</html>

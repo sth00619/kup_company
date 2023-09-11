@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <!-- css작성, 파일 -->
+    <link href="/toastUi/css/toastUi.css" rel="stylesheet">
+    <link href="/toastUi/css/toastUi-editor-plugin-table-merged-cell.css" rel="stylesheet">
+    <link href="/toastUi/css/tui-color-picker.css" rel="stylesheet">
+    <link href="/toastUi/css/toastUi-editor-plugin-color-syntax.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/worksheet/worksheet.css(date=${todayFormat})}" type="text/css">
+</th:block>
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideNotice :: sideNoticeFragment"></div>
+</th:block>
+
+
+<th:block layout:fragment="contents">
+    <form enctype="multipart/form-data" id="form" method="post" th:action="@{/}">
+        <input hidden id="type" name="type" th:value="${type}"/>
+
+
+        <div class="top_center_menu_visual">
+
+            <div class="main_center_wrap">
+
+                <div class="top_title">
+                    <h2 th:text="${title}"></h2>
+                </div>
+                <div class="Khlist">
+
+                    <dl class="list_view01">
+                        <dt>작성자</dt>
+                        <dd><span th:text="${myProfileDto.employeeName}"></span></dd>
+                    </dl>
+
+                    <dl class="list_view02">
+                        <dt>등록일</dt>
+                        <dd ><span id="today"></span></dd>
+                    </dl>
+
+                    <dl class="list_view03" th:if="${type}  == 1 ">
+                        <dt>머리말</dt>
+                        <dd>
+                            <div class="name_box">
+                                <select class="preface_select">
+                                    <option value="ALL">전체</option>
+                                    <option th:each=" dl : ${departmentList}" th:value="${dl.departmentCode}" th:text="${dl.departmentName}"  th:selected="${dl.departmentCode} == ${selectDepartmentCode}"></option>
+                                </select>
+                            </div>
+                        </dd>
+                    </dl>
+
+                    <dl class="list_view03" th:if="${type}  == 2 ">
+                        <dt>머리말</dt>
+                        <dd>
+                            <div class="name_box">
+                                <select class="preface_select">
+                                    <option th:each=" cl : ${categoryList}" th:value="${cl.index}" th:text="${cl.meaning}"></option>
+                                </select>
+                            </div>
+                        </dd>
+                    </dl>
+
+
+                    <dl class="list_view03">
+                        <dt>제목</dt>
+                        <dd>
+                            <div class="title_input">
+                                <input id="title" maxlength="50" name="title" type="text">
+                            </div>
+                        </dd>
+
+                    </dl>
+
+
+                    <dl class="list_view04 heightUp">
+                        <dt>내용</dt>
+                        <div id="editor"></div>
+
+                    </dl>
+
+                    <dl class="list_view03">
+                        <dt class="viewdt_flex">첨부파일</dt>
+                        <dd>
+
+                            <div class="filebox">
+
+                                <input id="attacheFiles" type="file" name="file" multiple>
+
+                            </div>
+
+                        </dd>
+                    </dl>
+
+                    <dl class="list_view03">
+                        <dt>댓글허용</dt>
+                        <dd>
+                            <div class="title_input">
+                                <input style="width : 3%;" type="checkbox" id="_comment" value="Y" name="replyAllow">
+                                <label for="_comment"></label>
+                            </div>
+                        </dd>
+
+                    </dl>
+
+                </div>
+
+                <div class="save_btn_wrap">
+                    <div>
+                        <button class="close_btn" id="back">취소</button>
+                        <button class="close_btn btn_color" id="addNoticeBtn">저장</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </form>
+</th:block>
+
+
+<th:block layout:fragment="pageScript">
+    <!-- js파일 -->
+    <!-- Color Picker -->
+    <script src="/toastUi/js/tui-color-picker.js"></script>
+    <!-- Editor -->
+    <script src="/toastUi/js/toastUi.js"></script>
+    <!-- Editor's Plugin -->
+    <script src="/toastUi/js/toastUi-editor-plugin-table-merged-cell.js"></script>
+    <script src="/toastUi/js/toastUi-editor-plugin-color-syntax.js"></script>
+    <script src="/js/multiFile.js"></script>
+    <script th:src="@{/js/potential/dateTimePicker.js}" type="text/javascript"></script>
+    <script th:src="@{/js/notice/addNotice.js(date=${todayFormat})}"></script>
+</th:block>
+
+
+</html>

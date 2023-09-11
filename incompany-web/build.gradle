@@ -1,0 +1,18 @@
+// this shouldn't be necessary as there are no real duplicates
+tasks {
+    processResources {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    }
+}
+
+// jar build 할때 test 제외
+test {
+    exclude '**/*'
+    useJUnitPlatform()
+    systemProperty 'jasypt.encryptor.password', findProperty("jasypt.encryptor.password")
+}
+
+// jar plain 안만들게 성정
+jar {
+    enabled = false
+}

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <link rel="stylesheet" th:href="@{/css/list_check_box.css(date=${todayFormat})}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/insurance/insuranceInfoList.css(date=${todayFormat})}" type="text/css">
+</th:block>
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideContractFortune :: sideContractFortuneFragment"></div>
+</th:block>
+<th:block layout:fragment="contents">
+    <input id="insuranceManageNo" th:value="${insuranceDto.insuranceManageNo}" type="hidden"/>
+    <input id="loginEmployeeCode" th:value="${loginEmployeeCode}" type="hidden"/>
+    <div class="guest_deta_wrap">
+        <div class="guest_deta_box">
+            <h2>보험 계약 수정</h2>
+            <div class="guest_deta">
+
+                <div class="contract_list">
+                    <div class="contract_list_name">
+                        <p>본부</p>
+                    </div>
+                    <div class="contract_list_box">
+                        <span th:text="${employeeDto.D1}"></span>
+                    </div>
+                </div>
+
+                <div class="contract_list">
+                    <div class="contract_list_name">
+                        <p>지점</p>
+                    </div>
+                    <div class="contract_list_box">
+                        <span th:text="${employeeDto.D2}"></span>
+                    </div>
+                </div>
+
+                <div class="contract_list">
+                    <div class="contract_list_name">
+                        <p>팀</p>
+                    </div>
+                    <div class="contract_list_box">
+                        <span th:text="${employeeDto.D3}"></span>
+                    </div>
+                </div>
+
+                <div class="contract_list">
+                    <div class="contract_list_name">
+                        <p>직급</p>
+                    </div>
+                    <div class="contract_list_box">
+                        <span th:text="${employeeDto.positionName}"></span>
+                    </div>
+                </div>
+
+                <div class="contract_list">
+                    <div class="contract_list_name">
+                        <p>담당자</p>
+                    </div>
+                    <div class="contract_list_box">
+                        <span name="employeeCode" th:text="${employeeDto.employeeName}"
+                              th:value="${employeeDto.employeeCode}"></span>
+                    </div>
+                </div>
+
+                <div class="contract_list">
+                    <div class="contract_list_name">
+                        <p class="none">담당자</p>
+                    </div>
+                    <div class="contract_list_box">
+                        <span></span>
+                    </div>
+                </div>
+
+                <div class="contract_list">
+                    <div class="contract_list_name">
+                        <p>고객</p>
+                    </div>
+                    <div class="contract_list_box">
+                        <span th:text="${insuranceDto.potentialUserName}"></span>
+                    </div>
+                </div>
+
+                <div class="contract_list">
+                    <div class="contract_list_name star">
+                        <p>금액</p>
+                    </div>
+                    <div class="contract_list_box">
+                        <div class="name_box">
+                            <input class="_totalAmount" id="totalAmount" name="totalAmount" readonly
+                                   th:value="${insuranceDto.getTotalAmountPlusComma()}" type="text">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="guest_deta_box">
+            <div class="add_button">
+                <button id="addBox" type="button">추가</button>
+                <button id="deleteBox" type="button">삭제</button>
+            </div>
+            <div class="guest_deta">
+                <div class="main_top">
+                    <div>
+                        <ul class="insur_main_title2">
+                            <li class="sub_first_txt _main_first_txt _li0">
+                                <label for="totalCheckbox"></label>
+                                <input id="totalCheckbox" type="checkbox">
+                            </li>
+                            <li class="_li1">계약날짜</li>
+                            <li class="_li2">구분</li>
+                            <li class="_li3">실적</li>
+                            <li class="_li4">보험구분</li>
+                            <li class="_li5">보험사</li>
+                            <li class="_li6 w_amend">종목</li>
+                            <li class="_li7">증권번호</li>
+                            <li class="_li8">이체일</li>
+                            <li class="_li9">납입/만기기간</li>
+                            <li class="_li10">금액</li>
+                            <li class="_li11">비교확인</li>
+                            <li class="_li12">완전판매</li>
+                            <li class="_li13">고지의무</li>
+                        </ul>
+                    </div>
+
+                    <div class="insur_sub_txt2 _insuranceInfo">
+                        <ul class="_insurance_info_box _InfoByUpdateForm" th:each="info : ${insuranceInfoList}">
+                            <li class="sub_first_txt _onlyCheckBox _li0">
+                                <label class="_sub_label" for="checkbox"></label>
+                                <input class="_sub_check _insuranceInfoNo" id="checkbox"
+                                       th:value="${info.insuranceInfoNo}" type="checkbox">
+                            </li>
+                            <li class="_li1">
+                                <div class="insur_input">
+                                    <input class="_insuranceJoinDate" name="insuranceJoinDate"
+                                           th:value="${info.insuranceJoinDate}" type="date">
+                                </div>
+                            </li>
+                            <li class="_li2">
+                                <select class="keep_select _insuranceState" name="insuranceState">
+                                    <option th:each="stateEnum : ${insuranceStateEnum}"
+                                            th:selected="${info.insuranceState} == ${stateEnum.index}"
+                                            th:text="${stateEnum.meaning}" th:value="${stateEnum.index}"></option>
+                                </select>
+                            </li>
+                            <li class="_li3">
+                                <select class="Y_select _achieveCheck" name="achieveCheck">
+                                    <option th:selected="${info.achieveCheck} == 'Y'" value="Y">Y</option>
+                                    <option th:selected="${info.achieveCheck} == 'N'" value="N">N</option>
+                                    <option th:selected="${info.achieveCheck} == 'H'" value="H">50%</option>
+                                    <option th:selected="${info.achieveCheck} == 'F'" value="F">25%</option>
+                                </select>
+                            </li>
+                            <li class="_li4">
+                                <select class="damage_select _insuranceCategory" name="insuranceCategoryCode">
+                                    <option th:each="categoryEnum : ${insuranceCategoryEnum}"
+                                            th:selected="${info.insuranceCategoryCode} == ${categoryEnum.category}"
+                                            th:text="${categoryEnum.meaning}"
+                                            th:value="${categoryEnum.category}"></option>
+                                </select>
+                            </li>
+                            <li class="_li5">
+                                <select class="samsung_select _insuranceCompanyName" name="insuranceCompanyCode">
+                                    <option disabled selected>선택</option>
+                                    <option hidden
+                                            th:data-category="${companyEnum.category}"
+                                            th:each="companyEnum : ${insuranceCompanyEnum}"
+                                            th:selected="${info.insuranceCompanyCode} == ${companyEnum.companyCode}"
+                                            th:text="${companyEnum.companyName}"
+                                            th:value="${companyEnum.companyCode}"></option>
+                                </select>
+                            </li>
+                            <li class="_li6 w_amend">
+                                <div class="insur_input">
+                                    <input class="_insuranceTitle" maxlength="100" name="insuranceTitle" th:value="${info.insuranceTitle}" type="text">
+                                </div>
+                            </li>
+                            <li class="_li7">
+                                <div class="insur_input">
+                                    <input class="_insuranceCode" maxlength="35" name="insuranceCode" th:value="${info.insuranceCode}" type="text">
+                                </div>
+                            </li>
+                            <li class="_li8">
+                                <div class="insur_input">
+                                    <input class="_insurancePayDate" name="insurancePayDate"
+                                           th:value="${info.insurancePayDate}" type="date">
+                                </div>
+                            </li>
+
+                            <li class="_li9">
+                                <div class="insur_input">
+                                    <input class="_insurancePayTerm" maxlength="15" name="insurancePayTerm" placeholder="ex) 10년/99세" th:value="${info.insurancePayTerm}" type="text">
+                                </div>
+                            </li>
+                            <li class="_li10">
+                                <div class="insur_input _amount">
+                                    <input class="_insuranceAmount _numberOnly" maxlength="20" name="insuranceAmount" placeholder="숫자 입력" th:value="${info.getAmountPlusComma}" type="text">
+                                </div>
+                            </li>
+                            <li class="sub_first_txt _li11 _custom_checkbox_li">
+                                <label class="_custom_label" for="documentCheck1" th:classappend="${info.documentCheck1 == 'Y'} ? '_customCheck'"></label>
+                                <input class="_custom_check" name="documentCheck1" id="documentCheck1" type="checkbox" th:checked="${info.documentCheck1 == 'Y'}">
+                            </li>
+                            <li class="sub_first_txt _li12 _custom_checkbox_li">
+                                <label class="_custom_label" for="documentCheck2" th:classappend="${info.documentCheck2 == 'Y'} ? '_customCheck'"></label>
+                                <input class="_custom_check" name="documentCheck2" id="documentCheck2" type="checkbox" th:checked="${info.documentCheck2 == 'Y'}">
+                            </li>
+                            <li class="sub_first_txt _li13 _custom_checkbox_li">
+                                <label class="_custom_label" for="documentCheck3" th:classappend="${info.documentCheck3 == 'Y'} ? '_customCheck'"></label>
+                                <input class="_custom_check" name="documentCheck3" id="documentCheck3" type="checkbox" th:checked="${info.documentCheck3 == 'Y'}">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="value_pay">
+                    <p>
+                        실적 인정 금액
+                        <em id="_totalPerformance"></em>원
+                        &emsp;&emsp;&emsp;
+                        총 금액
+                        <em id="_totalAmount"></em>원
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="guest_deta_box">
+            <h2>특이사항</h2>
+            <div class="guest_deta">
+                <div class="last_txt">
+                    <textarea id="note" maxlength="180" name="note" th:text="${insuranceDto.note}"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="save_btn_wrap">
+            <div>
+                <a th:href="@{/insurance/insurance}">
+                    <button class="close_btn">취소</button>
+                </a>
+                <button class="close_btn btn_color cbtn _submitBtn">저장</button>
+            </div>
+        </div>
+    </div>
+
+</th:block>
+<th:block layout:fragment="pageScript">
+    <script th:src="@{/js/insurance/updateInsurance.js(date=${todayFormat})}" type="text/javascript"></script>
+    <!-- checkBox -->
+    <script th:src="@{/js/list_check_box.js(date=${todayFormat})}" type="text/javascript"></script>
+
+    <!-- 문자열 유틸 -->
+    <script type="text/javascript" th:src="@{/js/utils/string_custom_util.js(date=${todayFormat})}"></script>
+</th:block>
+</html>

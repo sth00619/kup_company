@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<!-- Left CompanyChart Start -->
+<div class="slide_down_wrap" th:fragment="sideBoardFragment">
+
+    <div class="top_slide">
+        <h2>커뮤니티</h2>
+    </div>
+    <div>
+        <ul class="top_slide_sub5 con_1">
+            <li onclick="location.href='/faq/list'"><a th:classappend="${title=='FAQ'} ? 'on_color'" href="#">FAQ</a></li>
+        </ul>
+        <ul class="top_slide_sub5">
+            <li onclick="location.href='/board/list'"><a th:classappend="${title=='자유 게시판'} ? 'on_color'"  href="#">자유 게시판</a></li>
+        </ul>
+
+        <ul class="top_slide_sub5">
+            <li onclick="location.href='/groupware/requestList'">
+                <a th:classappend="${requestUrl == '/groupware/requestList'} ? 'on_color'"  href="#">그룹웨어 요청사항</a>
+            </li>
+        </ul>
+    </div>
+
+</div>
+
+</html>

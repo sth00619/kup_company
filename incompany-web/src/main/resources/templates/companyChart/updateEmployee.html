@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="@{layout/defaultFragment}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+<th:block layout:fragment="pageCss">
+    <link rel="stylesheet" th:href="@{/css/updateEmployee.css(date=${todayFormat})}" type="text/css">
+    <link href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
+</th:block>
+
+
+<th:block layout:fragment="pageScriptTop">
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script th:src="@{/js/main_left_company_chart.js}"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</th:block>
+
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideCompanyChart :: sideCompanyChartFragment"></div>
+</th:block>
+
+<th:block layout:fragment="contents">
+
+    <!-- 사원추가 -->
+    <form id="update" method="post" th:action="@{/companyChart/updateEmployee}">
+        <input id="employeeLoginCode" name="employeeLoginCode" th:value="${employeeLoginCode}" type="hidden">
+        <div class="member_deta_wrap">
+            <div class="member_deta_box">
+                <h2>사원 정보 입력</h2>
+                <div class="member_deta">
+
+                    <div class="deta_list">
+                        <div class="list_name star"><p>법인</p></div>
+                        <div class="list_box">
+                            <input id="companyCode" name="companyCode" th:value="${employeeDto.companyCode}"
+                                   type="hidden">
+                            <input id="workplace" name="workplace" type="hidden">
+                            <select class="belong_select _companyCode" name='companyCode'>
+                                <option disabled selected value="">법인</option>
+                                <option th:each="cl : ${companyList}"
+                                        th:if="${#authorization.expression('hasAnyAuthority(''COMPANY_EMPLOYEE_UPDATE'')')}"
+                                        th:selected="${employeeDto.companyName == cl.companyName}"
+                                        th:text="${cl.companyName}"
+                                        th:value="${cl.companyCode}">
+                                </option>
+                                <option th:each="cl : ${companyList}"
+                                        th:if="${employeeDto.companyName == cl.companyName}"
+                                        th:text="${cl.companyName}"
+                                        th:unless="${#authorization.expression('hasAnyAuthority(''COMPANY_EMPLOYEE_UPDATE'')')}"
+                                        th:value="${cl.companyCode}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="deta_list">
+                        <div class="list_name star"><p>소속</p></div>
+                        <input id="getEmployeeLoginCode" th:value="${employeeLoginCode}" type="hidden"/>
+                        <input id="departmentCode" name="departmentCode" th:value="${employeeDto.departmentCode}"
+                               type="hidden">
+                        <input class="_authCheck"
+                               th:classappend="${#authorization.expression('hasAnyAuthority(''COMPANY_EMPLOYEE_UPDATE'')')}? '_authTrue'"
+                               type="hidden">
+
+                        <div class="list_box">
+                            <select class="head_select _D1" hidden name='D1'>
+                                <option th:each="info : ${departmentInfoMap.get('departmentInfo1')}"
+                                        th:text="${info.departmentName}"
+                                        th:value="${info.departmentCode}"></option>
+                            </select>
+
+                            <select class="belong_select _D2" hidden name='D2'>
+                                <option th:each="info : ${departmentInfoMap.get('departmentInfo2')}"
+                                        th:text="${info.departmentName}"
+                                        th:value="${info.departmentCode}"></option>
+                            </select>
+
+                            <select class="team_select _D3" hidden name="D3">
+                                <option th:each="info : ${departmentInfoMap.get('departmentInfo3')}"
+                                        th:text="${info.departmentName}"
+                                        th:value="${info.departmentCode}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="deta_list">
+
+                        <div class="list_name star"><p>직급</p></div>
+
+                        <div class="list_box">
+                            <select class="rank_select _positionCode" name="positionCode">
+                                <option disabled selected value="">선택</option>
+                                <option th:each="cp : ${companyPositionList}"
+                                        th:if="${#authorization.expression('hasAnyAuthority(''COMPANY_EMPLOYEE_UPDATE'')')}"
+                                        th:selected="${cp.positionName}==${employeeDto.positionName}"
+                                        th:text="${cp.positionName}"
+                                        th:value="${cp.positionCode}"></option>
+                                <option th:each="cp : ${companyPositionList}"
+                                        th:if="${cp.positionName}==${employeeDto.positionName}"
+                                        th:selected="${cp.positionName}==${employeeDto.positionName}"
+                                        th:text="${cp.positionName}"
+                                        th:unless="${#authorization.expression('hasAnyAuthority(''COMPANY_EMPLOYEE_UPDATE'')')}"
+                                        th:value="${cp.positionCode}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="deta_list">
+
+                        <div class="list_name star"><p>이름</p></div>
+                        <div class="list_box">
+                            <div class="name_box"><input maxlength="15" id="employeeName" name="employeeName"
+                                                         th:classappend="${#authorization.expression('!hasAnyAuthority(''COMPANY_EMPLOYEE_UPDATE'')')}? '_authNone'"
+                                                         th:value="${employeeDto.employeeName}" type="text">
+                                <span aria-live="assertive" class="error_next_box name_error">반드시 입력해주세요.</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="deta_list">
+
+                        <div class="list_name star"><p>사번</p></div>
+
+                        <div class="list_box">
+                            <div class="name_box"><input maxlength="12" id="_employeeCode" name="employeeCode" readonly
+                                                         th:classappend="${#authorization.expression('!hasAnyAuthority(''COMPANY_EMPLOYEE_UPDATE'')')}? '_authNone'"
+                                                         th:value="${employeeDto.employeeCode}" type="text">
+                                <span aria-live="assertive" class="error_next_box code_error">변경이 가능하지 않습니다.</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="deta_list">
+
+                        <div class="list_name star"><p>생년월일</p></div>
+
+                        <div class="list_box">
+
+                            <div class="date_box">
+                                <input class="_datepicker" id="birthday" name="birthday"
+                                       th:value="${employeeDto.birthday}" type="date">
+                                <span aria-live="assertive" class="error_next_box birthday_error">반드시 입력해주세요.</span>
+                            </div>
+
+                            <div class="sexual_check_box">
+
+                                <div class="sexual_check">
+                                    <input class="_gender" name="gender" th:checked="${employeeDto.gender}=='남'"
+                                           type="radio"
+                                           value="남">
+                                    <label>남</label>
+                                </div>
+
+                                <div class="sexual_check">
+                                    <input class="_gender" name="gender" th:checked="${employeeDto.gender}=='여'"
+                                           type="radio"
+                                           value="여">
+                                    <label>여</label>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="deta_list">
+
+                        <div class="list_name star"><p>연락처</p></div>
+
+                        <div class="list_box">
+                            <div class="name_box"><input maxlength="18" id="mobile" name="mobile" th:value="${employeeDto.mobile}"
+                                                         type="text">
+                                <span aria-live="assertive" class="error_next_box mobile_error">반드시 입력해주세요.</span>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <!--Daum 주소 API-->
+                    <div class="deta_list">
+                        <div class="list_name star"><p>거주지</p></div>
+                        <th:block th:replace="fragments/daumPostcode :: daumPostcode"></th:block>
+                    </div>
+
+                    <div class="deta_list">
+                        <div class="list_name star">
+                            <p>재직여부</p>
+                        </div>
+
+                        <div class="contract_list_box">
+                            <div class="interest">
+                                <input id="month" name="working" th:checked="${employeeDto.working}=='0'" type="radio"
+                                       value="0">
+                                <label for="month">재직중</label>
+                            </div>
+
+                            <div class="interest">
+                                <input id="year" name="working" th:checked="${employeeDto.working}=='1'" type="radio"
+                                       value="1">
+                                <label for="year">퇴사</label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="member_deta_box">
+
+                <h2>상세 정보 입력</h2>
+
+                <div class="member_deta">
+
+                    <div class="deta_list">
+
+                        <div class="list_name">
+                            <div class="list_name"><p>입사일자</p></div>
+                        </div>
+
+                        <div class="list_box">
+                            <div class="date_box"><input class="_datepicker" id="joinDate" name="joinDate"
+                                                         th:classappend="${#authorization.expression('!hasAnyAuthority(''COMPANY_EMPLOYEE_UPDATE'')')}? '_authNone'"
+                                                         th:value="${employeeDto.joinDate}" type="date"></div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="deta_list">
+
+                        <div class="list_name"><p>이메일</p></div>
+                        <div class="list_box">
+                            <div class="name_box"><input maxlength="20" id="emailId" name="emailId" placeholder=""
+                                                         th:value="${employeeDto.emailId}"
+                                                         type="text"></div>
+                            <span class="waku">@</span>
+                            <input class="_emailSelf" hidden id="selboxDirect" name="emailSelf" placeholder="직접입력"
+                                   th:value="${employeeDto.emailForm}" type="text"/>
+                            <select class="email_select _emailSelect" id="emailForm" name="emailForm">
+                                <option disabled selected value="">선택하세요.</option>
+                                <option th:selected="${employeeDto.emailForm}=='naver.com'" value="naver.com">
+                                    naver.com
+                                </option>
+                                <option th:selected="${employeeDto.emailForm}=='gmail.com'" value="gmail.com">
+                                    gmail.com
+                                </option>
+                                <option th:selected="${employeeDto.emailForm}=='daum.com'" value="daum.com">daum.com
+                                </option>
+                                <option value="self">직접입력</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="deta_list" th:if="${myProfileDto.employeeCode.contains('K') or myProfileDto.employeeCode == 'qatest00'}">
+                        <div class="list_name"><p>사내 이메일</p></div>
+                        <div class="list_box">
+                            <div class="name_box"><input maxlength="20" id="companyEmailId" name="companyEmailId" th:value="${#strings.substringBefore(employeeDto.companyEmail, '@')}"
+                                                         type="text"></div>
+                            <span class="waku">@</span>
+                            <select class="email_select _emailSelect" id="companyEmailForm" name="companyEmailForm">
+                                <option disabled selected value="">선택하세요.</option>
+                                <option th:selected="${employeeDto.companyEmailForm}=='kupstudio.com'" value="kupstudio.com">
+                                    kupstudio.com
+                                </option>
+                                <!--
+                                <option th:selected="${employeeDto.companyEmailForm}=='khasset.com'" value="khasset.com">
+                                    khasset.com
+                                </option>
+                                -->
+                            </select>
+                            <span aria-live="assertive" class="error_next_box _checkCompanyEmail">이미 다른 사원이 사용중인 이메일입니다.</span>
+                            <span aria-live="assertive" class="error_next_box _successCompanyEmail">사용 가능한 이메일입니다.</span>
+                        </div>
+                    </div>
+
+
+                    <div class="license_charge">
+
+                        <div class="license_charge_name"><p>담당업무</p></div>
+
+                        <div class="license_charge_box">
+
+                            <div class="big_text">
+                                <textarea maxlength="180" id="assignedTask" name="assignedTask"
+                                          placeholder="내용을 입력하세요"
+                                          th:text="${employeeDto.assignedTask}"></textarea>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="license_charge">
+
+                        <div class="license_charge_name"><p>자격증</p></div>
+
+                        <div class="license_charge_box">
+
+                            <div class="big_text">
+                                <textarea maxlength="180" id="certificate" name="certificate"
+                                          placeholder="내용을 입력하세요"
+                                          th:text="${employeeDto.certificate}"></textarea>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- 저장버튼  -->
+            <div class="save_btn_wrap">
+                <div>
+                    <a th:href="@{/companyChart(departmentCode=${employeeDto.departmentCode})}">
+                        <button class="close_btn _closeBtn" type="button">취소</button>
+                    </a>
+                    <button class="close_btn btn_color _submitBtn" type="submit" onclick="return compareEmailAndSubmit(event)">저장</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+</th:block>
+
+<th:block layout:fragment="pageScript">
+    <script th:src="@{/js/daumPostcode.js}"></script>
+    <script th:src="@{/js/employee/updateEmployee.js(date=${todayFormat})}"></script>
+</th:block>
+
+</html>

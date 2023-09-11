@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <link href="/toastUi/css/toastUi.css" rel="stylesheet">
+    <link href="/toastUi/css/toastUi-editor-plugin-table-merged-cell.css" rel="stylesheet">
+    <link href="/toastUi/css/tui-color-picker.css" rel="stylesheet">
+    <link href="/toastUi/css/toastUi-editor-plugin-color-syntax.css" rel="stylesheet">
+</th:block>
+<th:block layout:fragment="pageScriptTop">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+</th:block>
+
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideBoard :: sideBoardFragment"></div>
+</th:block>
+
+<th:block layout:fragment="contents">
+    <form id="groupwareRequestInfo" method="post" th:action="@{/}">
+
+        <input name="_method" type="hidden" value="DELETE" />
+        <input id="groupwareRequestNo" th:value="${groupwareRequestDto.groupwareRequestNo}" type="hidden">
+
+      <!--  <input th:value="${cloudUrl}" id="cloudUrl" hidden />-->
+
+        <div class="top_center_menu_visual">
+            <div class="main_center_wrap">
+                <div class="top_title">
+                    <h2>상세 내용</h2>
+                </div>
+                <div class="Khlist">
+
+                    <dl class="list_view03">
+                        <dt>작성자</dt>
+                        <dd><span>[[${groupwareRequestDto.employeeName}]]</span></dd>
+                    </dl>
+
+                    <dl class="list_view03">
+                        <dt>제목</dt>
+                        <dd><span>[[${groupwareRequestDto.title}]]</span></dd>
+                    </dl>
+
+                    <dl class="list_view04">
+                        <p hidden id="contents" th:text="${groupwareRequestDto.contents}"></p>
+                        <dt>내용</dt>
+                        <dd>
+                            <div id="viewer"></div>
+                        </dd>
+                    </dl>
+
+                    <dl class="list_view03 file_view">
+                        <dt>첨부파일</dt>
+                        <dd>
+                            <div th:if="${groupwareRequestDto.isFileExist}">
+                                <div th:each="ifu : ${imgFileUrl}">
+                                    <img style="float:left; margin-left:10px" th:src="${ifu}" class="_fileImg" width="150" height="150">
+                                </div>
+                                <div class="modal">
+                                    <img id="fileUrl" width="100%" height="100%">
+                                </div>
+                                <a class="file_click">
+                                    <img src="/images/img/file.png">
+                                </a>
+                                <div class="file_viewbox">
+                                    <ul th:each="fl: ${fileList}">
+                                        <li id="downFile" th:text="${fl}"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+                <!-- 댓글 -->
+                <th:block th:replace="fragments/reply :: reply"></th:block>
+
+
+                <div class="save_btn_wrap">
+                    <div>
+                        <button class="close_btn full_list2 _fullListBtn" type="button">전체목록</button>
+
+                        <button class="close_btn _updateBtn" th:if="${groupwareRequestDto.employeeCode == loginECode}" type="button">수정</button>
+                        <button class="close_btn btn_color _deleteBtn" th:if="${groupwareRequestDto.employeeCode == loginECode}" type="button">삭제</button>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </form>
+</th:block>
+
+
+<th:block layout:fragment="pageScript">
+    <!-- Color Picker -->
+    <script src="/toastUi/js/tui-color-picker.js"></script>
+    <!-- Editor -->
+    <script src="/toastUi/js/toastUi.js"></script>
+    <!-- Editor's Plugin -->
+    <script src="/toastUi/js/toastUi-editor-plugin-table-merged-cell.js"></script>
+    <script src="/toastUi/js/toastUi-editor-plugin-color-syntax.js"></script>
+    <script th:src="@{/js/toastUI/InfoContents.js(date=${todayFormat})}"></script>
+    <script th:src="@{/js/groupware/requestInfo.js(date=${todayFormat})}" type="text/javascript"></script>
+    <!--첨부파일 js-->
+    <script th:src="@{/js/attachFile/attachFileAtInfo.js(date=${todayFormat})}" type="text/javascript"></script>
+</th:block>
+
+
+</html>

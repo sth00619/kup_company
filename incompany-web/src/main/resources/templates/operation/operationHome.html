@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideOperation :: sideOperationFragment"></div>
+</th:block>
+
+<th:block layout:fragment="contents">
+    <h3> HELLO WORLD </h3>
+
+    <div>
+        <input type="text" id="qrcodeText" style="outline:2px solid #d50000; margin-bottom : 50px; margin-top : 50px;">
+        <div id="qrcode"></div>
+    </div>
+
+</th:block>
+
+<th:block layout:fragment="pageScript">
+    <!-- qrcode -->
+    <script type="text/javascript" th:src="@{/lib/qrcode.min.js}"></script>
+    <script type="text/javascript" th:src="@{/lib/qrcode.js}"></script>
+    <script th:src="@{/js/qrcode.js(date=${todayFormat})}" type="text/javascript"></script>
+</th:block>
+</html>

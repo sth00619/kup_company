@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!--
+    ※ - 리스트 검색 기능 fragment
+    검색조건은 Enum 으로 관리할 것. 검색 조건 Enum 자체를 controller 에서 model 에 searchCateList 변수로 담아 response 시켜줘야함
+    searchValue, searchKey, startDate, endDate 이 4개의 parameter 는 controller 에 request 하여 로직처리 후 model 에 담아 다시 response 시켜줘야함. (새로고침 시 검색 유지를 위함)
+-->
+<th:block th:fragment="search_fragment">
+    <!-- 검색 관련 세팅 -->
+    <input id="searchValue" th:value="${searchValue}" type="hidden"/>
+    <input id="searchKey" th:value="${searchKey}" type="hidden"/>
+    <input id="startDate" th:value="${startDate}" type="hidden"/>
+    <input id="endDate" th:value="${endDate}" type="hidden"/>
+
+    <div class="date_box search_deta">
+        <input class="_search_start_date" th:value="${startDate}" type="date">
+    </div>
+    <div class="date_box search_deta">
+        <input class="_search_end_date" th:value="${endDate}" type="date">
+    </div>
+    <select class="select_box _searchKey _searchArea">
+        <option th:data-isDate="${scl.isDate}"
+                th:each="scl : ${searchCateList}"
+                th:selected="${scl.meaning} == ${searchKey}"
+                th:text="${scl.meaning}"></option>
+    </select>
+
+    <div class="salesman_search _searchArea">
+        <input class="_searchValue" placeholder="검색" th:value="${searchValue}" type="text">
+        <img alt="검색" class="_searchBtn" th:src="@{/images/img/search_icon.png}"/>
+    </div>
+
+    <!-- search btn -->
+    <script th:src="@{/js/utils/search_action.js}" type="text/javascript"></script>
+</th:block>
+</html>

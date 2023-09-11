@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="coffeePointBox">
+    <div class="coffee_point_box">
+        <button class="attendance_btn _attendance_btn">
+            <span class="blind">출석</span>
+        </button>
+        <div class="coffee_wrap">
+            <div class="my_point">
+                <span class="point_data _point_data"> P</span>
+            </div>
+            <div class="coffee_change">
+                <button class="change_btn" onclick="location.href='/myPage/attendance/myAttendance'">커피 교환하기 ></button>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/js/coffeePointBox.js}"></script>
+</th:block>
+</html>

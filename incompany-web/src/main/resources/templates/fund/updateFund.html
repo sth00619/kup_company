@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+  <link rel="stylesheet" th:href="@{/css/list_check_box.css(date=${todayFormat})}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/insurance/insuranceInfoList.css(date=${todayFormat})}" type="text/css">
+</th:block>
+<th:block layout:fragment="side_contents">
+  <div th:replace="fragments/sideContractFortune :: sideContractFortuneFragment"></div>
+</th:block>
+<th:block layout:fragment="contents">
+  <input id="fundManageNo" th:value="${fundDto.fundManageNo}" type="hidden"/>
+  <input id="loginEmployeeCode" th:value="${loginEmployeeCode}" type="hidden"/>
+  <div class="guest_deta_wrap">
+    <div class="guest_deta_box">
+      <h2>보험 계약 수정</h2>
+      <div class="guest_deta">
+
+        <div class="contract_list">
+          <div class="contract_list_name">
+            <p>본부</p>
+          </div>
+          <div class="contract_list_box">
+            <span th:text="${employeeDto.D1}"></span>
+          </div>
+        </div>
+
+        <div class="contract_list">
+          <div class="contract_list_name">
+            <p>지점</p>
+          </div>
+          <div class="contract_list_box">
+            <span th:text="${employeeDto.D2}"></span>
+          </div>
+        </div>
+
+        <div class="contract_list">
+          <div class="contract_list_name">
+            <p>팀</p>
+          </div>
+          <div class="contract_list_box">
+            <span th:text="${employeeDto.D3}"></span>
+          </div>
+        </div>
+
+        <div class="contract_list">
+          <div class="contract_list_name">
+            <p>직급</p>
+          </div>
+          <div class="contract_list_box">
+            <span th:text="${employeeDto.positionName}"></span>
+          </div>
+        </div>
+
+        <div class="contract_list">
+          <div class="contract_list_name">
+            <p>담당자</p>
+          </div>
+          <div class="contract_list_box">
+                        <span name="employeeCode" th:text="${employeeDto.employeeName}"
+                              th:value="${employeeDto.employeeCode}"></span>
+          </div>
+        </div>
+
+        <div class="contract_list">
+          <div class="contract_list_name">
+            <p class="none">담당자</p>
+          </div>
+          <div class="contract_list_box">
+            <span></span>
+          </div>
+        </div>
+
+        <div class="contract_list">
+          <div class="contract_list_name">
+            <p>고객</p>
+          </div>
+          <div class="contract_list_box">
+            <span th:text="${fundDto.potentialUserName}"></span>
+          </div>
+        </div>
+
+        <div class="contract_list">
+          <div class="contract_list_name star">
+            <p>금액</p>
+          </div>
+          <div class="contract_list_box">
+            <div class="name_box">
+              <input class="_totalAmount" id="totalAmount" name="totalAmount" readonly
+                     th:value="${fundDto.getTotalAmountPlusComma()}" type="text">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="guest_deta_box">
+      <div class="add_button">
+        <button id="addBox" type="button">추가</button>
+        <button id="deleteBox" type="button">삭제</button>
+      </div>
+      <div class="guest_deta">
+        <div class="main_top">
+          <div>
+            <ul class="insur_main_title2">
+              <li class="sub_first_txt _main_first_txt">
+                <label for="totalCheckbox"></label>
+                <input id="totalCheckbox" type="checkbox">
+              </li>
+              <li>계약날짜</li>
+              <li>구분</li>
+              <li>실적</li>
+              <li class="w_amend2">종목</li>
+              <li>계좌개설일</li>
+              <li>만기일</li>
+              <li>이체일</li>
+              <li>금액</li>
+            </ul>
+          </div>
+
+          <div class="insur_sub_txt2 _fundInfo _sub_ul">
+            <ul class="_fund_info_box _InfoByUpdateForm" th:each="info : ${fundInfoList}">
+              <li class="sub_first_txt _onlyCheckBox">
+                <label class="_sub_label" for="checkbox"></label>
+                <input class="_sub_check _fundInfoNo" id="checkbox"
+                       th:value="${info.fundInfoNo}" type="checkbox">
+              </li>
+              <li>
+                <div class="insur_input">
+                  <input class="_fundJoinDate" name="fundJoinDate"
+                         th:value="${info.fundJoinDate}" type="date">
+                </div>
+              </li>
+              <li>
+                <select class="keep_select _fundState" name="fundState">
+                  <option th:each="stateEnum : ${fundStateEnum}"
+                          th:selected="${info.fundState} == ${stateEnum.index}"
+                          th:text="${stateEnum.meaning}" th:value="${stateEnum.index}"></option>
+                </select>
+              </li>
+              <li>
+                <select class="Y_select _achieveCheck" name="achieveCheck">
+                  <option th:selected="${info.achieveCheck} == 'Y'" value="Y">Y</option>
+                  <option th:selected="${info.achieveCheck} == 'N'" value="N">N</option>
+                  <option th:selected="${info.achieveCheck} == 'H'" value="H">50%</option>
+                  <option th:selected="${info.achieveCheck} == 'F'" value="F">25%</option>
+                </select>
+              </li>
+              <li class="w_amend2">
+                <div class="insur_input">
+                  <input class="_fundTitle" maxlength="100" name="fundTitle" th:value="${info.fundTitle}" type="text">
+                </div>
+              </li>
+              <li>
+                <div class="insur_input">
+                  <input class="_accountOpenDate" name="accountOpenDate"
+                         th:value="${info.accountOpenDate}" type="date">
+                </div>
+              </li>
+              <li>
+                <div class="insur_input">
+                  <input class="_fundPayTerm" name="fundPayTerm"
+                         th:value="${info.fundPayTerm}" type="date">
+                </div>
+              </li>
+              <li>
+                <div class="insur_input">
+                  <input class="_fundPayDate" name="fundPayDate"
+                         th:value="${info.fundPayDate}" type="date">
+                </div>
+              </li>
+              <li>
+                <div class="insur_input _amount">
+                  <input class="_fundAmount _numberOnly" maxlength="20" name="fundAmount" placeholder="숫자 입력" th:value="${info.getAmountPlusComma}" type="text">
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="value_pay">
+          <p>
+            실적 인정 금액
+            <em id="_totalPerformance"></em>원
+            &emsp;&emsp;&emsp;
+            총 금액
+            <em id="_totalAmount"></em>원
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="guest_deta_box">
+      <h2>특이사항</h2>
+      <div class="guest_deta">
+        <div class="last_txt">
+          <textarea id="note" maxlength="180" name="note" th:text="${fundDto.note}"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="save_btn_wrap">
+      <div>
+        <a th:href="@{/fund/fund}">
+          <button class="close_btn">취소</button>
+        </a>
+        <button class="close_btn btn_color cbtn _submitBtn">저장</button>
+      </div>
+    </div>
+  </div>
+
+</th:block>
+<th:block layout:fragment="pageScript">
+  <script th:src="@{/js/fund/updateFund.js(date=${todayFormat})}" type="text/javascript"></script>
+  <!-- checkBox -->
+  <script th:src="@{/js/list_check_box.js(date=${todayFormat})}" type="text/javascript"></script>
+
+  <!-- 문자열 유틸 -->
+  <script type="text/javascript" th:src="@{/js/utils/string_custom_util.js(date=${todayFormat})}"></script>
+</th:block>
+</html>

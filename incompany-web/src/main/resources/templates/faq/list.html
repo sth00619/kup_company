@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" >
+
+<th:block layout:fragment="pageCss">
+    <link href="/toastUi/css/toastUi.css" rel="stylesheet">
+    <link href="/toastUi/css/toastUi-editor-plugin-table-merged-cell.css" rel="stylesheet">
+    <link href="/toastUi/css/tui-color-picker.css" rel="stylesheet">
+    <link href="/toastUi/css/toastUi-editor-plugin-color-syntax.css" rel="stylesheet">
+</th:block>
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideBoard :: sideBoardFragment"></div>
+</th:block>
+<th:block layout:fragment="contents">
+
+    <input id="type" th:value="${type}" type="hidden">
+
+    <div class="top_center_menu_visual">
+
+        <div class="top_center-menu">
+
+            <button sec:authorize="hasAnyAuthority('COMMUNITY_FAQ')" class="writing_btn"><a
+                    th:href="@{/faq/addFaq}">글쓰기</a></button>
+
+            <!-- <div class="notice_search">
+
+                <select class="select_box">
+                    <option value="all">전체</option>
+                </select>
+
+                <div class="salesman_search">
+                    <input id="searchTitle" placeholder="검색" th:value="${searchTitle}" type="text">
+                    <img alt="검색" class="_searchBtn" src="/images/img/search_icon.png" />
+                </div>
+
+            </div> -->
+
+        </div>
+
+        <div class="main_center_wrap">
+
+            <div class="notice_btn_wrap">
+                <div class="notice_btn l_none" id="typeA" th:classappend="${type == null} ? 'line'">전체</div>
+
+                <div class="notice_btn" id="typeZ" th:classappend="${type == 0} ? 'line'"> 고객</div>
+
+                <div class="notice_btn" id="typeF" th:classappend="${type ==1} ? 'line'"> 계약</div>
+
+                <div class="notice_btn" id="typeS" th:classappend="${type ==2} ? 'line'"> 업무</div>
+
+                <div class="notice_btn r_none" id="typeL" th:classappend="${type == 3} ? 'line'"> 기타</div>
+            </div>
+
+            <div class="faq_visual">
+
+                <div class="faq_txt" th:each="fl : ${faqList.getList()}" >
+                    <span th:text="${fl.title}"></span>
+                    <div class="faq_sub_txt" th:style="${fl.faqNo == faqNo} ? 'display : block' : '' ">
+                        <p hidden class="_contents" th:text="${fl.contents}"></p>
+                        <div class="_viewer"></div>
+
+                        <div sec:authorize="hasAnyAuthority('COMMUNITY_FAQ')">
+                            <br><br>
+                            <a
+                                th:href="@{/faq/updateFaq(faqNo=${fl.faqNo},type=${type},pageNum=${pageNum})}"><button>수정</button></a>
+                            <button id="deleteFaq">삭제</button>
+                            <input th:value="${fl.faqNo}" hidden>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- pageNation -->
+    <th:block th:replace="fragments/page_nation :: page_nation"></th:block>
+
+
+</th:block>
+
+
+<th:block layout:fragment="pageScript">
+    <!-- Color Picker -->
+    <script src="/toastUi/js/tui-color-picker.js"></script>
+    <!-- Editor -->
+    <script src="/toastUi/js/toastUi.js"></script>
+    <!-- Editor's Plugin -->
+    <script src="/toastUi/js/toastUi-editor-plugin-table-merged-cell.js"></script>
+    <script src="/toastUi/js/toastUi-editor-plugin-color-syntax.js"></script>
+    <script th:src="@{/js/faq/list.js(date=${todayFormat})}"></script>
+</th:block>
+
+
+</html>

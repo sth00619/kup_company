@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+</th:block>
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideNotice :: sideNoticeFragment"></div>
+</th:block>
+<th:block layout:fragment="contents">
+
+    <input id="message" th:value="${message}" type="hidden">
+    <!-- 페이징 관련 데이터 세팅 -->
+    <input id="nextPage" th:value="${noticeList.getNavigateLastPage()}" type="hidden" />
+    <input id="prePage" th:value="${noticeList.getNavigateFirstPage()}" type="hidden" />
+    <input id="pages" th:value="${noticeList.getPages()}" type="hidden" />
+    <input id="pageNum" th:value="${pageNum}" type="hidden" />
+    <!-- 검색 -->
+    <input id="type" th:value="${type}" type="hidden">
+
+
+    <!-- 공지사항 center -->
+    <div class="top_center_menu_visual">
+
+        <div class="top_center-menu">
+
+            <button class="writing_btn" sec:authorize="hasAnyAuthority('KHNEWS_SNS')"><a  th:href="@{/notice/addNotice(type=${type})}">글쓰기</a></button>
+
+            <div class="notice_search">
+                <select class="select_box _selectBox">
+                    <!-- <option value="all">전체</option> -->
+                    <option value="title">제목</option>
+                    <!-- <option value="contents">내용</option> -->
+                    <!-- <option value="titleContents">제목+내용</option> -->
+                    <!-- <option value="attachFile">첨부파일</option> -->
+                    <option th:selected="${searchType}=='writer'" value="writer">작성자</option>
+                    <option th:selected="${searchType}=='createDate'" value="createDate">등록일</option>
+                </select>
+
+                <div class="salesman_search">
+                    <input id="keyword" placeholder="검색" th:value="${keyword}" type="text">
+
+                    <img alt="검색" class="_searchBtn" src="/images/img/search_icon.png" />
+                </div>
+            </div>
+
+        </div>
+
+        <div class="main_center_wrap">
+
+            <div class="notice_title">
+                <ul>
+                    <li style="width:150px;">NO</li>
+                    <li style="width:700px;">제목</li>
+                    <li style="width:150px;">조회수</li>
+                    <li style="width:150px;">작성자</li>
+                    <li style="width:150px;">등록일</li>
+                </ul>
+            </div>
+
+            <div class="notice_sub_txt">
+
+
+                <ul th:each="nl : ${noticeList.getList()}">
+                    <li style="width:150px;">
+                        <a th:href="@{/notice/contents(noticeNo=${nl.noticeNo},pageNum=${pageNum},searchType=${searchType},keyword=${keyword},type=${type})}"
+                           th:text="${nl.noticeNo}"></a>
+                    </li>
+                    <li style="width:700px;">
+                        <a
+                                th:href="@{/notice/contents(noticeNo=${nl.noticeNo},pageNum=${pageNum},searchType=${searchType},keyword=${keyword},type=${type})}">
+                            <div class="title_inner" style="margin-left:100px">
+                                [[${nl.title}]]
+                            </div>
+                            <div class="new" th:if="${nl.isNew}"><img src="/images/img/new.png"></div>
+                            <div class="title_file" th:if="${nl.isFileExist}"><img src="/images/img/file.png"></div>
+                            <div class="comment" th:if="${nl.replyCount} > 0"><img src="/images/img/comment.png"></div>
+                        </a>
+                    </li>
+                    <li style="width:150px;"><a
+                            th:href="@{/notice/contents(noticeNo=${nl.noticeNo},pageNum=${pageNum},searchType=${searchType},keyword=${keyword},type=${type})}">[[${nl.hit}]]</a>
+                    </li>
+                    <li style="width:150px;"><a
+                            th:href="@{/notice/contents(noticeNo=${nl.noticeNo},pageNum=${pageNum},searchType=${searchType},keyword=${keyword},type=${type})}">[[${nl.createEmployeeName}]]</a>
+                    </li>
+                    <li style="width:150px;"><a
+                            th:href="@{/notice/contents(noticeNo=${nl.noticeNo},pageNum=${pageNum},searchType=${searchType},keyword=${keyword},type=${type})}">[[${nl.createDate}]]</a>
+                    </li>
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- pageNation -->
+    <th:block th:replace="fragments/page_nation :: page_nation"></th:block>
+
+</th:block>
+
+
+<th:block layout:fragment="pageScript">
+    <script th:src="@{/js/notice/list.js(date=${todayFormat})}"></script>
+</th:block>
+
+
+</html>

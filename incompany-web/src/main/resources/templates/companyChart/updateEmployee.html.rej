@@ -1,0 +1,26 @@
+diff a/src/main/resources/templates/companyChart/updateEmployee.html b/src/main/resources/templates/companyChart/updateEmployee.html	(rejected hunks)
+@@ -79,21 +79,18 @@
+ 
+                         <!--권한 MANAGER 일때-->
+                         <div class="list_box" th:if="${#authorization.expression('hasAnyAuthority(''MANAGER'',''ADMIN'')')}">
+-                            <select class="head_select _authCheck _first" name='first'
+-                                    th:classappend="${#authorization.expression('hasAnyAuthority(''USER'')')}? '_authNone'">
++                            <select class="head_select _first" name='first'>
+                                 <option disabled selected value="">본부명</option>
+                                 <option th:each="info : ${departmentInfo.get('departmentInfo1')}"
+                                         th:text="${info.departmentName}" th:value="${info.departmentCode}">본부명
+                                 </option>
+                             </select>
+-                            <select class="belong_select _authCheck _second" hidden name='second'
+-                                    th:classappend="${#authorization.expression('hasAnyAuthority(''USER'')')}? '_authNone'">
++                            <select class="belong_select _second" hidden name='second'>
+                                 <option th:each="info : ${departmentInfo.get('departmentInfo2')}"
+                                         th:text="${info.departmentName}" th:value="${info.departmentCode}" value="">지점명
+                                 </option>
+                             </select>
+-                            <select class="team_select _authCheck _third" hidden
+-                                    th:classappend="${#authorization.expression('hasAnyAuthority(''USER'')')}? '_authNone'">
++                            <select class="team_select _third" hidden>
+                                 <option th:each="info : ${departmentInfo.get('departmentInfo3')}"
+                                         th:text="${info.departmentName}" th:value="${info.departmentCode}" value="">팀명
+                                 </option>

@@ -1,0 +1,9 @@
+/* .top_slide_sub > li 에 `_notChild` 클래스 추가 하면 아래 화살표 사라짐 */
+
+.top_slide_sub > li._notChild:after {
+    background-image: url("") !important;
+}
+
+.arrowOn .sub_arrowOn._notChild:after {
+    background-image: url("") !important;
+}

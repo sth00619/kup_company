@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="add_group_fragment">
+    <!-- 조직추가 -->
+    <div class="advice_save_visual pop5">
+        <div class="close_btn_wrap" id="close">
+            <div class="close_btn_img">
+                <img src="/images/img/close_btn.png">
+            </div>
+        </div>
+
+        <div class="deta_advice_wrap">
+            <div class="deta_advice_inner">
+                <h2>조직 추가하기</h2>
+                <div id="form">
+                    <div class="guest_deta">
+
+                        <div class="contract_list2">
+                            <div class="guest_list_name2">
+                                <p>법인</p>
+                            </div>
+                            <div class="contract_list_box2">
+                                <input hidden id="companyCode" th:value="${companyCode}">
+                                <select class="group_select _companyCode" name="companyCode">
+                                    <option th:each="cl : ${companyList}" th:text="${cl.companyName}"
+                                            th:value="${cl.companyCode}">
+                                    </option>
+                                </select>
+                                <div class="name_box2">
+                                    <input hidden maxlength="20" name="belong" type="text">
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                        <div class="contract_list2">
+                            <div class="guest_list_name2">
+                                <p>본부</p>
+                            </div>
+                            <div class="contract_list_box2">
+                                <input id="departmentCode" name="departmentCode" type="hidden">
+                                <select class="group_select _D1" name='D1'>
+                                    <option value="D">직접입력</option>
+                                </select>
+                                <div class="name_box2">
+                                    <input id="addOneDepth" maxlength="20" type="text">
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                        <div class="contract_list2">
+                            <div class="guest_list_name2">
+                                <p>지점</p>
+                            </div>
+                            <div class="contract_list_box2">
+
+                                <select class="group_select _D2" name="department">
+                                    <option value="noWrite">해당없음</option>
+                                </select>
+                                <div class="name_box2">
+                                    <input hidden id="addTwoDepth" maxlength="20" type="text">
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="contract_list2">
+                            <div class="guest_list_name2">
+                                <p>팀</p>
+                            </div>
+                            <div class="contract_list_box2">
+
+                                <select class="group_select _D3" name="team">
+                                    <option value="noWrite">해당없음</option>
+                                </select>
+
+                                <div class="name_box2">
+                                    <input hidden id="addThreeDepth" maxlength="20" type="text">
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="save_btn_wrap">
+                    <div>
+                        <button class="close_btn cbt" id="closeAddForm" type="button">취소</button>
+                        <button class="close_btn btn_color" id="saveBtn">저장</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <!-- end -->
+
+    <!-- 조직 수정 -->
+    <div class="advice_save_visual pop7">
+
+        <div class="close_btn_wrap">
+            <div class="close_btn_img">
+                <img src="/images/img/close_btn.png">
+            </div>
+        </div>
+
+        <div class="deta_advice_wrap">
+
+            <div class="deta_advice_inner">
+
+                <h2>조직 수정하기</h2>
+                <div id="modifForm">
+                    <div class="guest_deta">
+                        <div class="contract_list2">
+                            <div class="guest_list_name2">
+                                <p>법인</p>
+                            </div>
+                            <div class="contract_list_box2">
+
+                                <div class="amend_box">
+                                    <p id="companyName"></p>
+                                </div>
+
+                                <div class="name_box2" id="updateCompanyName">
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="contract_list2">
+                            <div class="guest_list_name2">
+                                <p>본부</p>
+                            </div>
+                            <div class="contract_list_box2">
+
+                                <div class="amend_box" id="oneDepthBox">
+                                    <p id="oneDepth"></p>
+
+                                </div>
+
+                                <div class="name_box2" id="oneDepthName">
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="contract_list2">
+                            <div class="guest_list_name2">
+                                <p>지점</p>
+                            </div>
+                            <div class="contract_list_box2">
+
+                                <div class="amend_box" id="twoDepthBox">
+                                    <p id="twoDepth"></p>
+
+                                </div>
+
+                                <div class="name_box2" id="twoDepthName">
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="contract_list2">
+                            <div class="guest_list_name2">
+                                <p>팀</p>
+                            </div>
+                            <div class="contract_list_box2">
+
+                                <div class="amend_box" id="threeDepthBox">
+                                    <p id="threeDepth"></p>
+
+                                </div>
+
+                                <div class="name_box2" id="threeDepthName">
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="save_btn_wrap">
+                    <div>
+                        <button class="close_btn cbt">취소</button>
+                        <button class="close_btn btn_color" id="updateBtn">수정</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <!-- end -->
+    <div class="black_screen"></div>
+</th:block>
+
+</html>

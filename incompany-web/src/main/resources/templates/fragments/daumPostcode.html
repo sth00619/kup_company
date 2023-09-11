@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block class="_daumPostcode" th:fragment="daumPostcode">
+
+    <!--다음 API 를 사용한 거주지 input box
+    controller에서 model에 fragmentInfoDto를 담아줘야한다.-->
+
+    <div class="list_box">
+        <div class="name_box2"><input id="postcode" name="postcode" placeholder="우편번호"
+                                      th:value="${fragmentInfoDto.postcode}" type="text"></div>
+        <div class="find"><input id="findBtn" type="button" value="찾기"></div>
+        <div class="name_box2"><input id="address" name="address" placeholder="주소"
+                                      th:value="${fragmentInfoDto.address}" type="text"><br></div>
+        <div class="name_box2"><input maxlength="20" id="detailAddress" name="detailAddress" placeholder="상세주소"
+                                      th:value="${fragmentInfoDto.detailAddress}" type="text"></div>
+        <div class="name_box2"><input id="extraAddress" name="extraAddress" placeholder="참고항목"
+                                      th:value="${fragmentInfoDto.extraAddress}" type="text"></div>
+    </div>
+
+</th:block>
+</html>

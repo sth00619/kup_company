@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- Left CompanyChart Start -->
+<div class="slide_down_wrap" th:fragment="sideNoteFragment">
+
+    <div class="top_slide">
+        <h2><a>쪽지</a></h2>
+    </div>
+    <div>
+        <ul class="top_slide_sub5">
+            <li onclick="location.href='/note/receive/list'">
+                <a href="#" 
+                th:classappend="${#strings.contains(requestUrl,'receive')}  ? 'on_color'">받은쪽지</a></li>
+        </ul>
+        <ul class="top_slide_sub5">
+            <li onclick="location.href='/note/toMe/list'">
+                <a href="#" th:classappend="${#strings.contains(requestUrl,'toMe')}  ? 'on_color'">내게쓴쪽지</a></li>
+        </ul>
+        <ul class="top_slide_sub5">
+            <li onclick="location.href='/note/send/list'">
+                <a href="#" th:classappend="${#strings.contains(requestUrl,'send')}  ? 'on_color'">보낸쪽지</a></li>
+        </ul>
+        <ul class="top_slide_sub5">
+            <li onclick="location.href='/note/save/list'">
+                <a href="#" th:classappend="${#strings.contains(requestUrl,'save')} ? 'on_color'">쪽지 보관함</a></li>
+        </ul>
+    </div>
+
+</div>
+
+</html>

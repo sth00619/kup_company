@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <link rel="stylesheet" th:href="@{/css/contractFortune/repaymentContractFortune.css(date=${todayFormat})}" type="text/css">
+</th:block>
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideContractFortune :: sideContractFortuneFragment"></div>
+</th:block>
+<th:block layout:fragment="contents">
+
+    <div hidden id="_repaymentExcelDiv"></div>
+
+    <!-- 처리 결과 여부 및 메세지 -->
+    <input id="message" th:value="${message}" type="hidden">
+
+    <input id="getDepartmentCode" th:value="${departmentCode}" type="hidden"/>
+    <input id="getEmployeeCode" th:value="${employeeCode}" type="hidden"/>
+    <input id="getTeamCode" type="hidden"/>
+
+    <input id="_isManager" type="hidden" th:classappend="${#authorization.expression('hasAnyAuthority(''COMPANY_EMPLOYEE_UPDATE'')')}? '_managerTrue'">
+
+<!--    <div class="top_center_menu_visual" style="margin-top:60px;">-->
+    <div class="top_center_menu_visual">
+
+        <div class="top_center-menu">
+            <div class="top_left_menu _top_left_menu">
+                <!-- 부서, 팀, 담당자 선택 select -->
+                <th:block th:replace="fragments/select_department_employee :: select_department_employee"></th:block>
+            </div>
+
+            <div class="top_right_menu">
+                <!-- 기간 조회 -->
+                <th:block th:replace="fragments/date_search_by_period :: date_search_by_period"></th:block>
+            </div>
+        </div>
+
+        <div style="margin-top:40px;">
+            <p style="margin-bottom:10px; font-size: 12px; color: #7c7f84; font-weight: normal;">※ - 특이사항은 상환 총합에 합산됩니다.</p>
+            <ul class="contract_main_title" style="width:450px;">
+                <li style="width:150px;">상환 총합</li>
+                <li style="width:150px;">연장 총합</li>
+                <li style="width:150px;">엑셀 다운로드</li>
+            </ul>
+        </div>
+
+        <div class="contract_sub_txt">
+            <ul class="_total_ul" style="width:450px;">
+                <li id="_total_amount_by_repayment" style="width:150px;"></li>
+                <li id="_total_amount_by_extension" style="width:150px;"></li>
+                <li style="width:150px;"><img id="_excel_download" style="margin:10px auto !important;" src="/images/excel_icon.png"></li>
+            </ul>
+        </div>
+
+        <!-- 목돈 계약 리스트 -->
+        <div class="main_center_wrap">
+            <div class="main_top">
+                <div>
+                    <ul class="contract_main_title">
+                        <li class="_contractCode">계약번호</li>
+                        <li class="_employee">담당자</li>
+                        <li class="_potentialUser">고객</li>
+                        <li class="_amount">원금</li>
+                        <li class="_interest">이자</li>
+                        <li class="_interestPlus">추가이자</li>
+                        <li class="_totalRepayment">총 상환액</li>
+                        <li class="_endDate">계약종료일</li>
+                        <li class="_account">상환계좌</li>
+                        <li class="_repayment_type">확인</li>
+                        <li class="_noteArea">비고</li>
+                        <li class="_redemptionDate">
+                            <div class="date_box search_deta _no_margin">
+                                <input type="date" class="_selectRepaymentDate" th:value="${repaymentDate}"/>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="contract_sub_txt">
+                    <ul class="_contract_sub_title _sub_ul" th:each="cfl : ${contractFortuneList}"
+                        th:value="${cfl.contractCode}">
+                        <li class="_contractCode" th:text="${cfl.contractNumber}" th:value="${cfl.contractCode}"></li>
+                        <li class="_employee" th:text="${cfl.employeeName}" th:value="${cfl.employeeCode}"></li>
+                        <li class="_potentialUser" th:text="${cfl.potentialUserName}" th:value="${cfl.potentialUserNo}"></li>
+                        <li class="_amount" th:text="${cfl.amountPlusComma}"></li>
+                        <li class="_interest" th:text="${cfl.interest}"></li>
+                        <li class="_interestPlus"></li>
+                        <input class="_preRepaymentType" type="hidden" th:value="${cfl.contractRepaymentDto.repaymentType}">
+                        <li th:if="${cfl.contractRepaymentDto.repaymentType == 3} and ${#authorization.expression('hasAnyAuthority(''CONTRACT_REPAYMENT_MANAGER'')')}" class="_totalRepayment">
+                            <input class="_editTotalRepayment _numberOnly" type="text" maxlength="14" th:value="${cfl.contractRepaymentDto.totalRepaymentComma}">
+                        </li>
+                        <input class="_totalRepaymentComma" type="hidden" th:value="${cfl.contractRepaymentDto.totalRepaymentComma}">
+                        <li th:unless="${cfl.contractRepaymentDto.repaymentType == 3} and ${#authorization.expression('hasAnyAuthority(''CONTRACT_REPAYMENT_MANAGER'')')}" class="_totalRepayment" th:text="${cfl.contractRepaymentDto.totalRepaymentComma}"></li>
+                        <li class="_endDate" th:text="${cfl.endDate}"></li>
+                        <li class="_account" th:value="${cfl.excelBankCode}" th:text="${cfl.accountBankName} + ' ' + ${cfl.accountNo}"></li>
+                        <input class="_accountNo" type="hidden" th:value="${cfl.accountNo}">
+
+                        <li class="_repayment_type">
+                            <select class="_select_repayment_type">
+                                <option selected value="0">---</option>
+                                <option th:each="repaymentTypeEnum : ${repaymentTypeEnumList}" th:text="${repaymentTypeEnum.meaning}"
+                                        th:value="${repaymentTypeEnum.index}" th:selected="${repaymentTypeEnum.index} == ${cfl.contractRepaymentDto.repaymentType}"></option>
+                            </select>
+                        </li>
+                        <li class="_noteArea">
+                            <div>
+                                <textarea maxlength="300" th:text="${cfl.contractRepaymentDto.note}" class="_note"></textarea>
+                            </div>
+                        </li>
+                        <li class="_redemptionDate"></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+<th:block layout:fragment="pagePop">
+
+</th:block>
+
+<th:block layout:fragment="pageScript">
+
+    <script type="text/javascript" th:src="@{/js/contractFortune/repaymentContractFortune.js(date=${todayFormat})}"></script>
+
+    <!-- department select box -->
+    <script type="text/javascript" th:src="@{/js/select_department_employee.js(date=${todayFormat})}"></script>
+
+    <!-- 문자열 유틸 -->
+    <script type="text/javascript" th:src="@{/js/utils/string_custom_util.js(date=${todayFormat})}"></script>
+
+    <!-- 날짜 계산 -->
+    <script type="text/javascript" th:src="@{/js/utils/date_util.js(date=${todayFormat})}"></script>
+
+    <!-- 엑셀 다운로드 -->
+    <script type="text/javascript" th:src="@{/js/utils/excel_download.js(date=${todayFormat})}"></script>
+</th:block>
+</html>

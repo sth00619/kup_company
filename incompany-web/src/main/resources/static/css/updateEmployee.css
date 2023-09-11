@@ -1,0 +1,19 @@
+.error_next_box {
+    display : none;
+    margin : 9px 0 -2px;
+    font-size : 15px;
+    line-height : 14px;
+    color : red;
+}
+
+#employeeCode {
+    background-color : #F5F5F5
+}
+
+._authNone {
+    background-color : #F5F5F5
+}
+
+._emailSelf {
+    margin-right: 10px;
+}

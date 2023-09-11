@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="pageCss">
+    <!-- css작성, 파일 -->
+    <link href="/toastUi/css/toastUi.css" rel="stylesheet">
+    <link href="/toastUi/css/toastUi-editor-plugin-table-merged-cell.css" rel="stylesheet">
+    <link href="/toastUi/css/tui-color-picker.css" rel="stylesheet">
+    <link href="/toastUi/css/toastUi-editor-plugin-color-syntax.css" rel="stylesheet">
+
+</th:block>
+
+<th:block layout:fragment="side_contents">
+    <div th:replace="fragments/sideWorksheet :: sideWorksheetFragment"></div>
+</th:block>
+
+
+<th:block layout:fragment="contents">
+    <input hidden id="projectNo" th:value="${pc.projectNo}" />
+
+    <div class="top_center_menu_visual">
+
+        <div class="main_center_wrap">
+
+            <div class="top_title">
+                <h2>프로젝트</h2>
+            </div>
+            <div class="Khlist">
+
+                <dl class="list_view03">
+                    <dt>작성자</dt>
+                    <dd>
+                        <span>[[${pc.createEmployeeName}]]</span>
+                    </dd>
+                </dl>
+
+                <dl class="list_view03">
+                    <dt>참여인원</dt>
+                    <dd>
+                        <div class="p_people view03people" th:each=" mpl : ${pc.myProjectList}">
+
+
+                            <img th:if="${#strings.isEmpty(mpl.imageUrl)}" src="/images/img/quick_my.png">
+                            <img th:unless="${#strings.isEmpty(mpl.imageUrl)}" th:src="${mpl.imageUrl}">
+
+                            <p class="hover_name" th:text="${mpl.employeeName}"></p>
+                        </div>
+
+
+                    </dd>
+                </dl>
+
+                <dl class="list_view03">
+                    <dt>프로젝트명</dt>
+                    <dd><span>[[${pc.title}]]</span></dd>
+                </dl>
+
+                <dl class="list_view04">
+                    <dt>내용</dt>
+                    <p hidden id="contents" th:text="${pc.contents}"></p>
+                    <dd>
+                        <div id="viewer"></div>
+                    </dd>
+                </dl>
+
+
+            </div>
+
+            <!-- 댓글 -->
+            <th:block th:replace="fragments/reply :: reply"></th:block>
+
+            <!-- 팀장 이상일 경우 -->
+            <!-- 시나리오 아직모름 -->
+            <!-- <div class="save_btn_wrap"  th:if="${#authorization.expression('hasAnyAuthority(''SCHEDULE_SELECT_DEPARTMENT_ONE_DEPTH'',''SCHEDULE_SELECT_DEPARTMENT_TWO_DEPTH'',''SCHEDULE_SELECT_DEPARTMENT_THREE_DEPTH'')')} and ${pc.createEmployeeCode != employeeLoginCode}">
+                <div>
+                    <a th:href="@{/worksheet/project/list(employeeCode=${selectEmployeeCode},departmentCode=${departmentCode},pageNum=${pageNum},searchType=${searchType},keyword=${keyword},state=${state})}">
+                        <button class="close_btn" >취소</button>
+                    </a>
+                    <button class="close_btn btn_color" >결제</button>
+                </div>
+            </div> -->
+
+            <!-- 팀장 이상이 아닐경우 -->
+            <!-- <div class="save_btn_wrap"  th:unless="${#authorization.expression('hasAnyAuthority(''SCHEDULE_SELECT_DEPARTMENT_ONE_DEPTH'',''SCHEDULE_SELECT_DEPARTMENT_TWO_DEPTH'',''SCHEDULE_SELECT_DEPARTMENT_THREE_DEPTH'')')} and ${pc.createEmployeeCode != employeeLoginCode}"> -->
+            <div class="save_btn_wrap">
+                <div>
+                    <a
+                        th:href="@{/worksheet/project/list(employeeCode=${selectEmployeeCode},departmentCode=${departmentCode},pageNum=${pageNum},searchType=${searchType},keyword=${keyword},state=${state})}">
+                        <button class="close_btn full_list2">전체목록</button>
+                    </a>
+                    <!-- 작성자가 본인 -->
+                    <button class="close_btn" id="updateBtn" th:each=" mpl : ${pc.myProjectList}"
+                        th:if="${mpl.employeeCode == employeeLoginCode}">수정</button>
+                    <button class="close_btn" id="updateBtn"
+                    th:if="${pc.createEmployeeCode == employeeLoginCode}">수정</button>
+
+                    
+                    <button class="close_btn btn_color" th:if="${pc.createEmployeeCode == employeeLoginCode}"
+                        id="deleteBtn">삭제</button>
+                </div>
+            </div>
+
+
+
+
+
+            <!-- 이전글, 다음글 -->
+            <div class="Khlist">
+
+                <dl class="list_view07">
+                    <dt>이전글</dt>
+                    <a th:if="${not #strings.isEmpty(pc.prevNo) }"
+                        th:href="@{/worksheet/project/contents(projectNo=${pc.prevNo},employeeCode=${selectEmployeeCode},departmentCode=${departmentCode},searchType=${searchType},keyword=${keyword},state=${state})}">
+                        <dd><span th:text="${pc.prevTitle}"></span></dd>
+                        <div class="today_itembox">
+                            <p class="today_item" th:text="${pc.prevCreateDateFormat}">2022-03-23</p>
+                        </div>
+                    </a>
+                </dl>
+
+                <dl class="list_view07">
+                    <dt>다음글</dt>
+                    <a th:if="${not #strings.isEmpty(pc.nextNo) }"
+                        th:href="@{/worksheet/project/contents(projectNo=${pc.nextNo},employeeCode=${selectEmployeeCode},departmentCode=${departmentCode},searchType=${searchType},keyword=${keyword},state=${state})}">
+                        <dd><span th:text="${pc.nextTitle}">제목입니다</span></dd>
+                        <div class="today_itembox">
+                            <p class="today_item" th:text="${pc.nextCreateDateFormat}"></p>
+                        </div>
+                    </a>
+                </dl>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <form enctype="multipart/form-data" id="form" method="post" th:action="@{/}">
+
+    </form>
+
+
+</th:block>
+
+
+<th:block layout:fragment="pageScript">
+    <!-- js파일 -->
+    <!-- Color Picker -->
+    <script src="/toastUi/js/tui-color-picker.js"></script>
+    <!-- Editor -->
+    <script src="/toastUi/js/toastUi.js"></script>
+    <!-- Editor's Plugin -->
+    <script src="/toastUi/js/toastUi-editor-plugin-table-merged-cell.js"></script>
+    <script src="/toastUi/js/toastUi-editor-plugin-color-syntax.js"></script>
+    <script th:src="@{/js/worksheet/project/contents.js(date=${todayFormat})}"></script>
+
+
+</th:block>
+
+
+</html>

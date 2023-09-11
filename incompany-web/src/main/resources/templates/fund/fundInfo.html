@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="@{layout/defaultFragment}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<th:block layout:fragment="pageCss">
+    <link rel="stylesheet" th:href="@{/css/list_check_box.css(date=${todayFormat})}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/insurance/insuranceInfoList.css(date=${todayFormat})}" type="text/css">
+</th:block>
+<th:block layout:fragment="side_contents">
+
+    <div th:unless="${#authorization.expression('hasAnyAuthority(''SI_COMPANY'', ''FA_COMPANY'')')}">
+        <div th:replace="fragments/sideContractFortune :: sideContractFortuneFragment"></div>
+    </div>
+
+    <!--si company 권한 있을 경우 사이드바 -->
+    <div th:if="${#authorization.expression('hasAnyAuthority(''SI_COMPANY'', ''FA_COMPANY'')')}">
+        <div th:replace="fragments/sideSiCompany :: sideSiCompanyFragment"></div>
+    </div>
+
+</th:block>
+<th:block layout:fragment="contents">
+    <input id="fundManageNo" type="hidden" th:value="${fundDto.fundManageNo}">
+
+    <div class="guest_deta_wrap">
+        <div class="guest_deta_box">
+            <h2>펀드 정보</h2>
+            <div class="guest_deta">
+                <div class="contract_list">
+                    <div class="contract_list_name">
+                        <p>본부</p>
+                    </div>
+                    <div class="contract_list_box">
+                        <span th:text="${employeeDto.D1}"></span>
+                    </div>
+                </div>
+
+                <div class="contract_list">
+                    <div class="contract_list_name">
+                        <p>지점</p>
+                    </div>
+                    <div class="contract_list_box">
+                        <span th:text="${employeeDto.D2}"></span>
+                    </div>
+                </div>
+
+                <div class="contract_list">
+                    <div class="contract_list_name">
+                        <p>팀</p>
+                    </div>
+                    <div class="contract_list_box">
+                        <span th:text="${employeeDto.D3}"></span>
+                    </div>
+                </div>
+
+                <div class="contract_list">
+                    <div class="contract_list_name">
+                        <p>직급</p>
+                    </div>
+                    <div class="contract_list_box">
+                        <span th:text="${employeeDto.positionName}"></span>
+                    </div>
+                </div>
+
+                <div class="contract_list">
+                    <div class="contract_list_name">
+                        <p>담당자</p>
+                    </div>
+                    <div class="contract_list_box">
+                        <span th:text="${employeeDto.employeeName}"></span>
+                    </div>
+                </div>
+
+                <div class="contract_list">
+                    <div class="contract_list_name">
+                        <p class="none">담당자</p>
+                    </div>
+                    <div class="contract_list_box">
+                        <span></span>
+                    </div>
+                </div>
+
+                <div class="contract_list">
+                    <div class="contract_list_name">
+                        <p>고객</p>
+                    </div>
+                    <div class="contract_list_box">
+                        <span th:text="${fundDto.potentialUserName}"></span>
+                    </div>
+                </div>
+
+                <div class="contract_list">
+                    <div class="contract_list_name">
+                        <p>금액</p>
+                    </div>
+                    <div class="contract_list_box">
+                        <span class="_totalAmount"></span>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+
+        <div class="guest_deta_box">
+
+            <div class="guest_deta">
+
+                <div class="main_top">
+                    <div>
+                        <ul class="insur_main_title2 istsize">
+                            <li>계약날짜</li>
+                            <li>구분</li>
+                            <li>실적</li>
+                            <li>종목</li>
+                            <li>계좌개설일</li>
+                            <li>만기일</li>
+                            <li>이체일</li>
+                            <li>금액</li>
+                        </ul>
+                    </div>
+
+                    <div class="insur_sub_txt2 istsize">
+                        <ul th:each="infoList : ${fundInfoList}" class="_fund_info_box">
+                            <li>
+                                <span th:text="${infoList.getFundJoinDate}"></span>
+                            </li>
+                            <li>
+                                <span th:text="${infoList.getStateEnum}"></span>
+                            </li>
+                            <li>
+                                <span class="_achieveCheck" th:value="${infoList.getAchieveCheck}"></span>
+                            </li>
+                            <li>
+                                <span th:text="${infoList.getFundTitle}"></span>
+                            </li>
+                            <li>
+                                <span th:text="${infoList.getAccountOpenDate}"></span>
+                            </li>
+                            <li>
+                                <span th:text="${infoList.getFundPayTerm}"></span>
+
+                            </li>
+                            <li>
+                                <span th:text="${infoList.getFundPayDate}"></span>
+                            </li>
+                            <li>
+                                <span th:text="${infoList.getAmountPlusComma}" class="_fundAmount"></span>
+                            </li>
+                        </ul>
+
+
+                    </div>
+
+
+                </div>
+
+                <div class="value_pay">
+                    <p>
+                        실적 인정 금액
+                        <em id="_totalPerformance"></em>원
+                        &emsp;&emsp;&emsp;
+                        총 금액
+                        <em id="_totalAmount"></em>원
+                    </p>
+                </div>
+
+            </div>
+
+
+        </div>
+
+        <div class="guest_deta_box">
+            <h2>특이사항</h2>
+
+            <div class="guest_deta">
+                <div class="last_txt">
+                    <span th:text="${fundDto.note}"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 댓글 -->
+        <div th:unless="${checkFund == 'Y'}">
+            <th:block th:replace="fragments/reply :: reply"></th:block>
+        </div>
+
+        <div class="save_btn_wrap">
+            <div>
+                <a>
+                    <button class="close_btn _close_btn">취소</button>
+                </a>
+                <a th:href="@{/fund/updateFund(fundManageNo=${fundDto.fundManageNo})}">
+                    <button class="close_btn btn_color" sec:authorize="hasAnyAuthority('CONTRACT_MANAGER')">수정</button>
+                </a>
+                <button class="close_btn _deleteBtn" th:if="${fundDto.checkFund} == 'N'" sec:authorize="hasAnyAuthority('CONTRACT_MANAGER')">삭제</button>
+            </div>
+        </div>
+
+    </div>
+</th:block>
+<th:block layout:fragment="pageScript">
+    <script th:src="@{/js/fund/fundInfo.js(date=${todayFormat})}" type="text/javascript"></script>
+
+    <!-- checkBox -->
+    <script th:src="@{/js/list_check_box.js(date=${todayFormat})}" type="text/javascript"></script>
+
+    <!-- 문자열 유틸 -->
+    <script type="text/javascript" th:src="@{/js/utils/string_custom_util.js(date=${todayFormat})}"></script>
+</th:block>
+</html>
